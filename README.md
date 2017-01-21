@@ -10,24 +10,24 @@ Main features:
 - Ability to register in the Consul discovery service
 - Ability to work like a simple spring config server
 
+[Download Release 1.0.0](https://github.com/laviua/komock/releases/download/1.0.0/komock-1.0.0.zip)
+
 
 Look at self-describable configuration file:
 **mock_example.yaml** 
 
-1.make distribution:
+How to run:
 
-    gradle clean build
-
-2.extract distribution from the following path:
+1. Extract release version :
     
-    build/distributions/komock-xx-version.zip
+        komock-x.x.x.zip
 
-3.run
+3. Run
 
-    bin\komock d:\mock_example.yaml
+        bin\komock d:\mock_example.yaml
 
 HTTPS/SSL:
 
-You can use your personal keystore. Just create it and put into the config:
+You can use your personal keystore. Just create it by the following command and set filename with password in configuration file:
 
     keytool -genkey -alias replserver -keyalg RSA -keystore mock_keystore.jks -dname "CN=Mark Smith, OU=JavaSoft, O=Sun, L=Cupertino, S=California, C=US" -storepass mockpassword -keypass mockpassword
