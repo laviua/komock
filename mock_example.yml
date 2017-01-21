@@ -1,0 +1,127 @@
+daemonMode: false
+consul:
+  enabled: false
+  consulHost: 127.0.0.1
+  services:
+    -
+      serviceId: customer-data-service
+      serviceName: customer-data-service
+      servicePort: 8081
+      serviceAddress: 127.0.0.1
+      checkInterval: 30s
+      checkTimeout: 30s
+
+springConfig:
+  enabled: true
+  sourceFolder: ./src/test/resources/springconfig
+  profiles:
+    - dev
+    - qa
+  server:
+    id: spring-config-server
+    port: 8888
+    ipAddress: 127.0.0.1
+    secure:
+      enabled: true
+      keyStoreLocation: mock_keystore.jks
+      keyStorePassword: mockpassword
+
+servers:
+  -
+    id: firstServer
+    port: 8081
+    routes:
+      -
+        httpMethod: GET
+        url: /testNoConent
+        contentType: text/plain
+        responseBody: This content will be ignored
+        code: 204
+      -
+        httpMethod: GET
+        url: /testGetText
+        contentType: text/plain
+        responseBody: Hello World. Plain Text.
+        code: 200
+      -
+        httpMethod: GET
+        url: /giveMeCookies
+        contentType: text/plain
+        responseBody: Hello. Take your cookies
+        code: 200
+        cookies:
+          -
+            name: cookieName
+            value: cookieValue
+            path: /
+            maxAge: 3600
+            secure: true
+            domain: 127.0.0.1
+            comment: someComment
+      -
+        httpMethod: GET
+        url: /anymask/*/anypath/
+        contentType: text/plain
+        responseBody: Hello World. Test url mask with additional text
+        code: 200
+      -
+        httpMethod: GET
+        url: /somemask/*/somepath/*/somepath
+        contentType: text/plain
+        responseBody: Some Complicated Path
+        code: 200
+      -
+        httpMethod: POST
+        url: /testGetText
+        contentType: text/plain
+        responseBody: Hello World Again. Plain Text.
+        code: 200
+      -
+        httpMethod: GET
+        url: /testGetJson
+        contentType: application/json
+        responseBody: '{"name": "Korben Dallas"}'
+        code: 200
+      -
+        httpMethod: POST
+        url: /oauth/token
+        contentType: "application/json"
+        responseBody: '{"access_token" : "ya29S6ZQbiBQpA5Rz8oty00xj-xydfdfddteerer-1eM",  "token_type" : "Bearer",  "expires_in" : 3600}'
+        responseHeaders:
+          - {"X-java-version" : "1.8"}
+          - {"X-builder" : "gradle"}
+        code: 200
+        logRequest: true
+        logResponse: true
+        logBefore: "textBefore"
+        logAfter: "textAfter"
+
+      -
+        httpMethod: DELETE
+        url: /deleteResource
+        contentType: text/plain
+        responseBody: OK
+        code: 200
+      -
+        httpMethod: PATCH
+        url: /patchResource
+        contentType: application/json
+        responseBody: '{"patchedParameter": "patchedVariable with error"}'
+        code: 500
+  -
+    id: secondServer
+    port: 8082
+    minThreads: 1
+    maxThreads: 10
+    idleTimeout: 60000
+    secure:
+      enabled: true
+      keyStoreLocation: mock_keystore.jks
+      keyStorePassword: mockpassword
+    routes:
+      -
+        httpMethod: GET
+        url: /testGetText
+        contentType: text/plain
+        responseBody: Content from the second server
+        code: 200

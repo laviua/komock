@@ -1,0 +1,429 @@
+17:37:10.371 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: ${projectVersion}. config path: mock_example.yml
+17:37:10.546 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @604ms to org.eclipse.jetty.util.log.Slf4jLog
+17:37:10.605 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: defaultServer on port: 8081
+17:37:10.609 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+17:37:10.609 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:37:10.610 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+17:37:10.610 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+17:37:10.610 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+17:37:10.610 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+17:37:10.610 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+17:37:10.610 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+17:37:10.610 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+17:37:10.610 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+17:37:10.611 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+17:37:10.611 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:37:10.646 [Thread-0] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:37:10.646 [Thread-1] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:37:10.660 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: config-server on: 8888
+17:37:10.661 [Thread-2] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:37:10.679 [Thread-0] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:37:10.679 [Thread-1] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:37:10.679 [Thread-2] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:37:10.679 [Thread-0] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:37:10.679 [Thread-1] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:37:10.679 [Thread-2] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:37:10.682 [Thread-1] INFO  org.eclipse.jetty.server.session - Scavenging every 660000ms
+17:37:10.682 [Thread-2] INFO  org.eclipse.jetty.server.session - Scavenging every 660000ms
+17:37:10.682 [Thread-0] INFO  org.eclipse.jetty.server.session - Scavenging every 660000ms
+17:37:10.723 [Thread-0] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@34e6cf3f{HTTP/1.1,[http/1.1]}{0.0.0.0:8081}
+17:37:10.724 [Thread-0] INFO  org.eclipse.jetty.server.Server - Started @785ms
+17:37:10.736 [Thread-2] INFO  o.e.jetty.util.ssl.SslContextFactory - x509=X509@4f2662fb(replserver,h=[],w=[]) for SslContextFactory@75cb0fc0(file:///Users/oleksandrloushkin/dev/projects/komock/mock_keystore.jks,null)
+17:37:10.736 [Thread-1] INFO  o.e.jetty.util.ssl.SslContextFactory - x509=X509@37af953a(replserver,h=[],w=[]) for SslContextFactory@11756100(file:///Users/oleksandrloushkin/dev/projects/komock/mock_keystore.jks,null)
+17:37:10.738 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+17:37:10.738 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+17:37:10.738 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+17:37:10.977 [Thread-1] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@6574a260{SSL,[ssl, http/1.1]}{0.0.0.0:8082}
+17:37:10.977 [Thread-1] INFO  org.eclipse.jetty.server.Server - Started @1038ms
+17:37:10.981 [Thread-2] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@194bf67{SSL,[ssl, http/1.1]}{127.0.0.1:8888}
+17:37:10.983 [Thread-2] INFO  org.eclipse.jetty.server.Server - Started @1045ms
+17:37:27.985 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: ${projectVersion}. config path: mock_example.yml
+17:37:28.163 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @643ms to org.eclipse.jetty.util.log.Slf4jLog
+17:37:28.223 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: defaultServer on port: 8081
+17:37:28.226 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+17:37:28.226 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:37:28.226 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+17:37:28.227 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+17:37:28.227 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+17:37:28.227 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+17:37:28.227 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+17:37:28.227 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+17:37:28.227 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+17:37:28.227 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+17:37:28.228 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+17:37:28.228 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:37:28.265 [Thread-0] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:37:28.265 [Thread-1] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:37:28.276 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: config-server on: 8888
+17:37:28.277 [Thread-2] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:37:28.301 [Thread-1] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:37:28.301 [Thread-2] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:37:28.301 [Thread-0] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:37:28.301 [Thread-1] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:37:28.301 [Thread-2] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:37:28.301 [Thread-0] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:37:28.304 [Thread-1] INFO  org.eclipse.jetty.server.session - Scavenging every 660000ms
+17:37:28.304 [Thread-2] INFO  org.eclipse.jetty.server.session - Scavenging every 660000ms
+17:37:28.304 [Thread-0] INFO  org.eclipse.jetty.server.session - Scavenging every 660000ms
+17:37:28.345 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+17:37:28.345 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+17:37:28.345 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+17:37:28.356 [Thread-0] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@30e43e31{HTTP/1.1,[http/1.1]}{0.0.0.0:8081}
+17:37:28.356 [Thread-0] INFO  org.eclipse.jetty.server.Server - Started @839ms
+17:37:28.366 [Thread-1] INFO  o.e.jetty.util.ssl.SslContextFactory - x509=X509@508b9f6b(replserver,h=[],w=[]) for SslContextFactory@fdd5713(file:///Users/oleksandrloushkin/dev/projects/komock/mock_keystore.jks,null)
+17:37:28.366 [Thread-2] INFO  o.e.jetty.util.ssl.SslContextFactory - x509=X509@54c522c0(replserver,h=[],w=[]) for SslContextFactory@10b7981f(file:///Users/oleksandrloushkin/dev/projects/komock/mock_keystore.jks,null)
+17:37:28.611 [Thread-1] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@17dea11d{SSL,[ssl, http/1.1]}{0.0.0.0:8082}
+17:37:28.611 [Thread-1] INFO  org.eclipse.jetty.server.Server - Started @1094ms
+17:37:28.612 [Thread-2] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@3302773d{SSL,[ssl, http/1.1]}{127.0.0.1:8888}
+17:37:28.613 [Thread-2] INFO  org.eclipse.jetty.server.Server - Started @1096ms
+17:37:44.644 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: ${projectVersion}. config path: mock_example.yml
+17:37:44.837 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @711ms to org.eclipse.jetty.util.log.Slf4jLog
+17:37:44.914 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: defaultServer on port: 8081
+17:37:44.919 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+17:37:44.919 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:37:44.919 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+17:37:44.919 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+17:37:44.919 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+17:37:44.919 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+17:37:44.919 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+17:37:44.919 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+17:37:44.919 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+17:37:44.919 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+17:37:44.920 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+17:37:44.921 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:37:44.957 [Thread-0] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:37:44.957 [Thread-1] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:37:44.986 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: config-server on: 8888
+17:37:44.987 [Thread-18] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:37:45.001 [Thread-1] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:37:45.001 [Thread-18] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:37:45.001 [Thread-0] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:37:45.001 [Thread-1] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:37:45.001 [Thread-18] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:37:45.001 [Thread-0] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:37:45.006 [Thread-0] INFO  org.eclipse.jetty.server.session - Scavenging every 600000ms
+17:37:45.006 [Thread-1] INFO  org.eclipse.jetty.server.session - Scavenging every 600000ms
+17:37:45.006 [Thread-18] INFO  org.eclipse.jetty.server.session - Scavenging every 600000ms
+17:37:45.063 [Thread-0] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@11ede626{HTTP/1.1,[http/1.1]}{0.0.0.0:8081}
+17:37:45.064 [Thread-0] INFO  org.eclipse.jetty.server.Server - Started @940ms
+17:37:45.075 [Thread-1] INFO  o.e.jetty.util.ssl.SslContextFactory - x509=X509@3bffbf0a(replserver,h=[],w=[]) for SslContextFactory@36ce80a2(file:///Users/oleksandrloushkin/dev/projects/komock/mock_keystore.jks,null)
+17:37:45.076 [Thread-18] INFO  o.e.jetty.util.ssl.SslContextFactory - x509=X509@21a9a6b5(replserver,h=[],w=[]) for SslContextFactory@4affcf79(file:///Users/oleksandrloushkin/dev/projects/komock/mock_keystore.jks,null)
+17:37:45.094 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+17:37:45.094 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+17:37:45.095 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+17:37:45.333 [Thread-1] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@55d0d41c{SSL,[ssl, http/1.1]}{0.0.0.0:8082}
+17:37:45.333 [Thread-18] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@3aa987d9{SSL,[ssl, http/1.1]}{127.0.0.1:8888}
+17:37:45.333 [Thread-1] INFO  org.eclipse.jetty.server.Server - Started @1209ms
+17:37:45.333 [Thread-18] INFO  org.eclipse.jetty.server.Server - Started @1209ms
+17:38:11.128 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: ${projectVersion}. config path: mock_example.yml
+17:38:11.288 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @612ms to org.eclipse.jetty.util.log.Slf4jLog
+17:38:11.345 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: defaultServer on port: 8081
+17:38:11.348 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+17:38:11.348 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:38:11.348 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+17:38:11.348 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+17:38:11.348 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+17:38:11.348 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+17:38:11.348 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+17:38:11.348 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+17:38:11.348 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+17:38:11.348 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+17:38:11.349 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+17:38:11.349 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:38:11.393 [Thread-1] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:38:11.393 [Thread-0] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:38:11.396 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: config-server on: 8888
+17:38:11.397 [Thread-2] INFO  org.eclipse.jetty.server.Server - jetty-9.4.0.v20161208
+17:38:11.429 [Thread-1] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:38:11.429 [Thread-0] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:38:11.430 [Thread-2] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+17:38:11.430 [Thread-1] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:38:11.430 [Thread-0] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:38:11.430 [Thread-2] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+17:38:11.434 [Thread-1] INFO  org.eclipse.jetty.server.session - Scavenging every 600000ms
+17:38:11.434 [Thread-2] INFO  org.eclipse.jetty.server.session - Scavenging every 600000ms
+17:38:11.435 [Thread-0] INFO  org.eclipse.jetty.server.session - Scavenging every 600000ms
+17:38:11.459 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+17:38:11.459 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+17:38:11.459 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+17:38:11.476 [Thread-0] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@fb58089{HTTP/1.1,[http/1.1]}{0.0.0.0:8081}
+17:38:11.476 [Thread-0] INFO  org.eclipse.jetty.server.Server - Started @802ms
+17:38:11.481 [Thread-2] INFO  o.e.jetty.util.ssl.SslContextFactory - x509=X509@668a0b09(replserver,h=[],w=[]) for SslContextFactory@35c8e8ea(file:///Users/oleksandrloushkin/dev/projects/komock/mock_keystore.jks,null)
+17:38:11.481 [Thread-1] INFO  o.e.jetty.util.ssl.SslContextFactory - x509=X509@1f9cda23(replserver,h=[],w=[]) for SslContextFactory@5b97a150(file:///Users/oleksandrloushkin/dev/projects/komock/mock_keystore.jks,null)
+17:38:11.724 [Thread-1] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@434bc823{SSL,[ssl, http/1.1]}{0.0.0.0:8082}
+17:38:11.724 [Thread-1] INFO  org.eclipse.jetty.server.Server - Started @1050ms
+17:38:11.725 [Thread-2] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@25064089{SSL,[ssl, http/1.1]}{127.0.0.1:8888}
+17:38:11.725 [Thread-2] INFO  org.eclipse.jetty.server.Server - Started @1051ms
+17:39:52.877 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: ${projectVersion}. config path: mock_example.yml
+17:39:53.106 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: defaultServer on port: 8081
+17:39:53.110 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+17:39:53.110 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:39:53.110 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+17:39:53.110 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+17:39:53.110 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+17:39:53.110 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+17:39:53.110 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+17:39:53.110 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+17:39:53.110 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+17:39:53.110 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+17:39:53.111 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+17:39:53.111 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:39:53.158 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: config-server on: 8888
+17:39:53.246 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+17:39:53.247 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+17:39:53.247 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+17:40:09.461 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: ${projectVersion}. config path: mock_example.yml
+17:40:09.705 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: defaultServer on port: 8081
+17:40:09.709 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+17:40:09.709 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:40:09.709 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+17:40:09.709 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+17:40:09.709 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+17:40:09.709 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+17:40:09.709 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+17:40:09.709 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+17:40:09.709 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+17:40:09.709 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+17:40:09.710 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+17:40:09.710 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+17:40:09.763 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: config-server on: 8888
+17:40:09.828 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+17:40:09.828 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+17:40:09.828 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+18:20:52.461 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:20:52.687 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:20:52.691 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:20:52.691 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:20:52.691 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:20:52.691 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:20:52.692 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:20:52.692 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:20:52.692 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:20:52.692 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:20:52.692 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:20:52.692 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:20:52.693 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:20:52.693 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:20:52.747 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:20:52.807 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+18:20:52.807 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+18:20:52.807 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+18:29:15.991 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:29:16.529 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:29:16.548 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:29:16.548 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:29:16.552 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:29:16.552 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:29:16.552 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:29:16.552 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:29:16.553 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:29:16.553 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:29:16.553 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:29:16.553 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:29:16.555 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:29:16.556 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:29:16.858 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:29:17.046 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+18:29:17.047 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+18:29:17.047 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+18:30:10.985 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:30:11.556 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:30:11.569 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:30:11.569 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:30:11.569 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:30:11.569 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:30:11.569 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:30:11.570 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:30:11.571 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:30:11.572 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:30:11.572 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:30:11.572 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:30:11.573 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:30:11.574 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:30:11.755 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:30:11.918 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+18:30:11.919 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+18:30:11.919 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+18:35:08.996 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:35:09.494 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:35:09.510 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:35:09.510 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:35:09.510 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:35:09.510 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:35:09.512 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:35:09.512 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:35:09.513 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:35:09.513 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:35:09.513 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:35:09.513 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:35:09.515 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:35:09.515 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:35:09.729 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:35:09.889 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+18:35:09.890 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+18:35:09.890 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+18:35:21.237 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:35:21.483 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:35:21.487 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:35:21.487 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:35:21.487 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:35:21.487 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:35:21.487 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:35:21.487 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:35:21.487 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:35:21.487 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:35:21.488 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:35:21.488 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:35:21.488 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:35:21.489 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:35:21.543 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:35:21.650 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+18:35:21.650 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+18:35:21.650 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+18:45:45.019 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:45:45.245 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:45:45.249 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:45:45.249 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:45:45.249 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:45:45.249 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:45:45.249 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:45:45.249 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:45:45.250 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:45:45.250 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:45:45.250 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:45:45.250 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:45:45.250 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:45:45.251 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:45:45.304 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:45:45.367 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+18:45:45.367 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+18:45:45.367 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+18:48:00.620 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:48:00.888 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:48:00.889 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads 100. minThreads: 4. Idle: 60000
+18:48:00.892 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:48:00.892 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:48:00.893 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:48:00.893 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:48:00.893 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:48:00.893 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:48:00.893 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:48:00.893 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:48:00.893 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:48:00.893 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:48:00.894 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:48:00.895 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads 100. minThreads: 4. Idle: 60000
+18:48:00.895 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:48:00.944 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:48:01.040 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+18:48:01.041 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+18:48:01.041 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+18:49:19.183 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:49:32.372 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:49:32.604 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:49:32.604 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads 100. minThreads: 4. Idle: 60000
+18:49:32.607 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:49:32.607 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:49:32.608 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:49:32.608 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:49:32.608 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:49:32.608 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:49:32.608 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:49:32.608 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:49:32.608 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:49:32.608 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:49:32.608 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:49:32.609 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads 2. minThreads: 1. Idle: 60000
+18:49:32.609 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:49:32.660 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:49:32.671 [Thread-1] ERROR u.com.lavi.komock.engine.JettyServer - secondServer - start failed
+java.lang.IllegalStateException: Insufficient threads: max=2 < needed(acceptors=1 + selectors=8 + request=1)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:414)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:68)
+	at ua.com.lavi.komock.engine.JettyServer.start(JettyServer.kt:42)
+	at ua.com.lavi.komock.engine.Router$start$1.run(Router.kt:62)
+	at java.lang.Thread.run(Thread.java:745)
+18:49:59.859 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:50:00.094 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:50:00.094 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads 100. minThreads: 4. Idle: 60000
+18:50:00.097 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:50:00.097 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:50:00.097 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:50:00.097 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:50:00.097 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:50:00.097 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:50:00.097 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:50:00.097 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:50:00.097 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:50:00.097 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:50:00.098 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:50:00.098 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads 9. minThreads: 1. Idle: 60000
+18:50:00.098 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:50:00.139 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:50:00.153 [Thread-1] ERROR u.com.lavi.komock.engine.JettyServer - secondServer - start failed
+java.lang.IllegalStateException: Insufficient threads: max=9 < needed(acceptors=1 + selectors=8 + request=1)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:414)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:68)
+	at ua.com.lavi.komock.engine.JettyServer.start(JettyServer.kt:42)
+	at ua.com.lavi.komock.engine.Router$start$1.run(Router.kt:62)
+	at java.lang.Thread.run(Thread.java:745)
+18:50:05.138 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:50:05.359 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:50:05.359 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads 100. minThreads: 4. Idle: 60000
+18:50:05.362 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:50:05.362 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:50:05.362 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:50:05.362 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:50:05.362 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:50:05.362 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:50:05.362 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:50:05.362 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:50:05.362 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:50:05.362 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:50:05.363 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:50:05.363 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads 10. minThreads: 1. Idle: 60000
+18:50:05.363 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:50:05.409 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:50:05.467 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+18:50:05.468 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+18:50:05.468 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+18:50:25.489 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:50:25.713 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:50:25.713 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads 100. minThreads: 4. Idle: 60000 ms
+18:50:25.717 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:50:25.717 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:50:25.717 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:50:25.717 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:50:25.717 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:50:25.718 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:50:25.718 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:50:25.718 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:50:25.718 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:50:25.718 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:50:25.718 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:50:25.718 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads 10. minThreads: 1. Idle: 60000 ms
+18:50:25.718 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:50:25.764 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:50:25.822 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+18:50:25.822 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+18:50:25.822 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml
+18:51:21.006 [main] INFO  ua.com.lavi.komock.Application - Run Komock version: 1.0.0. config path: mock_example.yml
+18:51:21.233 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: firstServer on port: 8081
+18:51:21.233 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads: 100. minThreads: 4. idle timeout: 60000 ms
+18:51:21.237 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testNoConent
+18:51:21.237 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:51:21.237 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /giveMeCookies
+18:51:21.237 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /anymask/*/anypath/
+18:51:21.237 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /somemask/*/somepath/*/somepath
+18:51:21.237 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /testGetText
+18:51:21.237 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetJson
+18:51:21.237 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: POST /oauth/token
+18:51:21.237 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: DELETE /deleteResource
+18:51:21.237 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: PATCH /patchResource
+18:51:21.238 [main] INFO  u.c.l.k.registrar.ServerRegistrar - Started server: secondServer on port: 8082
+18:51:21.238 [main] INFO  u.c.l.k.registrar.ServerRegistrar - maxThreads: 10. minThreads: 1. idle timeout: 60000 ms
+18:51:21.238 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /testGetText
+18:51:21.294 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Started server: spring-config-server on: 8888
+18:51:21.487 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/dev
+18:51:21.487 [main] INFO  ua.com.lavi.komock.engine.Router - Registered http route: GET /example-service/qa
+18:51:21.487 [main] INFO  u.c.l.k.r.SpringConfigRegistrar - Registered spring config file: ./src/test/resources/springconfig/example-service.yml

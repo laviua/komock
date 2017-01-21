@@ -1,0 +1,17 @@
+SnakeYaml - Apache 2.0
+Gson - Apache 2.0
+Consul - Apache 2.0
+Kotlin - Apache 2.0
+Jetty - Apache 2.0
+JUnit - EPL v10
+logback-classic - MIT
+Unirest - MIT
+
+Apache 2.0:
+http://www.apache.org/licenses/LICENSE-2.0
+
+MIT:
+http://directory.fsf.org/wiki/License:Expat
+
+EPL:
+http://www.eclipse.org/legal/epl-v10.html

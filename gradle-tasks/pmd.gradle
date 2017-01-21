@@ -1,0 +1,28 @@
+apply plugin: 'pmd'
+
+tasks.remove(pmdTest)
+tasks.withType(Pmd) {
+    group = "Code Quality"
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+dependencies {
+    pmd(
+            'net.sourceforge.pmd:pmd-core:5.4.2',
+            'net.sourceforge.pmd:pmd-java:5.4.2'
+    )
+}
+
+pmd {
+    toolVersion = "5.4.2"
+    sourceSets = [sourceSets.main]
+    ignoreFailures = false
+    consoleOutput = true
+    reportsDir = file("$project.buildDir/pmdReports")
+    ruleSets = []
+    ruleSetFiles = files("$rootDir/gradle-tasks/pmd.xml")
+}

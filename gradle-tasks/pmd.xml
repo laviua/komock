@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<ruleset name="DefaultRuleSet"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>Default rule set</description>
+
+    <rule ref="rulesets/java/basic.xml">
+        <exclude name="SimplifiedTernary"/>
+    </rule>
+    <rule ref="rulesets/java/braces.xml"/>
+    <rule ref="rulesets/java/clone.xml"/>
+
+    <rule ref="rulesets/java/codesize.xml/NPathComplexity"/>
+    <rule ref="rulesets/java/codesize.xml/ExcessiveMethodLength"/>
+    <rule ref="rulesets/java/codesize.xml/ExcessiveClassLength"
+            message="Avoid classes that is longer than 600 lines. Please clean up this class.">
+        <properties>
+            <property name="minimum" value="600"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/java/controversial.xml/AssignmentInOperand"/>
+    <rule ref="rulesets/java/controversial.xml/SuspiciousOctalEscape"/>
+    <rule ref="rulesets/java/controversial.xml/UnnecessaryParentheses"/>
+    <rule ref="rulesets/java/controversial.xml/AvoidLiteralsInIfCondition"/>
+
+    <rule ref="rulesets/java/design.xml/UseUtilityClass"/>
+    <rule ref="rulesets/java/design.xml/SwitchStmtsShouldHaveDefault"/>
+    <rule ref="rulesets/java/design.xml/AvoidDeeplyNestedIfStmts"/>
+    <rule ref="rulesets/java/design.xml/SwitchDensity"/>
+    <rule ref="rulesets/java/design.xml/ConstructorCallsOverridableMethod"/>
+    <rule ref="rulesets/java/design.xml/FinalFieldCouldBeStatic"/>
+    <rule ref="rulesets/java/design.xml/DefaultLabelNotLastInSwitchStmt"/>
+    <rule ref="rulesets/java/design.xml/OptimizableToArrayCall"/>
+    <rule ref="rulesets/java/design.xml/BadComparison"/>
+    <rule ref="rulesets/java/design.xml/EqualsNull"/>
+    <rule ref="rulesets/java/design.xml/ConfusingTernary"/>
+    <rule ref="rulesets/java/design.xml/InstantiationToGetClass"/>
+    <rule ref="rulesets/java/design.xml/IdempotentOperations"/>
+    <rule ref="rulesets/java/design.xml/AvoidProtectedFieldInFinalClass"/>
+    <rule ref="rulesets/java/design.xml/AssignmentToNonFinalStatic"/>
+    <rule ref="rulesets/java/design.xml/MissingStaticMethodInNonInstantiatableClass"/>
+    <rule ref="rulesets/java/design.xml/AvoidSynchronizedAtMethodLevel"/>
+    <rule ref="rulesets/java/design.xml/MissingBreakInSwitch"/>
+    <rule ref="rulesets/java/design.xml/UseNotifyAllInsteadOfNotify"/>
+    <rule ref="rulesets/java/design.xml/SimplifyConditional"/>
+    <rule ref="rulesets/java/design.xml/CompareObjectsWithEquals"/>
+    <rule ref="rulesets/java/design.xml/PositionLiteralsFirstInComparisons"/>
+    <rule ref="rulesets/java/design.xml/PositionLiteralsFirstInCaseInsensitiveComparisons"/>
+    <rule ref="rulesets/java/design.xml/UnnecessaryLocalBeforeReturn"/>
+    <rule ref="rulesets/java/design.xml/NonThreadSafeSingleton"/>
+    <rule ref="rulesets/java/design.xml/UncommentedEmptyMethodBody"/>
+    <rule ref="rulesets/java/design.xml/UnsynchronizedStaticDateFormatter"/>
+    <rule ref="rulesets/java/design.xml/PreserveStackTrace"/>
+    <rule ref="rulesets/java/design.xml/UseCollectionIsEmpty"/>
+    <rule ref="rulesets/java/design.xml/SingularField"/>
+    <rule ref="rulesets/java/design.xml/ReturnEmptyArrayRatherThanNull"/>
+    <rule ref="rulesets/java/design.xml/FieldDeclarationsShouldBeAtStartOfClass"/>
+    <rule ref="rulesets/java/design.xml/AvoidProtectedMethodInFinalClassNotExtending"/>
+
+
+    <rule ref="rulesets/java/empty.xml"/>
+    <rule ref="rulesets/java/empty.xml/EmptyCatchBlock">
+        <properties>
+            <property name="allowCommentedBlocks" value="true"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/java/finalizers.xml"/>
+    <rule ref="rulesets/java/imports.xml">
+        <exclude name="DuplicateImports"/>
+        <exclude name="TooManyStaticImports"/>
+        <exclude name="UnnecessaryFullyQualifiedName"/>
+    </rule>
+    <rule ref="rulesets/java/logging-jakarta-commons.xml">
+        <exclude name="GuardLogStatement"/>
+    </rule>
+    <rule ref="rulesets/java/logging-java.xml"/>
+
+    <rule ref="rulesets/java/naming.xml/AvoidDollarSigns"/>
+    <rule ref="rulesets/java/naming.xml/SuspiciousHashcodeMethodName"/>
+    <rule ref="rulesets/java/naming.xml/SuspiciousConstantFieldName"/>
+    <rule ref="rulesets/java/naming.xml/SuspiciousEqualsMethodName"/>
+    <rule ref="rulesets/java/naming.xml/NoPackage"/>
+    <rule ref="rulesets/java/naming.xml/PackageCase"/>
+
+    <rule ref="rulesets/java/optimizations.xml/UseArrayListInsteadOfVector"/>
+    <rule ref="rulesets/java/optimizations.xml/UseStringBufferForStringAppends"/>
+    <rule ref="rulesets/java/optimizations.xml/UseArraysAsList"/>
+    <rule ref="rulesets/java/optimizations.xml/AvoidArrayLoops"/>
+    <rule ref="rulesets/java/optimizations.xml/UnnecessaryWrapperObjectCreation"/>
+    <rule ref="rulesets/java/optimizations.xml/AddEmptyString"/>
+
+    <rule ref="rulesets/java/strictexception.xml">
+        <exclude name="AvoidThrowingRawExceptionTypes"/>
+        <exclude name="AvoidCatchingGenericException"/>
+    </rule>
+
+    <rule ref="rulesets/java/strings.xml">
+        <exclude name="InsufficientStringBufferDeclaration"/>
+        <exclude name="ConsecutiveLiteralAppends"/>
+    </rule>
+
+    <rule ref="rulesets/java/typeresolution.xml"/>
+
+    <rule ref="rulesets/java/unnecessary.xml"/>
+
+    <rule ref="rulesets/java/unusedcode.xml"/>
+
+</ruleset>
