@@ -111,8 +111,8 @@ servers:
   -
     id: secondServer
     port: 8082
-    minThreads: 1
-    maxThreads: 10
+    minThreads: 10
+    maxThreads: 20
     idleTimeout: 60000
     secure:
       enabled: true
