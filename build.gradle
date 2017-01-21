@@ -21,7 +21,7 @@ repositories {
 
 apply from: "$rootDir/gradle-tasks/pmd.gradle"
 
-mainClassName = 'ua.com.lavi.komock.Komock'
+mainClassName = 'ua.com.lavi.komock.Application'
 
 dependencies {
     compile "ch.qos.logback:logback-classic:1.1.7"
