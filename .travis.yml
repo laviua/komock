@@ -5,3 +5,4 @@ script: gradle clean build --stacktrace --info --debug
 branches:
   only:
     - master
+    - develop
