@@ -25,6 +25,8 @@ class Router(val serverId: String,
 
     private var isStarted: Boolean = false
 
+    private var isStarted: Boolean = false
+
     companion object {
 
         private val routers = ArrayList<Router>()
