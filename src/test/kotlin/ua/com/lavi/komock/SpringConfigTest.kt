@@ -30,7 +30,7 @@ class SpringConfigTest {
 
         @AfterClass @JvmStatic
         fun stopServer() {
-            Router.stopAllServers()
+            Router.stopAllRouters()
         }
     }
 

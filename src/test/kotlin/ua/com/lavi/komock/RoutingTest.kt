@@ -38,7 +38,7 @@ class RoutingTest {
 
         @AfterClass @JvmStatic
         fun stopServer() {
-            Router.stopAllServers()
+            Router.stopAllRouters()
         }
     }
 
@@ -223,7 +223,7 @@ class RoutingTest {
     }
 
     @Test
-    fun testRouter() {
+    fun testRoutingTable() {
 
         val routingTable: RoutingTable = RoutingTable()
 
@@ -246,9 +246,19 @@ class RoutingTest {
         routingTable.find(HttpMethod.PUT, "/someRoute") ?: fail("It should not be null")
         routingTable.find(HttpMethod.DELETE, "/mask/sdfsdf/newroute") ?: fail("It should not be null")
         routingTable.find(HttpMethod.POST, "/newmask/ololo/routeagain/trololo/maskagain") ?: fail("It should not be null")
+        assertTrue(routingTable.getRouteMap().size == 3)
+
+        routingTable.deleteRoute("/someRoute", HttpMethod.PUT)
+        routingTable.deleteRoute("/someRoute/*", HttpMethod.PUT)
+        routingTable.deleteRoute("/someRoute*", HttpMethod.PUT)
+        routingTable.deleteRoute("someRoute*", HttpMethod.PUT)
+        routingTable.deleteRoute("/someRoute", HttpMethod.GET)
+        assertTrue(routingTable.getRouteMap().size == 2)
+
+        routingTable.deleteRoute("/mask/*/newroute", HttpMethod.DELETE)
+        assertTrue(routingTable.getRouteMap().size == 1)
 
         routingTable.clearRoutes()
-
         assertTrue(routingTable.getRouteMap().isEmpty())
 
     }
