@@ -14,7 +14,7 @@ import java.util.*
 
 internal class RoutingTable {
 
-    private val routeMap = HashMap<String, MutableMap<HttpMethod, Route>>()
+    private val routeMap = HashMap<String, HashMap<HttpMethod, Route>>()
     private val REGEX_URL_WILDCARD = "([A-Za-z0-9_.-~]+)"
 
     fun addRoute(url: String,
@@ -22,7 +22,7 @@ internal class RoutingTable {
                  routeHandler: RouteHandler,
                  beforeRouteHandler: BeforeRouteHandler,
                  afterRouteHandler: AfterRouteHandler) {
-        var urlMap: MutableMap<HttpMethod, Route>? = routeMap[url]
+        var urlMap: HashMap<HttpMethod, Route>? = routeMap[url]
         if (urlMap == null) {
             urlMap = HashMap<HttpMethod, Route>()
         }
@@ -61,5 +61,12 @@ internal class RoutingTable {
 
     fun getRouteMap(): Map<String, MutableMap<HttpMethod, Route>> {
         return routeMap
+    }
+
+    fun deleteRoute(url: String, httpMethod: HttpMethod) {
+        routeMap[url]?.remove(httpMethod)
+        if (routeMap[url]?.size == 0) {
+            routeMap.remove(url)
+        }
     }
 }

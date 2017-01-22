@@ -23,17 +23,19 @@ class Router(val serverId: String,
              var threadIdleTimeoutMillis: Int,
              var sslKeyStore: SslKeyStore?) {
 
+    private var isStarted: Boolean = false
+
     companion object {
 
         private val routers = ArrayList<Router>()
 
         @JvmStatic
-        fun startAllServers() {
+        fun startAllRouters() {
             routers.forEach(Router::start)
         }
 
         @JvmStatic
-        fun stopAllServers() {
+        fun stopAllRouters() {
             routers.forEach(Router::stop)
         }
     }
@@ -50,23 +52,29 @@ class Router(val serverId: String,
     }
 
     @Synchronized fun stop() {
-        Thread {
-            routingTable.clearRoutes()
-            server.stop()
-        }.start()
+        if (isStarted) {
+            Thread {
+                routingTable.clearRoutes()
+                server.stop()
+            }.start()
+            isStarted = false
+        }
     }
 
 
     @Synchronized fun start() {
-        Thread {
-            server.start(
-                    ipAddress,
-                    port,
-                    sslKeyStore,
-                    maxThreads,
-                    minThreads,
-                    threadIdleTimeoutMillis)
-        }.start()
+        if (!isStarted) {
+            Thread {
+                server.start(
+                        ipAddress,
+                        port,
+                        sslKeyStore,
+                        maxThreads,
+                        minThreads,
+                        threadIdleTimeoutMillis)
+            }.start()
+            isStarted = true
+        }
     }
 
 
@@ -120,6 +128,10 @@ class Router(val serverId: String,
         routingTable.addRoute(routeProperties.url, httpMethod, routeHandler, beforeRouteHandler, afterRouteHandler)
 
         log.info("Registered http route: ${routeProperties.httpMethod} ${routeProperties.url}")
+    }
+
+    fun deleteRoute(url: String, httpMethod: HttpMethod) {
+        routingTable.deleteRoute(url, httpMethod)
     }
 
 }
