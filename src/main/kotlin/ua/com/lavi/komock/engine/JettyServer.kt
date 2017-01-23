@@ -1,26 +1,28 @@
 package ua.com.lavi.komock.engine
 
 
-import org.eclipse.jetty.server.Connector
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.ServerConnector
+import org.eclipse.jetty.server.handler.ContextHandler
 import org.eclipse.jetty.server.handler.HandlerList
 import org.eclipse.jetty.util.ssl.SslContextFactory
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.model.SslKeyStore
+import java.util.*
 import java.util.concurrent.TimeUnit
+
 
 /**
  * Created by Oleksandr Loushkin
  */
 
-internal class JettyServer(val serverId: String, val handler: Handler) {
+internal class JettyServer(val serverId: String, val virtualHosts: ArrayList<String>, val httpHandler: Handler) {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    private lateinit var server: Server
+    private lateinit var jettyServer: Server
 
     fun start(host: String,
               port: Int,
@@ -29,18 +31,22 @@ internal class JettyServer(val serverId: String, val handler: Handler) {
               minThreads: Int,
               idleTimeout: Int) {
 
-        server = Server(QueuedThreadPool(maxThreads, minThreads, idleTimeout))
+        jettyServer = Server(QueuedThreadPool(maxThreads, minThreads, idleTimeout))
 
-        val connector: ServerConnector = buildSocketConnector(server, host, port, sslKeyStore)
-        server = connector.server
-        server.connectors = arrayOf<Connector>(connector)
+        val contextHandler = ContextHandler("/")
+        contextHandler.virtualHosts = virtualHosts.toTypedArray()
+        contextHandler.handler = httpHandler
+
+        val connector: ServerConnector = buildSocketConnector(jettyServer, host, port, sslKeyStore)
+        jettyServer = connector.server
+        jettyServer.connectors = arrayOf(connector)
         val handlerList: HandlerList = HandlerList()
-        handlerList.handlers = arrayOf(handler)
-        server.handler = handlerList
+        handlerList.handlers = arrayOf(contextHandler)
+        jettyServer.handler = handlerList
 
         try {
-            server.start()
-            server.join()
+            jettyServer.start()
+            jettyServer.join()
             log.info("$serverId - listening on $host:$port")
         } catch (e: Exception) {
             log.error("$serverId - start failed", e)
@@ -51,7 +57,7 @@ internal class JettyServer(val serverId: String, val handler: Handler) {
 
     fun stop() {
         log.info("Stopping $serverId")
-        server.stop()
+        jettyServer.stop()
         log.info("$serverId is stopped")
     }
 

@@ -22,11 +22,11 @@ class ServerRegistrar {
         val router = Router(serverProp.id,
                 serverProp.ipAddress, serverProp.port,
                 serverProp.minThreads, serverProp.maxThreads,
-                serverProp.idleTimeout, sslKeyStore)
+                serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts)
 
         router.start()
 
-        log.info("Started server: ${serverProp.id} on port: ${serverProp.port}")
+        log.info("Started server: ${serverProp.id} on port: ${serverProp.port}. virtualHosts: ${serverProp.virtualHosts.joinToString(",")}")
         log.info("maxThreads: ${serverProp.maxThreads}. minThreads: ${serverProp.minThreads}. idle timeout: ${serverProp.idleTimeout} ms")
 
         //register routeHolders

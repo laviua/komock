@@ -31,21 +31,20 @@ class SpringConfigRegistrar {
     private val gson = Gson()
 
     fun register(springConfigProperties: SpringConfigProperties) {
-        val serverProperties: ServerProperties = springConfigProperties.server
-        val port = serverProperties.port
+        val serverProp: ServerProperties = springConfigProperties.server
 
         var sslKeyStore: SslKeyStore? = null
-        if (serverProperties.secure.enabled) {
-            sslKeyStore = SslKeyStore(serverProperties.secure.keyStoreLocation, serverProperties.secure.keyStorePassword)
+        if (serverProp.secure.enabled) {
+            sslKeyStore = SslKeyStore(serverProp.secure.keyStoreLocation, serverProp.secure.keyStorePassword)
         }
-        val router = Router(serverProperties.id,
-                serverProperties.ipAddress, serverProperties.port,
-                serverProperties.minThreads, serverProperties.maxThreads,
-                serverProperties.idleTimeout, sslKeyStore)
+        val router = Router(serverProp.id,
+                serverProp.ipAddress, serverProp.port,
+                serverProp.minThreads, serverProp.maxThreads,
+                serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts)
 
         router.start()
 
-        log.info("Started server: ${serverProperties.id} on: $port")
+        log.info("Started server: ${serverProp.id} on port: ${serverProp.port}. virtualHosts: ${serverProp.virtualHosts.joinToString(",")}")
 
         val springConfigFilePathes = Files.walk(Paths.get(springConfigProperties.sourceFolder))
                 .filter { it.toFile().isFile }
