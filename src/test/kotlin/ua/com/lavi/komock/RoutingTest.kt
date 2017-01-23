@@ -280,4 +280,39 @@ class RoutingTest {
     }
 
 
+    @Test
+    @Throws(UnirestException::class)
+    fun shouldGetSpringConfig() {
+
+        val sslHttpClient = HttpClients.custom()
+                .setSSLSocketFactory(SSLConnectionSocketFactory(SSLContexts.custom().
+                        loadTrustMaterial(null, TrustSelfSignedStrategy()).build(), NullHostnameVerifier()))
+                .build()
+
+        Unirest.setHttpClient(sslHttpClient)
+
+        val response = Unirest.get("https://127.0.0.1:8888/example-service/dev")
+                .asJson()
+
+        assertTrue(response.headers["Content-Type"]!![0] == "application/json")
+        assertTrue(response.status == 200)
+
+        assertTrue(response.body.`object`.get("name") == "example-service")
+
+        val array = response.body.`object`.getJSONArray("profiles")
+        assertTrue(array.get(0) == "dev")
+        assertTrue(array.get(1) == "qa")
+
+        val jsonObject = response.body
+                .`object`
+                .getJSONArray("propertySources")
+                .getJSONObject(0)
+                .getJSONObject("source")
+
+        assertTrue(jsonObject.getInt("server.port") == 7100)
+        assertTrue(jsonObject.getString("spring.datasource.url") == "\${POSTGRES_URL:jdbc:postgresql://localhost:5432/test_database}")
+
+    }
+
+
 }
