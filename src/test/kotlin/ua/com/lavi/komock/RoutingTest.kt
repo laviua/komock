@@ -223,6 +223,22 @@ class RoutingTest {
     }
 
     @Test
+    @Throws(Exception::class)
+    fun should_ok_get_plaintext_with_content_on_third_secured_server() {
+        val sslHttpClient = HttpClients.custom()
+                .setSSLSocketFactory(SSLConnectionSocketFactory(SSLContexts.custom().
+                        loadTrustMaterial(null, TrustSelfSignedStrategy()).build(), NullHostnameVerifier()))
+                .build()
+
+        Unirest.setHttpClient(sslHttpClient)
+
+        val response = Unirest.get("https://127.0.0.1:8083/testGetText")
+                .asString()
+
+        assertTrue(response.status == 404)
+    }
+
+    @Test
     fun testRoutingTable() {
 
         val routingTable: RoutingTable = RoutingTable()
