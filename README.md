@@ -7,10 +7,11 @@ We use this framework for develop microservices or API integration with third pa
 Main features:  
 - Configurable response for any kind of HTTP request/response with wildcards, cookies and custom headers.
 - SSL support
+- Virtual Host support
 - Ability to register in the Consul discovery service
 - Ability to work like a simple spring config server
 
-[Download Last Release](https://github.com/laviua/komock/releases/download/1.0.1/komock-1.0.1.zip)
+[Download Last Release](https://github.com/laviua/komock/releases/download/1.0.2/komock-1.0.1.zip)
 
 
 Look at self-describable configuration file:

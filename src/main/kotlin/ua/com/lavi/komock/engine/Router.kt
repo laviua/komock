@@ -21,7 +21,7 @@ class Router(val serverId: String,
              var minThreads: Int,
              var maxThreads: Int,
              var threadIdleTimeoutMillis: Int,
-             var sslKeyStore: SslKeyStore?) {
+             var sslKeyStore: SslKeyStore?, virtualHosts: ArrayList<String>) {
 
     private var isStarted: Boolean = false
 
@@ -47,7 +47,7 @@ class Router(val serverId: String,
 
 
     init {
-        server = JettyServer(serverId, HttpHandler(RoutingFilter(routingTable)))
+        server = JettyServer(serverId, virtualHosts, HttpHandler(RoutingFilter(routingTable)))
         routers.add(this)
     }
 

@@ -9,6 +9,7 @@ import java.util.*
 
 class ServerProperties {
     var id = "defaultInstance" // default name
+    var virtualHosts = ArrayList<String>()
     var ipAddress = "0.0.0.0" // listen on all interfaces
     var port = 8080 // default port;
     var routes = ArrayList<RouteProperties>()

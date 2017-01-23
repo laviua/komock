@@ -125,3 +125,22 @@ servers:
         contentType: text/plain
         responseBody: Content from the second server
         code: 200
+  -
+    id: thirdServer
+    port: 8083
+    minThreads: 10
+    maxThreads: 20
+    idleTimeout: 60000
+    virtualHosts:
+      - "vhost.mocka"
+    secure:
+      enabled: true
+      keyStoreLocation: mock_keystore.jks
+      keyStorePassword: mockpassword
+    routes:
+      -
+        httpMethod: GET
+        url: /testGetText
+        contentType: text/plain
+        responseBody: Content from the third server
+        code: 200
