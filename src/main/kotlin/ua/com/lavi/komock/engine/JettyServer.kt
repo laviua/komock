@@ -1,9 +1,7 @@
 package ua.com.lavi.komock.engine
 
 
-import org.eclipse.jetty.server.Handler
-import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.server.ServerConnector
+import org.eclipse.jetty.server.*
 import org.eclipse.jetty.server.handler.ContextHandler
 import org.eclipse.jetty.server.handler.HandlerList
 import org.eclipse.jetty.util.ssl.SslContextFactory
@@ -66,13 +64,17 @@ internal class JettyServer(val serverId: String, val virtualHosts: ArrayList<Str
                              port: Int,
                              sslKeyStore: SslKeyStore?): ServerConnector {
 
+        val httpConfig = HttpConfiguration()
+        httpConfig.sendServerVersion = false
+        val httpFactory = HttpConnectionFactory(httpConfig)
+
         val connector: ServerConnector?
         if (sslKeyStore == null) {
-            connector = ServerConnector(server)
+            connector = ServerConnector(server, httpFactory)
         } else {
             val sslContextFactory = SslContextFactory(sslKeyStore.keystoreFile)
             sslContextFactory.setKeyStorePassword(sslKeyStore.keystorePassword)
-            connector = ServerConnector(server, sslContextFactory)
+            connector = ServerConnector(server, sslContextFactory, httpFactory)
         }
         connector.idleTimeout = TimeUnit.HOURS.toMillis(1)
         connector.soLingerTime = -1
