@@ -32,9 +32,6 @@ class ServerRegistrar {
             return
         }
 
-        log.info("Started server: ${serverProp.id} on port: ${serverProp.port}. virtualHosts: ${serverProp.virtualHosts.joinToString(",")}")
-        log.info("maxThreads: ${serverProp.maxThreads}. minThreads: ${serverProp.minThreads}. idle timeout: ${serverProp.idleTimeout} ms")
-
         //register routeHolders
         if (!serverProp.routes.isEmpty()) {
             serverProp.routes.forEach { router.addRoute(it) }

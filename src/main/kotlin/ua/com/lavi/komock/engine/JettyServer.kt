@@ -43,14 +43,14 @@ internal class JettyServer(val serverId: String, val virtualHosts: ArrayList<Str
         jettyServer.handler = handlerList
 
         jettyServer.start()
-        log.info("$serverId - listening on $host:$port")
+        log.debug("$serverId - listening on $host:$port")
 
     }
 
     fun stop() {
-        log.info("Stopping $serverId")
+        log.debug("Stopping $serverId")
         jettyServer.stop()
-        log.info("$serverId is stopped")
+        log.debug("$serverId is stopped")
     }
 
     fun buildSocketConnector(server: Server,

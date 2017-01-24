@@ -9,7 +9,6 @@ import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
 import ua.com.lavi.komock.engine.model.SslKeyStore
-import java.net.BindException
 import java.util.*
 
 /**
@@ -21,8 +20,9 @@ class Router(val serverId: String,
              val port: Int,
              var minThreads: Int,
              var maxThreads: Int,
-             var threadIdleTimeoutMillis: Int,
-             var sslKeyStore: SslKeyStore?, virtualHosts: ArrayList<String>) {
+             var idleTimeout: Int,
+             var sslKeyStore: SslKeyStore?,
+             var virtualHosts: ArrayList<String>) {
 
     private var isStarted: Boolean = false
     private val log = LoggerFactory.getLogger(this.javaClass)
@@ -67,9 +67,11 @@ class Router(val serverId: String,
                     sslKeyStore,
                     maxThreads,
                     minThreads,
-                    threadIdleTimeoutMillis)
+                    idleTimeout)
 
             isStarted = true
+            log.info("Started server: $serverId on port: $port, virtualHosts: ${virtualHosts.joinToString(",")}. " +
+                    "maxThreads: $maxThreads, minThreads: $minThreads, idle timeout: $idleTimeout ms")
         } else {
             log.info("Server is already started!")
         }
