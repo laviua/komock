@@ -42,14 +42,8 @@ internal class JettyServer(val serverId: String, val virtualHosts: ArrayList<Str
         handlerList.handlers = arrayOf(contextHandler)
         jettyServer.handler = handlerList
 
-        try {
-            jettyServer.start()
-            jettyServer.join()
-            log.info("$serverId - listening on $host:$port")
-        } catch (e: Exception) {
-            log.error("$serverId - start failed", e)
-            System.exit(100)
-        }
+        jettyServer.start()
+        log.info("$serverId - listening on $host:$port")
 
     }
 

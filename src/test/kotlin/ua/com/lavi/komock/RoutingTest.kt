@@ -243,7 +243,7 @@ class RoutingTest {
 
         val routingTable: RoutingTable = RoutingTable()
 
-        assertTrue(routingTable.getRouteMap().isEmpty())
+        assertTrue(routingTable.getFullRouteMap().isEmpty())
 
         val beforeRouteHandler = object : BeforeRouteHandler {
             override fun handle(request: Request, response: Response) {}
@@ -262,20 +262,20 @@ class RoutingTest {
         routingTable.find(HttpMethod.PUT, "/someRoute") ?: fail("It should not be null")
         routingTable.find(HttpMethod.DELETE, "/mask/sdfsdf/newroute") ?: fail("It should not be null")
         routingTable.find(HttpMethod.POST, "/newmask/ololo/routeagain/trololo/maskagain") ?: fail("It should not be null")
-        assertTrue(routingTable.getRouteMap().size == 3)
+        assertTrue(routingTable.getFullRouteMap().size == 3)
 
         routingTable.deleteRoute("/someRoute", HttpMethod.PUT)
         routingTable.deleteRoute("/someRoute/*", HttpMethod.PUT)
         routingTable.deleteRoute("/someRoute*", HttpMethod.PUT)
         routingTable.deleteRoute("someRoute*", HttpMethod.PUT)
         routingTable.deleteRoute("/someRoute", HttpMethod.GET)
-        assertTrue(routingTable.getRouteMap().size == 2)
+        assertTrue(routingTable.getFullRouteMap().size == 2)
 
         routingTable.deleteRoute("/mask/*/newroute", HttpMethod.DELETE)
-        assertTrue(routingTable.getRouteMap().size == 1)
+        assertTrue(routingTable.getFullRouteMap().size == 1)
 
         routingTable.clearRoutes()
-        assertTrue(routingTable.getRouteMap().isEmpty())
+        assertTrue(routingTable.getFullRouteMap().isEmpty())
 
     }
 

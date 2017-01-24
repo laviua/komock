@@ -9,6 +9,7 @@ import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
 import ua.com.lavi.komock.engine.model.SslKeyStore
+import java.net.BindException
 import java.util.*
 
 /**
@@ -24,6 +25,9 @@ class Router(val serverId: String,
              var sslKeyStore: SslKeyStore?, virtualHosts: ArrayList<String>) {
 
     private var isStarted: Boolean = false
+    private val log = LoggerFactory.getLogger(this.javaClass)
+    private var server: JettyServer
+    private var routingTable = RoutingTable()
 
     companion object {
 
@@ -40,40 +44,34 @@ class Router(val serverId: String,
         }
     }
 
-
-    private val log = LoggerFactory.getLogger(this.javaClass)
-    private var server: JettyServer
-    private var routingTable = RoutingTable()
-
-
     init {
-        server = JettyServer(serverId, virtualHosts, HttpHandler(RoutingFilter(routingTable)))
+        val httpHandler = HttpHandler(RoutingFilter(routingTable))
+        server = JettyServer(serverId, virtualHosts, httpHandler)
         routers.add(this)
     }
 
-    @Synchronized fun stop() {
+    fun stop() {
         if (isStarted) {
-            Thread {
-                routingTable.clearRoutes()
-                server.stop()
-            }.start()
+            server.stop()
             isStarted = false
+        } else {
+            log.info("Server is not started!")
         }
     }
 
-
-    @Synchronized fun start() {
+    fun start() {
         if (!isStarted) {
-            Thread {
-                server.start(
-                        ipAddress,
-                        port,
-                        sslKeyStore,
-                        maxThreads,
-                        minThreads,
-                        threadIdleTimeoutMillis)
-            }.start()
+            server.start(
+                    ipAddress,
+                    port,
+                    sslKeyStore,
+                    maxThreads,
+                    minThreads,
+                    threadIdleTimeoutMillis)
+
             isStarted = true
+        } else {
+            log.info("Server is already started!")
         }
     }
 
