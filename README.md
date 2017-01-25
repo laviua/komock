@@ -11,7 +11,7 @@ Main features:
 - Ability to register in the Consul discovery service
 - Ability to work like a simple spring config server
 
-[Download Last Release](https://github.com/laviua/komock/releases/download/1.0.2/komock-1.0.1.zip)
+[Download Last Release](https://github.com/laviua/komock/releases/download/1.0.3/komock-1.0.3.zip)
 
 
 Look at self-describable configuration file:
