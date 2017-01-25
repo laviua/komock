@@ -59,7 +59,7 @@ internal class RoutingTable {
         routeMap.clear()
     }
 
-    fun getRouteMap(): Map<String, MutableMap<HttpMethod, Route>> {
+    fun getFullRouteMap(): Map<String, MutableMap<HttpMethod, Route>> {
         return routeMap
     }
 

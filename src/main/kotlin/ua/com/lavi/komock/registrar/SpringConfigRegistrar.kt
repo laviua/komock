@@ -12,6 +12,7 @@ import ua.com.lavi.komock.config.property.spring.SpringConfigProperties
 import ua.com.lavi.komock.engine.Router
 import ua.com.lavi.komock.engine.model.SslKeyStore
 import java.io.IOException
+import java.net.BindException
 import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Path
@@ -42,7 +43,12 @@ class SpringConfigRegistrar {
                 serverProp.minThreads, serverProp.maxThreads,
                 serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts)
 
-        router.start()
+        try {
+            router.start()
+        } catch (e: BindException) {
+            log.warn(e.message + ": ${serverProp.ipAddress}, port: ${serverProp.port}", e)
+            return
+        }
 
         log.info("Started server: ${serverProp.id} on port: ${serverProp.port}. virtualHosts: ${serverProp.virtualHosts.joinToString(",")}")
 

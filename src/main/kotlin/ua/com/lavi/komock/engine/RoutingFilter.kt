@@ -44,26 +44,22 @@ internal class RoutingFilter(val routingTable: RoutingTable) : Filter {
             route.beforeRouteHandler.handle(request, response)
             route.routeHandler.handle(request, response)
             route.afterRouteHandler.handle(request, response)
-            serializeContentToResponse(httpServletRequest, httpServletResponse, response.content)
         }
-
+        serializeContentToResponse(httpServletRequest, httpServletResponse, response.content)
 
         chain?.doFilter(httpServletRequest, httpServletResponse)
     }
 
-    fun serializeContentToResponse(httpServletRequest: HttpServletRequest, httpServletResponse: HttpServletResponse, content: String?) {
-
-        if (content != null) {
-            if (!httpServletResponse.isCommitted) {
-                val responseStream = gzip(httpServletRequest, httpServletResponse)
-                try {
-                    responseStream.write(content.toByteArray())
-                } catch (e: UnsupportedEncodingException) {
-                    throw IOException(e)
-                }
-                responseStream.flush()
-                responseStream.close()
+    fun serializeContentToResponse(httpServletRequest: HttpServletRequest, httpServletResponse: HttpServletResponse, content: String) {
+        if (!httpServletResponse.isCommitted) {
+            val responseStream = gzip(httpServletRequest, httpServletResponse)
+            try {
+                responseStream.write(content.toByteArray())
+            } catch (e: UnsupportedEncodingException) {
+                throw IOException(e)
             }
+            responseStream.flush()
+            responseStream.close()
         }
     }
 

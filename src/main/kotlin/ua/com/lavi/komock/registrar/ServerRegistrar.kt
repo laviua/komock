@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.Router
 import ua.com.lavi.komock.config.property.http.ServerProperties
 import ua.com.lavi.komock.engine.model.SslKeyStore
+import java.net.BindException
 
 /**
  * Created by Oleksandr Loushkin
@@ -24,10 +25,12 @@ class ServerRegistrar {
                 serverProp.minThreads, serverProp.maxThreads,
                 serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts)
 
-        router.start()
-
-        log.info("Started server: ${serverProp.id} on port: ${serverProp.port}. virtualHosts: ${serverProp.virtualHosts.joinToString(",")}")
-        log.info("maxThreads: ${serverProp.maxThreads}. minThreads: ${serverProp.minThreads}. idle timeout: ${serverProp.idleTimeout} ms")
+        try {
+            router.start()
+        } catch (e: BindException) {
+            log.warn(e.message + ": ${serverProp.ipAddress}, port: ${serverProp.port}", e)
+            return
+        }
 
         //register routeHolders
         if (!serverProp.routes.isEmpty()) {

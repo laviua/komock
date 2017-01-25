@@ -1,9 +1,7 @@
 package ua.com.lavi.komock.engine
 
 
-import org.eclipse.jetty.server.Handler
-import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.server.ServerConnector
+import org.eclipse.jetty.server.*
 import org.eclipse.jetty.server.handler.ContextHandler
 import org.eclipse.jetty.server.handler.HandlerList
 import org.eclipse.jetty.util.ssl.SslContextFactory
@@ -44,21 +42,15 @@ internal class JettyServer(val serverId: String, val virtualHosts: ArrayList<Str
         handlerList.handlers = arrayOf(contextHandler)
         jettyServer.handler = handlerList
 
-        try {
-            jettyServer.start()
-            jettyServer.join()
-            log.info("$serverId - listening on $host:$port")
-        } catch (e: Exception) {
-            log.error("$serverId - start failed", e)
-            System.exit(100)
-        }
+        jettyServer.start()
+        log.debug("$serverId - listening on $host:$port")
 
     }
 
     fun stop() {
-        log.info("Stopping $serverId")
+        log.debug("Stopping $serverId")
         jettyServer.stop()
-        log.info("$serverId is stopped")
+        log.debug("$serverId is stopped")
     }
 
     fun buildSocketConnector(server: Server,
@@ -66,13 +58,17 @@ internal class JettyServer(val serverId: String, val virtualHosts: ArrayList<Str
                              port: Int,
                              sslKeyStore: SslKeyStore?): ServerConnector {
 
+        val httpConfig = HttpConfiguration()
+        httpConfig.sendServerVersion = false
+        val httpFactory = HttpConnectionFactory(httpConfig)
+
         val connector: ServerConnector?
         if (sslKeyStore == null) {
-            connector = ServerConnector(server)
+            connector = ServerConnector(server, httpFactory)
         } else {
             val sslContextFactory = SslContextFactory(sslKeyStore.keystoreFile)
             sslContextFactory.setKeyStorePassword(sslKeyStore.keystorePassword)
-            connector = ServerConnector(server, sslContextFactory)
+            connector = ServerConnector(server, sslContextFactory, httpFactory)
         }
         connector.idleTimeout = TimeUnit.HOURS.toMillis(1)
         connector.soLingerTime = -1

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse
 
 class Response(private val servletResponse: HttpServletResponse) {
 
-    var content: String? = null
+    var content: String = ""
 
     fun statusCode(statusCode: Int) {
         servletResponse.status = statusCode

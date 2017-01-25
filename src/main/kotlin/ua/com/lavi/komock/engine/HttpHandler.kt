@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequestWrapper
  * Created by Oleksandr Loushkin
  */
 
-internal class HttpHandler(private val requestMatcherFilter: Filter) : SessionHandler() {
+internal class HttpHandler(private val routingFilter: Filter) : SessionHandler() {
 
     @Throws(IOException::class, ServletException::class)
     override fun doHandle(
@@ -28,7 +28,7 @@ internal class HttpHandler(private val requestMatcherFilter: Filter) : SessionHa
             request: HttpServletRequest,
             response: HttpServletResponse) {
 
-        requestMatcherFilter.doFilter(HttpRequestWrapper(request), response, null)
+        routingFilter.doFilter(HttpRequestWrapper(request), response, null)
     }
 
     class HttpRequestWrapper(request: HttpServletRequest) : HttpServletRequestWrapper(request) {
