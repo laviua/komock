@@ -11,7 +11,7 @@ Main features:
 - Ability to register in the Consul discovery service
 - Ability to work like a simple spring config server
 
-[Download Last Release](https://github.com/laviua/komock/releases/download/1.0.2/komock-1.0.1.zip)
+[Download Last Release](https://github.com/laviua/komock/releases/download/1.0.3/komock-1.0.3.zip)
 
 
 Look at self-describable configuration file:
@@ -29,6 +29,11 @@ How to run:
 
 HTTPS/SSL:
 
-You can use your personal keystore. Just create it by the following command and set filename with password in configuration file:
+You can use your personal keystore. Just create it by the following command and set filename with password in the configuration file (secure section):
 
     keytool -genkey -alias replserver -keyalg RSA -keystore mock_keystore.jks -dname "CN=Mark Smith, OU=JavaSoft, O=Sun, L=Cupertino, S=California, C=US" -storepass mockpassword -keypass mockpassword
+
+    secure:
+      enabled: true
+      keyStoreLocation: mock_keystore.jks
+      keyStorePassword: mockpassword
