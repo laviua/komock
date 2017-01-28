@@ -1,7 +1,9 @@
 language: java
 jdk:
   - oraclejdk8
-script: gradle clean build --stacktrace --info --debug
+script:
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then gradle clean build bintrayUpload -PbintrayUser=$bintrayUser -PbintrayKey=$bintrayKey -PdryRun=false; fi
+  - if [ "$TRAVIS_BRANCH" = "develop" ]; then gradle clean build; fi
 branches:
   only:
     - master
