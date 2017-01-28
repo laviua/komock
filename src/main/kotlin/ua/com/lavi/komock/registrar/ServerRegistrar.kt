@@ -21,14 +21,14 @@ class ServerRegistrar {
             sslKeyStore = SslKeyStore(serverProp.secure.keyStoreLocation, serverProp.secure.keyStorePassword)
         }
         val router = Router(serverProp.id,
-                serverProp.ipAddress, serverProp.port,
+                serverProp.host, serverProp.port,
                 serverProp.minThreads, serverProp.maxThreads,
                 serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts)
 
         try {
             router.start()
         } catch (e: BindException) {
-            log.warn(e.message + ": ${serverProp.ipAddress}, port: ${serverProp.port}", e)
+            log.warn(e.message + ": ${serverProp.host}, port: ${serverProp.port}", e)
             return
         }
 

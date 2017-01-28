@@ -19,7 +19,7 @@ springConfig:
   server:
     id: spring-config-server
     port: 8888
-    ipAddress: 127.0.0.1
+    host: 127.0.0.1
     secure:
       enabled: true
       keyStoreLocation: mock_keystore.jks
