@@ -47,13 +47,24 @@ internal class JettyServer(val serverId: String,
 
         jettyServer.start()
         log.debug("$serverId - listening on $host:$port")
-
     }
 
     fun stop() {
         log.debug("Stopping $serverId")
         jettyServer.stop()
         log.debug("$serverId is stopped")
+    }
+
+    fun addVirtualHosts(virtualHosts: ArrayList<String>) {
+        val handlerList = jettyServer.handler as HandlerList
+        val contextHandler = handlerList.handlers[0] as ContextHandler
+        contextHandler.addVirtualHosts(virtualHosts.toTypedArray())
+    }
+
+    fun removeVirtualHosts(virtualHosts: ArrayList<String>) {
+        val handlerList = jettyServer.handler as HandlerList
+        val contextHandler = handlerList.handlers[0] as ContextHandler
+        contextHandler.removeVirtualHosts(virtualHosts.toTypedArray())
     }
 
     private fun buildContextHandler(): ContextHandler {
@@ -63,7 +74,7 @@ internal class JettyServer(val serverId: String,
         return contextHandler
     }
 
-    fun buildServerConnector(server: Server,
+    private fun buildServerConnector(server: Server,
                              host: String,
                              port: Int,
                              sslKeyStore: SslKeyStore?): ServerConnector {

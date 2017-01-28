@@ -122,6 +122,14 @@ class Router(val serverId: String,
         log.info("Registered http route: ${routeProperties.httpMethod} ${routeProperties.url}")
     }
 
+    fun addVirtualHosts(virtualHosts: ArrayList<String>) {
+        server.addVirtualHosts(virtualHosts)
+    }
+
+    fun removeVirtualHosts(virtualHosts: ArrayList<String>) {
+        server.removeVirtualHosts(virtualHosts)
+    }
+
     fun deleteRoute(url: String, httpMethod: HttpMethod) {
         routingTable.deleteRoute(url, httpMethod)
     }

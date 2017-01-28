@@ -4,6 +4,20 @@ apply plugin: 'java'
 apply plugin: 'kotlin'
 apply plugin: 'idea'
 apply plugin: 'application'
+apply plugin: 'com.novoda.bintray-release'
+
+
+buildscript {
+    ext.kotlin_version = '1.0.6'
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.novoda:bintray-release:0.3.4"
+    }
+}
 
 processResources {
     filesMatching('**/*.properties') {
@@ -13,10 +27,9 @@ processResources {
     }
 }
 
-sourceCompatibility = 1.8
-
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 apply from: "$rootDir/gradle-tasks/pmd.gradle"
@@ -35,15 +48,16 @@ dependencies {
     testCompile "com.mashape.unirest:unirest-java:1.4.9"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
-buildscript {
-    ext.kotlin_version = '1.0.6'
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
+
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
+}
+
+publish {
+    groupId = 'ua.com.lavi'
+    artifactId = 'komock'
+    publishVersion = project.version
+    desc = 'Komock - mocker framework'
+    licences = ['APACHE2']
+    website = 'https://github.com/laviua/komock'
 }
