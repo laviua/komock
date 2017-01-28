@@ -16,7 +16,7 @@ import java.util.*
  */
 
 class Router(val serverId: String,
-             val ipAddress: String,
+             val host: String,
              val port: Int,
              var minThreads: Int,
              var maxThreads: Int,
@@ -46,8 +46,19 @@ class Router(val serverId: String,
 
     init {
         val httpHandler = HttpHandler(RoutingFilter(routingTable))
-        server = JettyServer(serverId, virtualHosts, httpHandler)
+        server = JettyServer(serverId, virtualHosts, httpHandler, host, port, sslKeyStore, maxThreads, minThreads, idleTimeout)
         routers.add(this)
+    }
+
+    fun start() {
+        if (!isStarted) {
+            server.start()
+            isStarted = true
+            log.info("Started server: $serverId on port: $port, virtualHosts: ${virtualHosts.joinToString(",")}. " +
+                    "maxThreads: $maxThreads, minThreads: $minThreads, idle timeout: $idleTimeout ms")
+        } else {
+            log.info("Server is already started!")
+        }
     }
 
     fun stop() {
@@ -59,27 +70,8 @@ class Router(val serverId: String,
         }
     }
 
-    fun start() {
-        if (!isStarted) {
-            server.start(
-                    ipAddress,
-                    port,
-                    sslKeyStore,
-                    maxThreads,
-                    minThreads,
-                    idleTimeout)
-
-            isStarted = true
-            log.info("Started server: $serverId on port: $port, virtualHosts: ${virtualHosts.joinToString(",")}. " +
-                    "maxThreads: $maxThreads, minThreads: $minThreads, idle timeout: $idleTimeout ms")
-        } else {
-            log.info("Server is already started!")
-        }
-    }
-
 
     fun addRoute(routeProperties: RouteProperties) {
-
 
         val beforeRouteHandler = object : BeforeRouteHandler {
             override fun handle(request: Request, response: Response) {
