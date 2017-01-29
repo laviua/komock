@@ -1,7 +1,8 @@
-package ua.com.lavi.komock
+package ua.com.lavi.komock.app
 
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.Yaml
+import ua.com.lavi.komock.KomockRunner
 import ua.com.lavi.komock.config.ApplicationConfiguration
 import java.io.IOException
 import java.nio.file.Files
@@ -11,7 +12,7 @@ import java.nio.file.Paths
  * Created by Oleksandr Loushkin
  */
 
-object Application {
+object KomockApplication {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
@@ -19,7 +20,7 @@ object Application {
         if (args.isNotEmpty()) {
             runApplication(args[0])
         } else {
-            log.error("Please input path with the configuration! Example: komock mock_example.yml")
+            log.error("Please input path with the configuration! Example: komock-app mock_example.yml")
         }
     }
 
@@ -36,6 +37,6 @@ object Application {
     }
 
     fun version(): String {
-        return Application::class.java.classLoader.getResourceAsStream("version.properties").bufferedReader().use { it.readText() }
+        return KomockApplication::class.java.classLoader.getResourceAsStream("version.properties").bufferedReader().use { it.readText() }
     }
 }
