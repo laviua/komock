@@ -1,0 +1,37 @@
+group 'ua.com.lavi'
+
+apply plugin: 'application'
+
+buildscript {
+    ext.kotlin_version = '1.0.6'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+processResources {
+    filesMatching('**/*.properties') {
+        filter {
+            it.replace('${projectVersion}', project.version)
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+mainClassName = 'ua.com.lavi.komock.app.KomockApplication'
+
+dependencies {
+    compile project(':komock-core')
+    compile "ch.qos.logback:logback-classic:1.1.7"
+    compile "org.yaml:snakeyaml:1.17"
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}

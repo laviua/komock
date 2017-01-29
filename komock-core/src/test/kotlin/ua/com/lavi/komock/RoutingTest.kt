@@ -10,6 +10,8 @@ import org.junit.AfterClass
 import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
+import org.yaml.snakeyaml.Yaml
+import ua.com.lavi.komock.config.ApplicationConfiguration
 import ua.com.lavi.komock.engine.Router
 import ua.com.lavi.komock.engine.RoutingTable
 import ua.com.lavi.komock.engine.handler.AfterRouteHandler
@@ -18,6 +20,8 @@ import ua.com.lavi.komock.engine.handler.RouteHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
+import java.nio.file.Files
+import java.nio.file.Paths
 import kotlin.test.fail
 
 
@@ -33,7 +37,13 @@ class RoutingTest {
 
         @BeforeClass @JvmStatic
         fun startServer() {
-            Application.main(arrayOf(MOCK_EXAMPLE_YAML))
+            runApplication(MOCK_EXAMPLE_YAML)
+        }
+
+        private fun runApplication(path: String) {
+            Files.newInputStream(Paths.get(path)).use { it ->
+                KomockRunner().run(Yaml().loadAs<ApplicationConfiguration>(it, ApplicationConfiguration::class.java))
+            }
         }
 
         @AfterClass @JvmStatic
@@ -255,9 +265,9 @@ class RoutingTest {
             override fun handle(request: Request, response: Response) {}
         }
 
-        routingTable.addRoute("/someRoute", HttpMethod.PUT, routeHandler , beforeRouteHandler, afterRouteHandler)
-        routingTable.addRoute("/mask/*/newroute", HttpMethod.DELETE, routeHandler , beforeRouteHandler, afterRouteHandler)
-        routingTable.addRoute("/newmask/*/routeagain/*/maskagain", HttpMethod.POST, routeHandler , beforeRouteHandler, afterRouteHandler)
+        routingTable.addRoute("/someRoute", HttpMethod.PUT, routeHandler, beforeRouteHandler, afterRouteHandler)
+        routingTable.addRoute("/mask/*/newroute", HttpMethod.DELETE, routeHandler, beforeRouteHandler, afterRouteHandler)
+        routingTable.addRoute("/newmask/*/routeagain/*/maskagain", HttpMethod.POST, routeHandler, beforeRouteHandler, afterRouteHandler)
 
         routingTable.find(HttpMethod.PUT, "/someRoute") ?: fail("It should not be null")
         routingTable.find(HttpMethod.DELETE, "/mask/sdfsdf/newroute") ?: fail("It should not be null")

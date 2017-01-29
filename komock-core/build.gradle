@@ -1,0 +1,47 @@
+group 'ua.com.lavi'
+
+apply plugin: 'com.novoda.bintray-release'
+
+
+buildscript {
+    ext.kotlin_version = '1.0.6'
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.novoda:bintray-release:0.3.4"
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile "org.slf4j:slf4j-api:1.7.22"
+    compile "com.google.code.gson:gson:2.8.0"
+    compile "com.ecwid.consul:consul-api:1.1.10"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.eclipse.jetty:jetty-server:9.4.0.v20161208"
+    compile "org.eclipse.jetty:jetty-servlet:9.4.0.v20161208"
+    testCompile "junit:junit:4.12"
+    testCompile "com.mashape.unirest:unirest-java:1.4.9"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testCompile "ch.qos.logback:logback-classic:1.1.7"
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
+
+publish {
+    groupId = 'ua.com.lavi'
+    artifactId = 'komock'
+    publishVersion = project.version
+    desc = 'Komock - mocker framework'
+    licences = ['APACHE2']
+    website = 'https://github.com/laviua/komock'
+}
