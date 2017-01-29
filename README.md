@@ -14,18 +14,18 @@ Main features:
 [Download Last Release](https://github.com/laviua/komock/releases/latest)
 
 
-Look at self-describable configuration file:
+Look at self-describable configuration file (sample config exists in the komock-core root project directory):
 **mock_example.yaml** 
 
-How to run:
+How to run stand alone application:
 
 1. Extract release version :
     
-        komock-x.x.x.zip
+        komock-app-x.x.x.zip
 
 3. Run
 
-        bin\komock d:\mock_example.yaml
+        bin\komock-app /path/your_config.yaml
 
 HTTPS/SSL:
 
