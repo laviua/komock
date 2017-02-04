@@ -1,4 +1,4 @@
-# Komock [![Build Status](https://travis-ci.org/laviua/komock.svg?branch=master)](https://travis-ci.org/laviua/komock) [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
+# Komock [![Build Status](https://travis-ci.org/laviua/komock.svg?branch=master)](https://travis-ci.org/laviua/komock) [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![GitHub version](https://badge.fury.io/gh/laviua%2Fkomock.svg)](https://badge.fury.io/gh/laviua%2Fkomock)
 Here is Simple HTTP/Consul/SpringConfig mocker framework written in Kotlin.  
 
 This tiny framework is very useful if you need to create REST based client for API service.  
@@ -13,6 +13,13 @@ Main features:
 
 [Download Last Release](https://github.com/laviua/komock/releases/latest)
 
+Maven repository
+
+    <dependency>
+      <groupId>ua.com.lavi</groupId>
+      <artifactId>komock-core</artifactId>
+      <version>1.1</version>
+    </dependency>
 
 Look at self-describable configuration file (sample config exists in the komock-core root project directory):
 **mock_example.yaml** 
