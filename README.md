@@ -1,4 +1,4 @@
-# Komock [![Build Status](https://travis-ci.org/laviua/komock.svg?branch=master)](https://travis-ci.org/laviua/komock) [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![GitHub version](https://badge.fury.io/gh/laviua%2Fkomock.svg)](https://badge.fury.io/gh/laviua%2Fkomock)
+# Komock [![Build Status](https://travis-ci.org/laviua/komock.svg?branch=master)](https://travis-ci.org/laviua/komock) [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 Here is Simple HTTP/Consul/SpringConfig mocker framework written in Kotlin.  
 
 This tiny framework is very useful if you need to create REST based client for API service.  
@@ -11,14 +11,14 @@ Main features:
 - Ability to register in the Consul discovery service
 - Ability to work like a simple spring config server
 
-[Download Last Release](https://github.com/laviua/komock/releases/latest)
+[Download latest standalone application](https://github.com/laviua/komock/releases/latest)
 
-Maven repository
+Maven sonatype repository:
 
     <dependency>
-      <groupId>ua.com.lavi</groupId>
-      <artifactId>komock-core</artifactId>
-      <version>1.1</version>
+        <groupId>ua.com.lavi</groupId>
+        <artifactId>komock-core</artifactId>
+        <version>RELEASE</version>
     </dependency>
 
 Look at self-describable configuration file (sample config exists in the komock-core root project directory):
