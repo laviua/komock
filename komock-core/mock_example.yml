@@ -27,6 +27,7 @@ springConfig:
 
 servers:
   -
+    enabled: true
     id: firstServer
     port: 8081
     routes:

@@ -14,7 +14,7 @@ class ServerRegistrar {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    fun registerServer(serverProp: ServerProperties) {
+    fun register(serverProp: ServerProperties) {
 
         var sslKeyStore: SslKeyStore? = null
         if (serverProp.secure.enabled) {

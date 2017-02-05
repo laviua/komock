@@ -15,7 +15,9 @@ class KomockRunner {
 
         //Server instances
         val serverRegistrar = ServerRegistrar()
-        applicationConfiguration.servers.forEach { serverRegistrar.registerServer(it) }
+        applicationConfiguration.servers.
+                filter { it.enabled }.
+                forEach { serverRegistrar.register(it) }
 
         //Spring config-server
         val springConfigRegistrar = SpringConfigRegistrar()

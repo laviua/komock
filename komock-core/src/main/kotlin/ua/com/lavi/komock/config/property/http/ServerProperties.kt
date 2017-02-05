@@ -8,6 +8,7 @@ import java.util.*
  */
 
 class ServerProperties {
+    var enabled: Boolean = true
     var id = "defaultInstance" // default name
     var virtualHosts = ArrayList<String>()
     var host = "0.0.0.0" // listen on all interfaces
