@@ -9,10 +9,12 @@ import java.util.*
 class ConsulServerProperties {
     var enabled: Boolean = false
     var consulHost = "localhost"
+    var consulPort = 8500
     var services = ArrayList<ConsulServiceProperties>()
 }
 
 class ConsulServiceProperties {
+    var enabled: Boolean = true
     var serviceId: String = "defaultConsulService"
     var serviceName: String = "defaultConsulServiceName"
     var servicePort: Int = 8080

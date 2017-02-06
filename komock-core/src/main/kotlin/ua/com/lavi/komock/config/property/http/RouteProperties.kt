@@ -8,6 +8,7 @@ import java.util.*
  */
 
 class RouteProperties {
+    var enabled: Boolean = true
     var httpMethod: String = ""
     var url: String = ""
     var contentType: String = ""

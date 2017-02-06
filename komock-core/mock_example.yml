@@ -1,6 +1,7 @@
 consul:
   enabled: false
   consulHost: 127.0.0.1
+  consulPort: 8500
   services:
     -
       serviceId: customer-data-service

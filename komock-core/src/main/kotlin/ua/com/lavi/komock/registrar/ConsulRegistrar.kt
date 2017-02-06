@@ -14,7 +14,7 @@ class ConsulRegistrar {
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     fun register(consulServerProperties: ConsulServerProperties) {
-        val clientRegistrar = ConsulClient(consulServerProperties.consulHost)
+        val clientRegistrar = ConsulClient(consulServerProperties.consulHost, consulServerProperties.consulPort)
         log.debug("Found: ${consulServerProperties.services.size} consul services")
         for (consulService in consulServerProperties.services) {
             val newService = NewService()
