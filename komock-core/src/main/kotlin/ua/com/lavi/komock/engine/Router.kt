@@ -1,7 +1,7 @@
 package ua.com.lavi.komock.engine
 
 import org.slf4j.LoggerFactory
-import ua.com.lavi.komock.config.property.http.RouteProperties
+import ua.com.lavi.komock.engine.model.config.property.http.RouteProperties
 import ua.com.lavi.komock.engine.handler.AfterRouteHandler
 import ua.com.lavi.komock.engine.handler.BeforeRouteHandler
 import ua.com.lavi.komock.engine.handler.RouteHandler
@@ -13,6 +13,7 @@ import java.util.*
 
 /**
  * Created by Oleksandr Loushkin
+ * This class represents all logic according to manage server and link route with the server
  */
 
 class Router(val serverId: String,
@@ -29,17 +30,18 @@ class Router(val serverId: String,
     private var server: JettyServer
     private var routingTable = RoutingTable()
 
+    //Helper object.
     companion object {
 
         private val routers = ArrayList<Router>()
 
         @JvmStatic
-        fun startAllRouters() {
+        fun startAllServers() {
             routers.forEach(Router::start)
         }
 
         @JvmStatic
-        fun stopAllRouters() {
+        fun stopAllServers() {
             routers.forEach(Router::stop)
         }
     }
@@ -57,7 +59,7 @@ class Router(val serverId: String,
             log.info("Started server: $serverId on port: $port, virtualHosts: ${virtualHosts.joinToString(",")}. " +
                     "maxThreads: $maxThreads, minThreads: $minThreads, idle timeout: $idleTimeout ms")
         } else {
-            log.info("Server is already started!")
+            log.info("Unable to start because server is already started!")
         }
     }
 
@@ -65,8 +67,9 @@ class Router(val serverId: String,
         if (isStarted) {
             server.stop()
             isStarted = false
+            log.info("Server is stopped")
         } else {
-            log.info("Server is not started!")
+            log.info("Unable to stop because server was not started!")
         }
     }
 

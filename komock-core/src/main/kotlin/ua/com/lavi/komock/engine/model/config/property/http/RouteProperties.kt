@@ -1,4 +1,4 @@
-package ua.com.lavi.komock.config.property.http
+package ua.com.lavi.komock.engine.model.config.property.http
 
 
 import java.util.*

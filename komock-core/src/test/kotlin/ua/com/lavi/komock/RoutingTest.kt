@@ -11,7 +11,7 @@ import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import org.yaml.snakeyaml.Yaml
-import ua.com.lavi.komock.config.ApplicationConfiguration
+import ua.com.lavi.komock.engine.model.config.KomockConfiguration
 import ua.com.lavi.komock.engine.Router
 import ua.com.lavi.komock.engine.RoutingTable
 import ua.com.lavi.komock.engine.handler.AfterRouteHandler
@@ -42,13 +42,13 @@ class RoutingTest {
 
         private fun runApplication(path: String) {
             Files.newInputStream(Paths.get(path)).use { it ->
-                KomockRunner().run(Yaml().loadAs<ApplicationConfiguration>(it, ApplicationConfiguration::class.java))
+                KomockRunner().run(Yaml().loadAs<KomockConfiguration>(it, KomockConfiguration::class.java))
             }
         }
 
         @AfterClass @JvmStatic
         fun stopServer() {
-            Router.stopAllRouters()
+            Router.stopAllServers()
         }
     }
 

@@ -4,11 +4,11 @@ import com.google.gson.Gson
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.Yaml
 
-import ua.com.lavi.komock.config.property.http.RouteProperties
-import ua.com.lavi.komock.config.property.http.ServerProperties
-import ua.com.lavi.komock.config.property.spring.PropertySource
-import ua.com.lavi.komock.config.property.spring.SpringConfigResponse
-import ua.com.lavi.komock.config.property.spring.SpringConfigProperties
+import ua.com.lavi.komock.engine.model.config.property.http.RouteProperties
+import ua.com.lavi.komock.engine.model.config.property.http.ServerProperties
+import ua.com.lavi.komock.engine.model.config.property.spring.PropertySource
+import ua.com.lavi.komock.engine.model.config.property.spring.SpringConfigResponse
+import ua.com.lavi.komock.engine.model.config.property.spring.SpringConfigProperties
 import ua.com.lavi.komock.engine.Router
 import ua.com.lavi.komock.engine.model.SslKeyStore
 import java.io.IOException
@@ -35,10 +35,10 @@ class SpringConfigRegistrar {
         val serverProp: ServerProperties = springConfigProperties.server
 
         var sslKeyStore: SslKeyStore? = null
-        if (serverProp.secure.enabled) {
-            sslKeyStore = SslKeyStore(serverProp.secure.keyStoreLocation, serverProp.secure.keyStorePassword)
+        if (serverProp.ssl.enabled) {
+            sslKeyStore = SslKeyStore(serverProp.ssl.keyStoreLocation, serverProp.ssl.keyStorePassword)
         }
-        val router = Router(serverProp.id,
+        val router = Router(serverProp.name,
                 serverProp.host, serverProp.port,
                 serverProp.minThreads, serverProp.maxThreads,
                 serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts)
@@ -50,7 +50,7 @@ class SpringConfigRegistrar {
             return
         }
 
-        log.info("Started server: ${serverProp.id} on port: ${serverProp.port}. virtualHosts: ${serverProp.virtualHosts.joinToString(",")}")
+        log.info("Started server: ${serverProp.name} on port: ${serverProp.port}. virtualHosts: ${serverProp.virtualHosts.joinToString(",")}")
 
         val springConfigFilePathes = Files.walk(Paths.get(springConfigProperties.sourceFolder))
                 .filter { it.toFile().isFile }

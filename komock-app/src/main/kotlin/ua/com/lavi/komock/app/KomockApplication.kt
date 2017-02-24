@@ -3,7 +3,7 @@ package ua.com.lavi.komock.app
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.Yaml
 import ua.com.lavi.komock.KomockRunner
-import ua.com.lavi.komock.config.ApplicationConfiguration
+import ua.com.lavi.komock.engine.model.config.KomockConfiguration
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -28,7 +28,7 @@ object KomockApplication {
         log.info("Run Komock version: ${version()}. config path: $path")
         try {
             Files.newInputStream(Paths.get(path)).use { it ->
-                KomockRunner().run(Yaml().loadAs<ApplicationConfiguration>(it, ApplicationConfiguration::class.java))
+                KomockRunner().run(Yaml().loadAs<KomockConfiguration>(it, KomockConfiguration::class.java))
             }
         } catch (e: IOException) {
             log.error("Unable to read configuration file: ", e)

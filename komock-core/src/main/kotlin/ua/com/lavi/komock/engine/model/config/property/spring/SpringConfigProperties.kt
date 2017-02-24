@@ -1,6 +1,6 @@
-package ua.com.lavi.komock.config.property.spring
+package ua.com.lavi.komock.engine.model.config.property.spring
 
-import ua.com.lavi.komock.config.property.http.ServerProperties
+import ua.com.lavi.komock.engine.model.config.property.http.ServerProperties
 import java.util.*
 
 /**

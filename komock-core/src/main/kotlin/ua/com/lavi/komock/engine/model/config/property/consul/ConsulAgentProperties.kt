@@ -1,4 +1,4 @@
-package ua.com.lavi.komock.config.property.consul
+package ua.com.lavi.komock.engine.model.config.property.consul
 
 import java.util.*
 
@@ -6,14 +6,14 @@ import java.util.*
  * Created by Oleksandr Loushkin
  */
 
-class ConsulServerProperties {
+class ConsulAgentProperties {
     var enabled: Boolean = false
     var consulHost = "localhost"
     var consulPort = 8500
-    var services = ArrayList<ConsulServiceProperties>()
+    var services = ArrayList<ConsulServiceAgentProperties>()
 }
 
-class ConsulServiceProperties {
+class ConsulServiceAgentProperties {
     var enabled: Boolean = true
     var serviceId: String = "defaultConsulService"
     var serviceName: String = "defaultConsulServiceName"

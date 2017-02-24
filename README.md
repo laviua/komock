@@ -40,7 +40,7 @@ You can use your personal keystore. Just create it by the following command and 
 
     keytool -genkey -alias replserver -keyalg RSA -keystore mock_keystore.jks -dname "CN=Mark Smith, OU=JavaSoft, O=Sun, L=Cupertino, S=California, C=US" -storepass mockpassword -keypass mockpassword
 
-    secure:
+    ssl:
       enabled: true
       keyStoreLocation: mock_keystore.jks
       keyStorePassword: mockpassword

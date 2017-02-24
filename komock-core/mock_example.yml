@@ -18,10 +18,10 @@ springConfig:
     - dev
     - qa
   server:
-    id: spring-config-server
+    name: spring-config-server
     port: 8888
     host: 127.0.0.1
-    secure:
+    ssl:
       enabled: true
       keyStoreLocation: mock_keystore.jks
       keyStorePassword: mockpassword
@@ -29,7 +29,7 @@ springConfig:
 servers:
   -
     enabled: true
-    id: firstServer
+    name: firstServer
     port: 8081
     routes:
       -
@@ -110,12 +110,12 @@ servers:
         responseBody: '{"patchedParameter": "patchedVariable with error"}'
         code: 500
   -
-    id: secondServer
+    name: secondServer
     port: 8082
     minThreads: 10
     maxThreads: 20
     idleTimeout: 60000
-    secure:
+    ssl:
       enabled: true
       keyStoreLocation: mock_keystore.jks
       keyStorePassword: mockpassword
@@ -127,14 +127,14 @@ servers:
         responseBody: Content from the second server
         code: 200
   -
-    id: thirdServer
+    name: thirdServer
     port: 8083
     minThreads: 10
     maxThreads: 20
     idleTimeout: 60000
     virtualHosts:
       - "vhost.mocka"
-    secure:
+    ssl:
       enabled: true
       keyStoreLocation: mock_keystore.jks
       keyStorePassword: mockpassword

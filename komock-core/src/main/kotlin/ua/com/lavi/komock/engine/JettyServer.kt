@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
  * Created by Oleksandr Loushkin
  */
 
-internal class JettyServer(val serverId: String,
+internal class JettyServer(val serverName: String,
                            val virtualHosts: ArrayList<String>,
                            val httpHandler: Handler,
                            val host: String,
@@ -35,7 +35,7 @@ internal class JettyServer(val serverId: String,
     }
 
     fun start() {
-
+        log.debug("$serverName - initializing on $host:$port")
         val contextHandler = buildContextHandler()
         val serverConnector: ServerConnector = buildServerConnector(jettyServer, host, port, sslKeyStore)
 
@@ -46,13 +46,13 @@ internal class JettyServer(val serverId: String,
         jettyServer.handler = handlerList
 
         jettyServer.start()
-        log.debug("$serverId - listening on $host:$port")
+        log.debug("$serverName - listening on $host:$port")
     }
 
     fun stop() {
-        log.debug("Stopping $serverId")
+        log.debug("Stopping $serverName")
         jettyServer.stop()
-        log.debug("$serverId is stopped")
+        log.debug("$serverName is stopped")
     }
 
     fun addVirtualHosts(virtualHosts: ArrayList<String>) {

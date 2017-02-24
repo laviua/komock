@@ -1,6 +1,6 @@
 package ua.com.lavi.komock
 
-import ua.com.lavi.komock.config.ApplicationConfiguration
+import ua.com.lavi.komock.engine.model.config.KomockConfiguration
 import ua.com.lavi.komock.registrar.ConsulRegistrar
 import ua.com.lavi.komock.registrar.ServerRegistrar
 import ua.com.lavi.komock.registrar.SpringConfigRegistrar
@@ -11,24 +11,24 @@ import ua.com.lavi.komock.registrar.SpringConfigRegistrar
 
 class KomockRunner {
 
-    fun run(applicationConfiguration: ApplicationConfiguration) {
+    fun run(komockConfiguration: KomockConfiguration) {
 
         //Server instances
         val serverRegistrar = ServerRegistrar()
-        applicationConfiguration.servers.
+        komockConfiguration.servers.
                 filter { it.enabled }.
                 forEach { serverRegistrar.register(it) }
 
         //Spring config-server
         val springConfigRegistrar = SpringConfigRegistrar()
-        val springConfigProperties = applicationConfiguration.springConfig
+        val springConfigProperties = komockConfiguration.springConfig
         if (springConfigProperties.enabled) {
             springConfigRegistrar.register(springConfigProperties)
         }
 
         //Consul registration
         val consulRegistrar = ConsulRegistrar()
-        val consulServerProperties = applicationConfiguration.consul
+        val consulServerProperties = komockConfiguration.consul
         if (consulServerProperties.enabled) {
             consulRegistrar.register(consulServerProperties)
         }
