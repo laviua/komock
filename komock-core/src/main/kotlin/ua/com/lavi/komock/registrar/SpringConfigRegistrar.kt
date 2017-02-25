@@ -10,6 +10,7 @@ import ua.com.lavi.komock.engine.model.config.property.spring.PropertySource
 import ua.com.lavi.komock.engine.model.config.property.spring.SpringConfigResponse
 import ua.com.lavi.komock.engine.model.config.property.spring.SpringConfigProperties
 import ua.com.lavi.komock.engine.Router
+import ua.com.lavi.komock.engine.model.ByteResource
 import ua.com.lavi.komock.engine.model.SslKeyStore
 import java.io.IOException
 import java.net.BindException
@@ -36,7 +37,9 @@ class SpringConfigRegistrar {
 
         var sslKeyStore: SslKeyStore? = null
         if (serverProp.ssl.enabled) {
-            sslKeyStore = SslKeyStore(serverProp.ssl.keyStoreLocation, serverProp.ssl.keyStorePassword)
+            sslKeyStore = SslKeyStore(
+                    ByteResource(Files.readAllBytes(Paths.get(serverProp.ssl.keyStoreLocation))),
+                    serverProp.ssl.keyStorePassword)
         }
         val router = Router(serverProp.name,
                 serverProp.host, serverProp.port,

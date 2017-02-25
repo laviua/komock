@@ -16,7 +16,7 @@ import java.util.*
  * This class represents all logic according to manage server and link route with the server
  */
 
-class Router(val serverId: String,
+class Router(val serverName: String,
              val host: String,
              val port: Int,
              var minThreads: Int,
@@ -26,9 +26,10 @@ class Router(val serverId: String,
              var virtualHosts: ArrayList<String>) {
 
     private var isStarted: Boolean = false
-    private val log = LoggerFactory.getLogger(this.javaClass)
     private var server: JettyServer
     private var routingTable = RoutingTable()
+
+    private val log = LoggerFactory.getLogger(this.javaClass)
 
     //Helper object.
     companion object {
@@ -48,7 +49,7 @@ class Router(val serverId: String,
 
     init {
         val httpHandler = HttpHandler(RoutingFilter(routingTable))
-        server = JettyServer(serverId, virtualHosts, httpHandler, host, port, sslKeyStore, maxThreads, minThreads, idleTimeout)
+        server = JettyServer(serverName, virtualHosts, httpHandler, host, port, sslKeyStore, maxThreads, minThreads, idleTimeout)
         routers.add(this)
     }
 
@@ -56,7 +57,7 @@ class Router(val serverId: String,
         if (!isStarted) {
             server.start()
             isStarted = true
-            log.info("Started server: $serverId on port: $port, virtualHosts: ${virtualHosts.joinToString(",")}. " +
+            log.info("Started server: $serverName on port: $port, virtualHosts: ${virtualHosts.joinToString(",")}. " +
                     "maxThreads: $maxThreads, minThreads: $minThreads, idle timeout: $idleTimeout ms")
         } else {
             log.info("Unable to start because server is already started!")
@@ -131,10 +132,12 @@ class Router(val serverId: String,
 
     fun removeVirtualHosts(virtualHosts: ArrayList<String>) {
         server.removeVirtualHosts(virtualHosts)
+        log.debug("Virtualhosts $virtualHosts - deleted")
     }
 
     fun deleteRoute(url: String, httpMethod: HttpMethod) {
         routingTable.deleteRoute(url, httpMethod)
+        log.debug("Route $url - deleted")
     }
 
 }

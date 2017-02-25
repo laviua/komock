@@ -2,9 +2,12 @@ package ua.com.lavi.komock.registrar
 
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.Router
+import ua.com.lavi.komock.engine.model.ByteResource
 import ua.com.lavi.komock.engine.model.config.property.http.ServerProperties
 import ua.com.lavi.komock.engine.model.SslKeyStore
 import java.net.BindException
+import java.nio.file.Files
+import java.nio.file.Paths
 
 /**
  * Created by Oleksandr Loushkin
@@ -18,7 +21,9 @@ class ServerRegistrar {
 
         var sslKeyStore: SslKeyStore? = null
         if (serverProp.ssl.enabled) {
-            sslKeyStore = SslKeyStore(serverProp.ssl.keyStoreLocation, serverProp.ssl.keyStorePassword)
+            sslKeyStore = SslKeyStore(
+                    ByteResource(Files.readAllBytes(Paths.get(serverProp.ssl.keyStoreLocation))),
+                    serverProp.ssl.keyStorePassword)
         }
         val router = Router(serverProp.name,
                 serverProp.host, serverProp.port,

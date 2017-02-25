@@ -55,12 +55,18 @@ internal class JettyServer(val serverName: String,
         log.debug("$serverName is stopped")
     }
 
+    /**
+     * Add virtual hosts to the running server
+     */
     fun addVirtualHosts(virtualHosts: ArrayList<String>) {
         val handlerList = jettyServer.handler as HandlerList
         val contextHandler = handlerList.handlers[0] as ContextHandler
         contextHandler.addVirtualHosts(virtualHosts.toTypedArray())
     }
 
+    /**
+     * Remove virtual host from the running server
+     */
     fun removeVirtualHosts(virtualHosts: ArrayList<String>) {
         val handlerList = jettyServer.handler as HandlerList
         val contextHandler = handlerList.handlers[0] as ContextHandler
@@ -85,7 +91,8 @@ internal class JettyServer(val serverName: String,
         if (sslKeyStore == null) {
             serverConnector = ServerConnector(server, httpFactory)
         } else {
-            val sslContextFactory = SslContextFactory(sslKeyStore.keystoreFile)
+            val sslContextFactory = SslContextFactory()
+            sslContextFactory.keyStoreResource = sslKeyStore.keystoreResource
             sslContextFactory.setKeyStorePassword(sslKeyStore.keystorePassword)
             serverConnector = ServerConnector(server, sslContextFactory, httpFactory)
         }
