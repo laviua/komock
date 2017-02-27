@@ -9,7 +9,7 @@ import java.util.*
 
 class SpringConfigProperties {
     var enabled: Boolean = false
-    var profiles = ArrayList<String>()
+    var profiles:List<String> = ArrayList()
     var sourceFolder: String = "/"
     var server: ServerProperties = ServerProperties()
 }

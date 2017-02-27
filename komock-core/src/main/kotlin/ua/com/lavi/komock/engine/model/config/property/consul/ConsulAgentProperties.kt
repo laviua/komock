@@ -10,7 +10,7 @@ class ConsulAgentProperties {
     var enabled: Boolean = false
     var consulHost = "localhost"
     var consulPort = 8500
-    var services = ArrayList<ConsulServiceAgentProperties>()
+    var services:List<ConsulServiceAgentProperties> = ArrayList()
 }
 
 class ConsulServiceAgentProperties {

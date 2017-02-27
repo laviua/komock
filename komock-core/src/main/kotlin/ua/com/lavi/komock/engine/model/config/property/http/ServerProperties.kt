@@ -10,10 +10,10 @@ import java.util.*
 class ServerProperties {
     var enabled: Boolean = true
     var name = "defaultInstanceName" // default name
-    var virtualHosts = ArrayList<String>()
+    var virtualHosts:List<String> = ArrayList()
     var host = "0.0.0.0" // listen on all interfaces
     var port = 8080 // default port;
-    var routes = ArrayList<RouteProperties>()
+    var routes:List<RouteProperties> = ArrayList()
     var ssl: SSLServerProperties = SSLServerProperties()
     var minThreads: Int = 10
     var maxThreads: Int = 100

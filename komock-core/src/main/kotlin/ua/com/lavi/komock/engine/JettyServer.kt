@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
  */
 
 internal class JettyServer(val serverName: String,
-                           val virtualHosts: ArrayList<String>,
+                           val virtualHosts: List<String>,
                            val httpHandler: Handler,
                            val host: String,
                            val port: Int,

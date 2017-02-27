@@ -7,10 +7,10 @@ import java.util.*
  */
 
 data class SpringConfigResponse(val name: String,
-                                val profiles: ArrayList<String>,
+                                val profiles:List<String> = ArrayList(),
                                 val label: String?,
                                 val version: String?,
-                                val propertySources: ArrayList<PropertySource>)
+                                val propertySources:List<PropertySource> = ArrayList())
 
 data class PropertySource(val name: String,
                           val source: Any)

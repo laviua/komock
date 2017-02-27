@@ -23,7 +23,7 @@ class Router(val serverName: String,
              var maxThreads: Int,
              var idleTimeout: Int,
              var sslKeyStore: SslKeyStore?,
-             var virtualHosts: ArrayList<String>) {
+             var virtualHosts: List<String>) {
 
     private var isStarted: Boolean = false
     private var server: JettyServer

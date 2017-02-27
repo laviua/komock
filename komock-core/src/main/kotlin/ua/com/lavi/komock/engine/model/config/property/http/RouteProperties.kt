@@ -13,7 +13,7 @@ class RouteProperties {
     var url: String = ""
     var contentType: String = ""
     var responseBody: String = ""
-    var responseHeaders = ArrayList<Map<String, String>>()
+    var responseHeaders:List<Map<String,String>> = ArrayList()
     var cookies: List<CookieProperties> = ArrayList()
     var code: Int = 0
     var logRequest: Boolean = false

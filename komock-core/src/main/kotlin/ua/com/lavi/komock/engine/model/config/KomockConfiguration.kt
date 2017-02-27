@@ -11,7 +11,7 @@ import java.util.*
 
 class KomockConfiguration {
 
-    var servers: ArrayList<ServerProperties> = ArrayList()
+    var servers: List<ServerProperties> = ArrayList()
     var consul: ConsulAgentProperties = ConsulAgentProperties()
     var springConfig: SpringConfigProperties = SpringConfigProperties()
 
