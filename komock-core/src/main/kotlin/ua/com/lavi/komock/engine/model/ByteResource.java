@@ -1,7 +1,5 @@
 package ua.com.lavi.komock.engine.model;
 
-import org.eclipse.jetty.util.resource.Resource;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +7,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
+
+import org.eclipse.jetty.util.resource.Resource;
 
 /**
  * Created by oleksandrloushkin on 25.02.17.
@@ -22,7 +22,7 @@ public class ByteResource extends Resource {
     }
 
     @Override
-    public boolean isContainedIn(Resource r) throws MalformedURLException {
+    public boolean isContainedIn(Resource resource) throws MalformedURLException {
         return false;
     }
 
