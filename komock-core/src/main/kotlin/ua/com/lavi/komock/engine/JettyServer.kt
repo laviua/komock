@@ -8,7 +8,6 @@ import org.eclipse.jetty.util.ssl.SslContextFactory
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.model.SslKeyStore
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -32,19 +31,17 @@ internal class JettyServer(val serverName: String,
 
     init {
         jettyServer = Server(QueuedThreadPool(maxThreads, minThreads, idleTimeout))
+        val contextHandler = buildContextHandler()
+        val handlerList: HandlerList = HandlerList()
+        handlerList.handlers = arrayOf(contextHandler)
+        jettyServer.handler = handlerList
     }
 
     fun start() {
         log.debug("$serverName - initializing on $host:$port")
-        val contextHandler = buildContextHandler()
         val serverConnector: ServerConnector = buildServerConnector(jettyServer, host, port, sslKeyStore)
-
         jettyServer = serverConnector.server
         jettyServer.connectors = arrayOf(serverConnector)
-        val handlerList: HandlerList = HandlerList()
-        handlerList.handlers = arrayOf(contextHandler)
-        jettyServer.handler = handlerList
-
         jettyServer.start()
         log.debug("$serverName - listening on $host:$port")
     }
@@ -58,25 +55,27 @@ internal class JettyServer(val serverName: String,
     /**
      * Add virtual hosts to the running server
      */
-    fun addVirtualHosts(virtualHosts: ArrayList<String>) {
-        val handlerList = jettyServer.handler as HandlerList
-        val contextHandler = handlerList.handlers[0] as ContextHandler
-        contextHandler.addVirtualHosts(virtualHosts.toTypedArray())
+    fun addVirtualHosts(virtualHosts: List<String>) {
+        getContextHabdler().addVirtualHosts(virtualHosts.toTypedArray())
     }
 
     /**
      * Remove virtual host from the running server
      */
-    fun removeVirtualHosts(virtualHosts: ArrayList<String>) {
-        val handlerList = jettyServer.handler as HandlerList
-        val contextHandler = handlerList.handlers[0] as ContextHandler
-        contextHandler.removeVirtualHosts(virtualHosts.toTypedArray())
+    fun removeVirtualHosts(virtualHosts: List<String>) {
+        getContextHabdler().removeVirtualHosts(virtualHosts.toTypedArray())
     }
 
     private fun buildContextHandler(): ContextHandler {
         val contextHandler = ContextHandler("/")
         contextHandler.virtualHosts = virtualHosts.toTypedArray()
         contextHandler.handler = httpHandler
+        return contextHandler
+    }
+
+    private fun getContextHabdler(): ContextHandler {
+        val handlerList = jettyServer.handler as HandlerList
+        val contextHandler = handlerList.handlers[0] as ContextHandler
         return contextHandler
     }
 
