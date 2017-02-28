@@ -11,8 +11,6 @@ import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import org.yaml.snakeyaml.Yaml
-import ua.com.lavi.komock.engine.model.config.KomockConfiguration
-import ua.com.lavi.komock.engine.Router
 import ua.com.lavi.komock.engine.RoutingTable
 import ua.com.lavi.komock.engine.handler.AfterRouteHandler
 import ua.com.lavi.komock.engine.handler.BeforeRouteHandler
@@ -20,6 +18,8 @@ import ua.com.lavi.komock.engine.handler.RouteHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
+import ua.com.lavi.komock.engine.model.config.KomockConfiguration
+import ua.com.lavi.komock.registrar.ServerRegistrar
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.test.fail
@@ -48,7 +48,7 @@ class RoutingTest {
 
         @AfterClass @JvmStatic
         fun stopServer() {
-            Router.stopAllServers()
+            ServerRegistrar.stopAllServers()
         }
     }
 

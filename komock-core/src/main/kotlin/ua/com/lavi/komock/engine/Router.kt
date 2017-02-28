@@ -1,7 +1,6 @@
 package ua.com.lavi.komock.engine
 
 import org.slf4j.LoggerFactory
-import ua.com.lavi.komock.engine.model.config.property.http.RouteProperties
 import ua.com.lavi.komock.engine.handler.AfterRouteHandler
 import ua.com.lavi.komock.engine.handler.BeforeRouteHandler
 import ua.com.lavi.komock.engine.handler.RouteHandler
@@ -9,7 +8,7 @@ import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
 import ua.com.lavi.komock.engine.model.SslKeyStore
-import java.util.*
+import ua.com.lavi.komock.engine.model.config.property.http.RouteProperties
 
 /**
  * Created by Oleksandr Loushkin
@@ -23,7 +22,7 @@ class Router(val serverName: String,
              var maxThreads: Int,
              var idleTimeout: Int,
              var sslKeyStore: SslKeyStore?,
-             var virtualHosts: List<String>) {
+             var virtualHosts: MutableList<String>) {
 
     private var isStarted: Boolean = false
     private var server: JettyServer
@@ -31,33 +30,16 @@ class Router(val serverName: String,
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    //Helper object.
-    companion object {
-
-        private val routers = ArrayList<Router>()
-
-        @JvmStatic
-        fun startAllServers() {
-            routers.forEach(Router::start)
-        }
-
-        @JvmStatic
-        fun stopAllServers() {
-            routers.forEach(Router::stop)
-        }
-    }
-
     init {
         val httpHandler = HttpHandler(RoutingFilter(routingTable))
         server = JettyServer(serverName, virtualHosts, httpHandler, host, port, sslKeyStore, maxThreads, minThreads, idleTimeout)
-        routers.add(this)
     }
 
     fun start() {
         if (!isStarted) {
             server.start()
             isStarted = true
-            log.info("Started server: $serverName on port: $port, virtualHosts: ${virtualHosts.joinToString(",")}. " +
+            log.info("Started server: $serverName on port: $port, virtualHosts: $virtualHosts. " +
                     "maxThreads: $maxThreads, minThreads: $minThreads, idle timeout: $idleTimeout ms")
         } else {
             log.info("Unable to start because server is already started!")
@@ -126,18 +108,21 @@ class Router(val serverName: String,
         log.info("Registered http route: ${routeProperties.httpMethod} ${routeProperties.url}")
     }
 
-    fun addVirtualHosts(virtualHosts: ArrayList<String>) {
+    fun addVirtualHosts(virtualHosts: List<String>) {
+        this.virtualHosts.addAll(virtualHosts)
         server.addVirtualHosts(virtualHosts)
+        log.debug("Added virtual hosts: $virtualHosts")
     }
 
-    fun removeVirtualHosts(virtualHosts: ArrayList<String>) {
+    fun removeVirtualHosts(virtualHosts: List<String>) {
+        this.virtualHosts.removeAll(virtualHosts)
         server.removeVirtualHosts(virtualHosts)
-        log.debug("Virtualhosts $virtualHosts - deleted")
+        log.debug("Removed virtual hosts: $virtualHosts")
     }
 
     fun deleteRoute(url: String, httpMethod: HttpMethod) {
         routingTable.deleteRoute(url, httpMethod)
-        log.debug("Route $url - deleted")
+        log.debug("Removed route: $url")
     }
 
 }

@@ -8,6 +8,7 @@ import ua.com.lavi.komock.engine.model.SslKeyStore
 import java.net.BindException
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.*
 
 /**
  * Created by Oleksandr Loushkin
@@ -16,6 +17,23 @@ import java.nio.file.Paths
 class ServerRegistrar {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
+
+
+    //Helper object.
+    companion object {
+
+        private val routers:MutableList<Router> = ArrayList()
+
+        @JvmStatic
+        fun startAllServers() {
+            routers.forEach(Router::start)
+        }
+
+        @JvmStatic
+        fun stopAllServers() {
+            routers.forEach(Router::stop)
+        }
+    }
 
     fun register(serverProp: ServerProperties) {
 
@@ -28,7 +46,9 @@ class ServerRegistrar {
         val router = Router(serverProp.name,
                 serverProp.host, serverProp.port,
                 serverProp.minThreads, serverProp.maxThreads,
-                serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts)
+                serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts.toMutableList())
+
+        routers.add(router)
 
         try {
             router.start()

@@ -44,7 +44,7 @@ class SpringConfigRegistrar {
         val router = Router(serverProp.name,
                 serverProp.host, serverProp.port,
                 serverProp.minThreads, serverProp.maxThreads,
-                serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts)
+                serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts.toMutableList())
 
         try {
             router.start()
@@ -53,7 +53,7 @@ class SpringConfigRegistrar {
             return
         }
 
-        log.info("Started server: ${serverProp.name} on port: ${serverProp.port}. virtualHosts: ${serverProp.virtualHosts.joinToString(",")}")
+        log.info("Started server: ${serverProp.name} on port: ${serverProp.port}. virtualHosts: ${serverProp.virtualHosts}")
 
         val springConfigFilePathes = Files.walk(Paths.get(springConfigProperties.sourceFolder))
                 .filter { it.toFile().isFile }
