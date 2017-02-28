@@ -7,6 +7,7 @@ import java.util.*
  */
 
 class ConsulAgentProperties {
+    var id: Long? = null
     var enabled: Boolean = false
     var consulHost = "localhost"
     var consulPort = 8500
@@ -14,6 +15,7 @@ class ConsulAgentProperties {
 }
 
 class ConsulServiceAgentProperties {
+    var id: Long? = null
     var enabled: Boolean = true
     var serviceId: String = "defaultConsulService"
     var serviceName: String = "defaultConsulServiceName"

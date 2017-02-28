@@ -8,6 +8,7 @@ import java.util.*
  */
 
 class ServerProperties {
+    var id: Long? = null
     var enabled: Boolean = true
     var name = "defaultInstanceName" // default name
     var virtualHosts:List<String> = ArrayList()

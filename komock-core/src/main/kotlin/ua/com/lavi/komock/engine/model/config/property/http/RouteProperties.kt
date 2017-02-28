@@ -8,6 +8,7 @@ import java.util.*
  */
 
 class RouteProperties {
+    var id: Long? = null
     var enabled: Boolean = true
     var httpMethod: String = ""
     var url: String = ""
@@ -23,6 +24,7 @@ class RouteProperties {
 }
 
 class CookieProperties {
+    var id: Long? = null
     var path: String = ""
     var name: String = ""
     var value: String = ""
