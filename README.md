@@ -11,9 +11,14 @@ Main features:
 - Ability to register in the Consul discovery service
 - Ability to work like a simple spring config server
 
-[Download latest standalone application](https://github.com/laviua/komock/releases/latest)
+## Download
 
-Maven sonatype repository:
+Binaries are available at
+https://github.com/laviua/komock/releases/latest
+
+[Changelog] (https://github.com/laviua/komock/blob/master/changelog.md)
+
+## Maven Central repository
 
     <dependency>
         <groupId>ua.com.lavi</groupId>
@@ -21,12 +26,11 @@ Maven sonatype repository:
         <version>RELEASE</version>
     </dependency>
 
-Look at self-describable configuration file (sample config exists in the komock-core root project directory):
-**mock_example.yaml** 
+## How to use
 
-How to run stand alone application:
+Run standalone application:
 
-1. Extract release version :
+1. Extract release version from https://github.com/laviua/komock/releases/latest :
     
         komock-app-x.x.x.zip
 
@@ -35,7 +39,8 @@ How to run stand alone application:
         bin\komock-app /path/your_config.yaml
 
 
-Example of the simplest config for oauth server
+## Examples
+**Get Oauth2 token example**
 
     servers:
       -
@@ -54,7 +59,25 @@ Example of the simplest config for oauth server
     curl -X POST "http://127.0.0.1:8080/oauth/token"
     {"access_token" : "ya29S6ZQbiBQpA5Rz8oty00xj-xydfdfddteerer-1eM",  "token_type" : "Bearer",  "expires_in" : 3600}
 
-HTTPS/SSL:
+**Consul service**
+
+    consul:
+      enabled: true
+      consulHost: 127.0.0.1
+      consulPort: 8500
+      services:
+        -
+          serviceId: customer-data-service
+          serviceName: customer-data-service
+          servicePort: 8081
+          serviceAddress: 127.0.0.1
+          checkInterval: 30s
+          checkTimeout: 30s
+      
+**Full config**
+Look at self-describable configuration file [Link] (https://github.com/laviua/komock/blob/master/komock-core/mock_example.yml):
+
+## HTTPS / SSL:
 
 You can use your personal keystore. Just create it by the following command and set filename with password in the configuration file (secure section):
 
