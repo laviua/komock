@@ -34,6 +34,26 @@ How to run stand alone application:
 
         bin\komock-app /path/your_config.yaml
 
+
+Example of the simplest config for oauth server
+
+    servers:
+      -
+        enabled: true
+        name: auth-server
+        port: 8080
+        routes:
+          -
+            httpMethod: POST
+            url: /oauth/token
+            contentType: "application/json"
+            responseBody: '{"access_token" : "ya29S6ZQbiBQpA5Rz8oty00xj-xydfdfddteerer-1eM",  "token_type" : "Bearer",  "expires_in" : 3600}'
+            code: 200
+            
+
+    curl -X POST "http://127.0.0.1:8080/oauth/token"
+    {"access_token" : "ya29S6ZQbiBQpA5Rz8oty00xj-xydfdfddteerer-1eM",  "token_type" : "Bearer",  "expires_in" : 3600}
+
 HTTPS/SSL:
 
 You can use your personal keystore. Just create it by the following command and set filename with password in the configuration file (secure section):
