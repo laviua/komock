@@ -22,5 +22,8 @@ class ConsulServiceAgentProperties {
     var servicePort: Int = 8080
     var serviceAddress: String = "127.0.0.1"
     var checkInterval: String = "30s"
-    var checkTimeout: String? = "30s"
+    var checkTimeout: String = "30s"
+    var tcp: String = ""
+    var http: String = ""
+    var script: String = ""
 }

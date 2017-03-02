@@ -23,8 +23,11 @@ class ConsulRegistrar {
             newService.port = consulService.servicePort
             newService.address = consulService.serviceAddress
             val check = NewService.Check()
-            check.interval = consulService.checkInterval
-            check.timeout = consulService.checkTimeout
+                check.interval = consulService.checkInterval
+                check.timeout = consulService.checkTimeout
+                check.tcp = consulService.tcp
+                check.http = consulService.http
+                check.script = consulService.script
             newService.check = check
             clientRegistrar.agentServiceRegister(newService)
             log.info("Registered consul service: ${consulService.serviceId} - ${consulService.serviceAddress}:${consulService.servicePort}")
