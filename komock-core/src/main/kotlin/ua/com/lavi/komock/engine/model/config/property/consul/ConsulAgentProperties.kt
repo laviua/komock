@@ -11,7 +11,7 @@ class ConsulAgentProperties {
     var enabled: Boolean = false
     var consulHost = "localhost"
     var consulPort = 8500
-    var services:List<ConsulServiceAgentProperties> = ArrayList()
+    var services: List<ConsulServiceAgentProperties> = ArrayList()
 }
 
 class ConsulServiceAgentProperties {
@@ -23,7 +23,7 @@ class ConsulServiceAgentProperties {
     var serviceAddress: String = "127.0.0.1"
     var checkInterval: String = "30s"
     var checkTimeout: String = "30s"
-    var tcp: String = ""
-    var http: String = ""
-    var script: String = ""
+    var tcp: String? = null
+    var http: String? = null
+    var script: String? = null
 }

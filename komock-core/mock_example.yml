@@ -17,6 +17,7 @@ springConfig:
   profiles:
     - dev
     - qa
+    - default
   server:
     name: spring-config-server
     port: 8888
