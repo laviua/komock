@@ -6,16 +6,14 @@ import java.util.*
  * Created by Oleksandr Loushkin
  */
 
-class ConsulAgentProperties {
-    var id: Long? = null
+open class ConsulAgentProperties {
     var enabled: Boolean = false
     var consulHost = "localhost"
     var consulPort = 8500
     var services: List<ConsulServiceAgentProperties> = ArrayList()
 }
 
-class ConsulServiceAgentProperties {
-    var id: Long? = null
+open class ConsulServiceAgentProperties {
     var enabled: Boolean = true
     var serviceId: String = "defaultConsulService"
     var serviceName: String = "defaultConsulServiceName"

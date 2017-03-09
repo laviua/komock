@@ -3,8 +3,8 @@ package ua.com.lavi.komock.registrar
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.Router
 import ua.com.lavi.komock.engine.model.ByteResource
-import ua.com.lavi.komock.engine.model.config.property.http.ServerProperties
 import ua.com.lavi.komock.engine.model.SslKeyStore
+import ua.com.lavi.komock.engine.model.config.property.http.ServerProperties
 import java.net.BindException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -57,9 +57,9 @@ class ServerRegistrar {
             return
         }
 
-        //register routeHolders
+        //register only enabled routeHolders
         if (!serverProp.routes.isEmpty()) {
-            serverProp.routes.forEach { router.addRoute(it) }
+            serverProp.routes.filter { it.enabled }.forEach { router.addRoute(it) }
         }
     }
 }

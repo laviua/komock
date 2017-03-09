@@ -7,8 +7,7 @@ import java.util.*
  * Created by Oleksandr Loushkin
  */
 
-class RouteProperties {
-    var id: Long? = null
+open class RouteProperties {
     var enabled: Boolean = true
     var httpMethod: String = ""
     var url: String = ""
@@ -23,8 +22,7 @@ class RouteProperties {
     var logAfter: String = ""
 }
 
-class CookieProperties {
-    var id: Long? = null
+open class CookieProperties {
     var path: String = ""
     var name: String = ""
     var value: String = ""

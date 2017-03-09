@@ -7,7 +7,7 @@ import java.util.*
  * Created by Oleksandr Loushkin
  */
 
-class SpringConfigProperties {
+open class SpringConfigProperties {
     var enabled: Boolean = false
     var profiles:List<String> = ArrayList()
     var sourceFolder: String = "/"

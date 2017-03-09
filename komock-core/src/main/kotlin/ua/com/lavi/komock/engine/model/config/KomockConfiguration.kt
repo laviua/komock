@@ -9,7 +9,7 @@ import java.util.*
  * Created by Oleksandr Loushkin
  */
 
-class KomockConfiguration {
+open class KomockConfiguration {
 
     var servers: List<ServerProperties> = ArrayList()
     var consul: ConsulAgentProperties = ConsulAgentProperties()

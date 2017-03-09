@@ -7,8 +7,7 @@ import java.util.*
  * Created by Oleksandr Loushkin
  */
 
-class ServerProperties {
-    var id: Long? = null
+open class ServerProperties {
     var enabled: Boolean = true
     var name = "defaultInstanceName" // default name
     var virtualHosts:List<String> = ArrayList()
@@ -21,7 +20,7 @@ class ServerProperties {
     var idleTimeout: Int = 60000
 }
 
-class SSLServerProperties {
+open class SSLServerProperties {
     var enabled: Boolean = false
     var keyStoreLocation: String = "keystore.jks"
     var keyStorePassword: String = "password"

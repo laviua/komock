@@ -17,20 +17,22 @@ class ConsulRegistrar {
         val clientRegistrar = ConsulClient(consulAgentProperties.consulHost, consulAgentProperties.consulPort)
         log.debug("Found: ${consulAgentProperties.services.size} consul services")
         for (consulService in consulAgentProperties.services) {
-            val newService = NewService()
-            newService.id = consulService.serviceId
-            newService.name = consulService.serviceName
-            newService.port = consulService.servicePort
-            newService.address = consulService.serviceAddress
-            val check = NewService.Check()
+            if (consulService.enabled) {
+                val newService = NewService()
+                newService.id = consulService.serviceId
+                newService.name = consulService.serviceName
+                newService.port = consulService.servicePort
+                newService.address = consulService.serviceAddress
+                val check = NewService.Check()
                 check.interval = consulService.checkInterval
                 check.timeout = consulService.checkTimeout
                 check.tcp = consulService.tcp
                 check.http = consulService.http
                 check.script = consulService.script
-            newService.check = check
-            clientRegistrar.agentServiceRegister(newService)
-            log.info("Registered consul service: ${consulService.serviceId} - ${consulService.serviceAddress}:${consulService.servicePort}")
+                newService.check = check
+                clientRegistrar.agentServiceRegister(newService)
+                log.info("Registered consul service: ${consulService.serviceId} - ${consulService.serviceAddress}:${consulService.servicePort}")
+            }
         }
         daemonMode()
     }
