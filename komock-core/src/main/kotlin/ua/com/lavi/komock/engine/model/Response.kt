@@ -1,6 +1,6 @@
 package ua.com.lavi.komock.engine.model
 
-import ua.com.lavi.komock.engine.model.config.property.http.CookieProperties
+import ua.com.lavi.komock.engine.model.config.http.CookieProperties
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
 

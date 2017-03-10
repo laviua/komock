@@ -1,8 +1,8 @@
 package ua.com.lavi.komock.engine.model.config
 
-import ua.com.lavi.komock.engine.model.config.property.consul.ConsulAgentProperties
-import ua.com.lavi.komock.engine.model.config.property.http.ServerProperties
-import ua.com.lavi.komock.engine.model.config.property.spring.SpringConfigProperties
+import ua.com.lavi.komock.engine.model.config.consul.ConsulAgentProperties
+import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
+import ua.com.lavi.komock.engine.model.config.spring.SpringConfigProperties
 import java.util.*
 
 /**
@@ -11,8 +11,8 @@ import java.util.*
 
 open class KomockConfiguration {
 
-    var servers: List<ServerProperties> = ArrayList()
-    var consul: ConsulAgentProperties = ConsulAgentProperties()
+    var httpServers: List<HttpServerProperties> = ArrayList()
+    var consulAgents: List<ConsulAgentProperties> = ArrayList()
     var springConfig: SpringConfigProperties = SpringConfigProperties()
 
 }

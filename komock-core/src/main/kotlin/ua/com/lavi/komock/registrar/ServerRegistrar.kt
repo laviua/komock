@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.Router
 import ua.com.lavi.komock.engine.model.ByteResource
 import ua.com.lavi.komock.engine.model.SslKeyStore
-import ua.com.lavi.komock.engine.model.config.property.http.ServerProperties
+import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import java.net.BindException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -35,31 +35,31 @@ class ServerRegistrar {
         }
     }
 
-    fun register(serverProp: ServerProperties) {
+    fun register(httpServerProp: HttpServerProperties) {
 
         var sslKeyStore: SslKeyStore? = null
-        if (serverProp.ssl.enabled) {
+        if (httpServerProp.ssl.enabled) {
             sslKeyStore = SslKeyStore(
-                    ByteResource(Files.readAllBytes(Paths.get(serverProp.ssl.keyStoreLocation))),
-                    serverProp.ssl.keyStorePassword)
+                    ByteResource(Files.readAllBytes(Paths.get(httpServerProp.ssl.keyStoreLocation))),
+                    httpServerProp.ssl.keyStorePassword)
         }
-        val router = Router(serverProp.name,
-                serverProp.host, serverProp.port,
-                serverProp.minThreads, serverProp.maxThreads,
-                serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts.toMutableList())
+        val router = Router(httpServerProp.name,
+                httpServerProp.host, httpServerProp.port,
+                httpServerProp.minThreads, httpServerProp.maxThreads,
+                httpServerProp.idleTimeout, sslKeyStore, httpServerProp.virtualHosts.toMutableList())
 
         routers.add(router)
 
         try {
             router.start()
         } catch (e: BindException) {
-            log.warn(e.message + ": ${serverProp.host}, port: ${serverProp.port}", e)
+            log.warn(e.message + ": ${httpServerProp.host}, port: ${httpServerProp.port}", e)
             return
         }
 
         //register only enabled routeHolders
-        if (!serverProp.routes.isEmpty()) {
-            serverProp.routes.filter { it.enabled }.forEach { router.addRoute(it) }
+        if (!httpServerProp.routes.isEmpty()) {
+            httpServerProp.routes.filter { it.enabled }.forEach { router.addRoute(it) }
         }
     }
 }

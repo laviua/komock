@@ -3,15 +3,14 @@ package ua.com.lavi.komock.registrar
 import com.google.gson.Gson
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.Yaml
-
-import ua.com.lavi.komock.engine.model.config.property.http.RouteProperties
-import ua.com.lavi.komock.engine.model.config.property.http.ServerProperties
-import ua.com.lavi.komock.engine.model.config.property.spring.PropertySource
-import ua.com.lavi.komock.engine.model.config.property.spring.SpringConfigResponse
-import ua.com.lavi.komock.engine.model.config.property.spring.SpringConfigProperties
 import ua.com.lavi.komock.engine.Router
 import ua.com.lavi.komock.engine.model.ByteResource
+import ua.com.lavi.komock.engine.model.PropertySource
+import ua.com.lavi.komock.engine.model.SpringConfigResponse
 import ua.com.lavi.komock.engine.model.SslKeyStore
+import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
+import ua.com.lavi.komock.engine.model.config.http.RouteProperties
+import ua.com.lavi.komock.engine.model.config.spring.SpringConfigProperties
 import java.io.IOException
 import java.net.BindException
 import java.nio.charset.Charset
@@ -33,27 +32,27 @@ class SpringConfigRegistrar {
     private val gson = Gson()
 
     fun register(springConfigProperties: SpringConfigProperties) {
-        val serverProp: ServerProperties = springConfigProperties.server
+        val httpServerProp: HttpServerProperties = springConfigProperties.httpServer
 
         var sslKeyStore: SslKeyStore? = null
-        if (serverProp.ssl.enabled) {
+        if (httpServerProp.ssl.enabled) {
             sslKeyStore = SslKeyStore(
-                    ByteResource(Files.readAllBytes(Paths.get(serverProp.ssl.keyStoreLocation))),
-                    serverProp.ssl.keyStorePassword)
+                    ByteResource(Files.readAllBytes(Paths.get(httpServerProp.ssl.keyStoreLocation))),
+                    httpServerProp.ssl.keyStorePassword)
         }
-        val router = Router(serverProp.name,
-                serverProp.host, serverProp.port,
-                serverProp.minThreads, serverProp.maxThreads,
-                serverProp.idleTimeout, sslKeyStore, serverProp.virtualHosts.toMutableList())
+        val router = Router(httpServerProp.name,
+                httpServerProp.host, httpServerProp.port,
+                httpServerProp.minThreads, httpServerProp.maxThreads,
+                httpServerProp.idleTimeout, sslKeyStore, httpServerProp.virtualHosts.toMutableList())
 
         try {
             router.start()
         } catch (e: BindException) {
-            log.warn(e.message + ": ${serverProp.host}, port: ${serverProp.port}", e)
+            log.warn(e.message + ": ${httpServerProp.host}, port: ${httpServerProp.port}", e)
             return
         }
 
-        log.info("Started server: ${serverProp.name} on port: ${serverProp.port}. virtualHosts: ${serverProp.virtualHosts}")
+        log.info("Started httpServer: ${httpServerProp.name} on port: ${httpServerProp.port}. virtualHosts: ${httpServerProp.virtualHosts}")
 
         val springConfigFilePathes = Files.walk(Paths.get(springConfigProperties.sourceFolder))
                 .filter { it.toFile().isFile }

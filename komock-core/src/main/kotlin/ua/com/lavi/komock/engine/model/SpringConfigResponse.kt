@@ -1,4 +1,4 @@
-package ua.com.lavi.komock.engine.model.config.property.spring
+package ua.com.lavi.komock.engine.model
 
 import java.util.*
 

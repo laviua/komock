@@ -312,6 +312,7 @@ class RoutingTest {
         val array = response.body.`object`.getJSONArray("profiles")
         assertTrue(array.get(0) == "dev")
         assertTrue(array.get(1) == "qa")
+        assertTrue(array.get(2) == "default")
 
         val jsonObject = response.body
                 .`object`

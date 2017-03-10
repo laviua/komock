@@ -42,7 +42,7 @@ Run standalone application:
 ## Examples
 **Get Oauth2 token example**
 
-    servers:
+    httpServers:
       -
         enabled: true
         name: auth-server
@@ -54,26 +54,32 @@ Run standalone application:
             contentType: "application/json"
             responseBody: '{"access_token" : "ya29S6ZQbiBQpA5Rz8oty00xj-xydfdfddteerer-1eM",  "token_type" : "Bearer",  "expires_in" : 3600}'
             code: 200
-            
+          -
+            httpMethod: GET
+            url: /anymask/*/anypath/
+            contentType: text/plain
+            responseBody: Hello World. Test url mask with additional text
+            code: 200
 
     curl -X POST "http://127.0.0.1:8080/oauth/token"
     {"access_token" : "ya29S6ZQbiBQpA5Rz8oty00xj-xydfdfddteerer-1eM",  "token_type" : "Bearer",  "expires_in" : 3600}
 
 **Consul service**
 
-    consul:
-      enabled: true
-      consulHost: 127.0.0.1
-      consulPort: 8500
-      services:
+    consulAgents:
         -
-          serviceId: customer-data-service
-          serviceName: customer-data-service
-          servicePort: 8081
-          serviceAddress: 127.0.0.1
-          checkInterval: 30s
-          checkTimeout: 30s
-      
+          enabled: false
+          consulHost: 127.0.0.1
+          consulPort: 8500
+          services:
+            -
+              serviceId: customer-data-service
+              serviceName: customer-data-service
+              servicePort: 8081
+              serviceAddress: 127.0.0.1
+              checkInterval: 30s
+              checkTimeout: 30s
+          
 **Full config**
 Look at self-describable configuration file [Link] (https://github.com/laviua/komock/blob/master/komock-core/mock_example.yml):
 

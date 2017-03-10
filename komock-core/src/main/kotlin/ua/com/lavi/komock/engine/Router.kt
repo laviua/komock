@@ -8,7 +8,7 @@ import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
 import ua.com.lavi.komock.engine.model.SslKeyStore
-import ua.com.lavi.komock.engine.model.config.property.http.RouteProperties
+import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 
 /**
  * Created by Oleksandr Loushkin

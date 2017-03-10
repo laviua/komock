@@ -15,7 +15,7 @@ class KomockRunner {
 
         //Server instances
         val serverRegistrar = ServerRegistrar()
-        komockConfiguration.servers.
+        komockConfiguration.httpServers.
                 filter { it.enabled }.
                 forEach { serverRegistrar.register(it) }
 
@@ -28,9 +28,6 @@ class KomockRunner {
 
         //Consul registration
         val consulRegistrar = ConsulRegistrar()
-        val consulServerProperties = komockConfiguration.consul
-        if (consulServerProperties.enabled) {
-            consulRegistrar.register(consulServerProperties)
-        }
+        komockConfiguration.consulAgents.filter { it.enabled }.forEach { consulRegistrar.register(it) }
     }
 }

@@ -1,15 +1,16 @@
-consul:
-  enabled: false
-  consulHost: 127.0.0.1
-  consulPort: 8500
-  services:
+consulAgents:
     -
-      serviceId: customer-data-service
-      serviceName: customer-data-service
-      servicePort: 8081
-      serviceAddress: 127.0.0.1
-      checkInterval: 30s
-      checkTimeout: 30s
+      enabled: false
+      consulHost: 127.0.0.1
+      consulPort: 8500
+      services:
+        -
+          serviceId: customer-data-service
+          serviceName: customer-data-service
+          servicePort: 8081
+          serviceAddress: 127.0.0.1
+          checkInterval: 30s
+          checkTimeout: 30s
 
 springConfig:
   enabled: true
@@ -18,8 +19,8 @@ springConfig:
     - dev
     - qa
     - default
-  server:
-    name: spring-config-server
+  httpServer:
+    name: spring-config-httpServer
     port: 8888
     host: 127.0.0.1
     ssl:
@@ -27,7 +28,7 @@ springConfig:
       keyStoreLocation: mock_keystore.jks
       keyStorePassword: mockpassword
 
-servers:
+httpServers:
   -
     enabled: true
     name: firstServer

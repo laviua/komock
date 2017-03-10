@@ -3,7 +3,7 @@ package ua.com.lavi.komock.registrar
 import com.ecwid.consul.v1.ConsulClient
 import com.ecwid.consul.v1.agent.model.NewService
 import org.slf4j.LoggerFactory
-import ua.com.lavi.komock.engine.model.config.property.consul.ConsulAgentProperties
+import ua.com.lavi.komock.engine.model.config.consul.ConsulAgentProperties
 
 /**
  * Created by Oleksandr Loushkin
