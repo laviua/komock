@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.5] - 2017-10-02
+## [1.5] - 2017-03-10
 ### Changes
 - Set variables in models are open. It can be override.
 - Add List of consul agents instead of the one consul agent.
@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 - Package name refactoring.
 - Update documentation and example
 
-## [1.4] - 2017-09-02
+## [1.4] - 2017-03-09
 ### Changes
 - Set models are open class
 - Move ByteResource code to Kotlin
