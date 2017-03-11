@@ -8,20 +8,14 @@ import java.util.*
  */
 
 open class HttpServerProperties {
-    open var enabled: Boolean = true
-    open var name = "defaultInstanceName" // default name
-    open var virtualHosts:List<String> = ArrayList()
-    open var host = "0.0.0.0" // listen on all interfaces
-    open var port = 8080 // default port;
-    open var routes:List<RouteProperties> = ArrayList()
-    open var ssl: SSLServerProperties = SSLServerProperties()
-    open var minThreads: Int = 10
-    open var maxThreads: Int = 100
-    open var idleTimeout: Int = 60000
-}
-
-open class SSLServerProperties {
-    open var enabled: Boolean = false
-    open var keyStoreLocation: String = "keystore.jks"
-    open var keyStorePassword: String = "password"
+    var enabled: Boolean = true
+    var name = "defaultInstanceName" // default name
+    var virtualHosts:List<String> = ArrayList()
+    var host = "0.0.0.0" // listen on all interfaces
+    var port = 8080 // default port;
+    var routes:List<RouteProperties> = ArrayList()
+    var ssl: SSLServerProperties = SSLServerProperties()
+    var minThreads: Int = 10
+    var maxThreads: Int = 100
+    var idleTimeout: Int = 60000
 }

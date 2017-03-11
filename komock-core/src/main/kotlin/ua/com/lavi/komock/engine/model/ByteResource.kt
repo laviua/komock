@@ -10,8 +10,9 @@ import java.net.URL
 import java.nio.channels.ReadableByteChannel
 
 /**
- * Created by Oleksandr Loushkin on 25.02.17.
+ * Created by Oleksandr Loushkin
  */
+
 class ByteResource(private val content: ByteArray) : Resource() {
 
     @Throws(MalformedURLException::class)

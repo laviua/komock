@@ -8,8 +8,8 @@ import java.util.*
  */
 
 open class SpringConfigProperties {
-    open var enabled: Boolean = false
-    open var profiles:List<String> = ArrayList()
-    open var sourceFolder: String = "/"
-    open var httpServer: HttpServerProperties = HttpServerProperties()
+    var enabled: Boolean = false
+    var profiles:List<String> = ArrayList()
+    var sourceFolder: String = "/"
+    var httpServer: HttpServerProperties = HttpServerProperties()
 }
