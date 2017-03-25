@@ -12,9 +12,9 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.yaml.snakeyaml.Yaml
 import ua.com.lavi.komock.engine.RoutingTable
-import ua.com.lavi.komock.engine.handler.AfterRouteHandler
-import ua.com.lavi.komock.engine.handler.BeforeRouteHandler
-import ua.com.lavi.komock.engine.handler.RouteHandler
+import ua.com.lavi.komock.engine.handler.AfterRequestHandler
+import ua.com.lavi.komock.engine.handler.BeforeRequestHandler
+import ua.com.lavi.komock.engine.handler.RequestHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
@@ -93,6 +93,30 @@ class RoutingTest {
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
         assertTrue(response.body == "Here is the parameter \${testP} and other \${someElse}")
+    }
+
+    @Test
+    @Throws(UnirestException::class)
+    fun should_ok_get_secured_area() {
+
+        val response = Unirest.get("http://127.0.0.1:8081/testGetTextSecuredRoute")
+                .basicAuth("username", "password")
+                .asString()
+
+        assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
+        assertTrue(response.status == 200)
+        assertTrue(response.body == "Hello World. This is basic secured area")
+    }
+
+    @Test
+    @Throws(UnirestException::class)
+    fun should_forbidden_get_secured_area() {
+
+        val response = Unirest.get("http://127.0.0.1:8081/testGetTextSecuredRoute")
+                .asString()
+
+        assertTrue(response.status == 401)
+        assertTrue(response.body == "")
     }
 
     @Test
@@ -276,13 +300,13 @@ class RoutingTest {
 
         assertTrue(routingTable.getFullRouteMap().isEmpty())
 
-        val beforeRouteHandler = object : BeforeRouteHandler {
+        val beforeRouteHandler = object : BeforeRequestHandler {
             override fun handle(request: Request, response: Response) {}
         }
-        val afterRouteHandler = object : AfterRouteHandler {
+        val afterRouteHandler = object : AfterRequestHandler {
             override fun handle(request: Request, response: Response) {}
         }
-        val routeHandler = object : RouteHandler {
+        val routeHandler = object : RequestHandler {
             override fun handle(request: Request, response: Response) {}
         }
 

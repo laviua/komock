@@ -62,10 +62,10 @@ class Router(val serverName: String,
 
     fun addRoute(routeProperties: RouteProperties) {
 
-        val routeHandlerBuilder = RouteHandlerBuilder(routeProperties)
+        val routeHandlerBuilder = RequestHandlerBuilder(routeProperties)
 
         val beforeRouteHandler = routeHandlerBuilder.beforeRouteHandler()
-        val afterRouteHandler = routeHandlerBuilder.afterRouteHandler()
+        val afterRouteHandler = routeHandlerBuilder.afterRequestHandler()
         val routeHandler = routeHandlerBuilder.routeHandler()
 
         val httpMethod = HttpMethod.retrieveMethod(routeProperties.httpMethod)

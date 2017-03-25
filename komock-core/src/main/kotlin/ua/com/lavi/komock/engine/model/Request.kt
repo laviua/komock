@@ -14,6 +14,10 @@ class Request(private val httpServletRequest: HttpServletRequest) {
         return httpServletRequest.inputStream.bufferedReader().use { it.readText() }
     }
 
+    fun authorizationHeader(): String? {
+        return httpServletRequest.getHeader("Authorization")
+    }
+
     fun queryParametersMap(): Map<String, String> {
         val queryParameters = HashMap<String, String>()
         val queryString = httpServletRequest.queryString

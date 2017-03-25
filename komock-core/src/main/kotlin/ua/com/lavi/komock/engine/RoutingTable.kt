@@ -1,8 +1,8 @@
 package ua.com.lavi.komock.engine
 
-import ua.com.lavi.komock.engine.handler.AfterRouteHandler
-import ua.com.lavi.komock.engine.handler.BeforeRouteHandler
-import ua.com.lavi.komock.engine.handler.RouteHandler
+import ua.com.lavi.komock.engine.handler.AfterRequestHandler
+import ua.com.lavi.komock.engine.handler.BeforeRequestHandler
+import ua.com.lavi.komock.engine.handler.RequestHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Route
 import java.util.*
@@ -19,14 +19,14 @@ internal class RoutingTable {
 
     fun addRoute(url: String,
                  httpMethod: HttpMethod,
-                 routeHandler: RouteHandler,
-                 beforeRouteHandler: BeforeRouteHandler,
-                 afterRouteHandler: AfterRouteHandler) {
+                 requestHandler: RequestHandler,
+                 beforeRequestHandler: BeforeRequestHandler,
+                 afterRequestHandler: AfterRequestHandler) {
         var urlMap: HashMap<HttpMethod, Route>? = routeMap[url]
         if (urlMap == null) {
             urlMap = HashMap<HttpMethod, Route>()
         }
-        urlMap.put(httpMethod, Route(url, httpMethod, routeHandler, beforeRouteHandler, afterRouteHandler))
+        urlMap.put(httpMethod, Route(url, httpMethod, requestHandler, beforeRequestHandler, afterRequestHandler))
         routeMap.put(url, urlMap)
     }
 

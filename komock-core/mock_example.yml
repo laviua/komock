@@ -48,6 +48,16 @@ httpServers:
         code: 200
       -
         httpMethod: GET
+        url: /testGetTextSecuredRoute
+        contentType: text/plain
+        basicAuth:
+          enabled: true
+          username: username
+          password: password
+        responseBody: Hello World. This is a basic secured area
+        code: 200
+      -
+        httpMethod: GET
         url: /testGetTextWithParameters
         contentType: text/plain
         responseBody: Here is the parameter ${testP} and other ${someElse}
