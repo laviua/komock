@@ -76,6 +76,27 @@ class RoutingTest {
 
     @Test
     @Throws(UnirestException::class)
+    fun should_ok_get_plaintext_with_content_by_parameters() {
+
+        val response = Unirest.get("http://127.0.0.1:8081/testGetTextWithParameters?testP=blabla&someElse=abc").asString()
+
+        assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
+        assertTrue(response.status == 200)
+        assertTrue(response.body == "Here is the parameter blabla and other abc")
+    }
+
+    @Test
+    @Throws(UnirestException::class)
+    fun should_ok_get_plaintext_with_content_by_parameters_empty_request() {
+
+        val response = Unirest.get("http://127.0.0.1:8081/testGetTextWithParameters").asString()
+        assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
+        assertTrue(response.status == 200)
+        assertTrue(response.body == "Here is the parameter \${testP} and other \${someElse}")
+    }
+
+    @Test
+    @Throws(UnirestException::class)
     fun should_ok_post_plaintext_with_content() {
 
         val response = Unirest.post("http://127.0.0.1:8081/testGetText").asString()

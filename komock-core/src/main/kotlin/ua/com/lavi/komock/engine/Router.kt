@@ -1,12 +1,7 @@
 package ua.com.lavi.komock.engine
 
 import org.slf4j.LoggerFactory
-import ua.com.lavi.komock.engine.handler.AfterRouteHandler
-import ua.com.lavi.komock.engine.handler.BeforeRouteHandler
-import ua.com.lavi.komock.engine.handler.RouteHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
-import ua.com.lavi.komock.engine.model.Request
-import ua.com.lavi.komock.engine.model.Response
 import ua.com.lavi.komock.engine.model.SslKeyStore
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 
@@ -32,7 +27,15 @@ class Router(val serverName: String,
 
     init {
         val httpHandler = HttpHandler(RoutingFilter(routingTable))
-        server = JettyServer(serverName, virtualHosts, httpHandler, host, port, sslKeyStore, maxThreads, minThreads, idleTimeout)
+        server = JettyServer(serverName,
+                virtualHosts,
+                httpHandler,
+                host,
+                port,
+                sslKeyStore,
+                maxThreads,
+                minThreads,
+                idleTimeout)
     }
 
     fun start() {
@@ -59,47 +62,11 @@ class Router(val serverName: String,
 
     fun addRoute(routeProperties: RouteProperties) {
 
-        val beforeRouteHandler = object : BeforeRouteHandler {
-            override fun handle(request: Request, response: Response) {
-                if (routeProperties.logRequest) {
-                    log.info("url: ${routeProperties.url}. RequestBody: ${request.requestBody()}")
-                }
-                if (routeProperties.logBefore.isNotEmpty()) {
-                    log.info(routeProperties.logBefore)
-                }
-            }
-        }
+        val routeHandlerBuilder = RouteHandlerBuilder(routeProperties)
 
-
-        val afterRouteHandler = object : AfterRouteHandler {
-            override fun handle(request: Request, response: Response) {
-                if (routeProperties.logResponse) {
-                    log.info("url: ${routeProperties.url}. ResponseBody: ${response.content}")
-                }
-
-                if (routeProperties.logAfter.isNotEmpty()) {
-                    log.info(routeProperties.logAfter)
-                }
-            }
-        }
-
-        val routeHandler = object : RouteHandler {
-            override fun handle(request: Request, response: Response) {
-                response.contentType(routeProperties.contentType)
-                response.statusCode(routeProperties.code)
-                response.content = routeProperties.responseBody
-
-                routeProperties.responseHeaders.forEach {
-                    it.forEach {
-                        response.addHeader(it.key, it.value)
-                    }
-                }
-
-                routeProperties.cookies.forEach {
-                    response.addCookie(it)
-                }
-            }
-        }
+        val beforeRouteHandler = routeHandlerBuilder.beforeRouteHandler()
+        val afterRouteHandler = routeHandlerBuilder.afterRouteHandler()
+        val routeHandler = routeHandlerBuilder.routeHandler()
 
         val httpMethod = HttpMethod.retrieveMethod(routeProperties.httpMethod)
 

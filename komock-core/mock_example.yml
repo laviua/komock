@@ -48,6 +48,12 @@ httpServers:
         code: 200
       -
         httpMethod: GET
+        url: /testGetTextWithParameters
+        contentType: text/plain
+        responseBody: Here is the parameter ${testP} and other ${someElse}
+        code: 200
+      -
+        httpMethod: GET
         url: /giveMeCookies
         contentType: text/plain
         responseBody: Hello. Take your cookies
