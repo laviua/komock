@@ -105,7 +105,7 @@ class RoutingTest {
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "Hello World. This is basic secured area")
+        assertTrue(response.body == "Hello World. This is a basic secured area")
     }
 
     @Test
