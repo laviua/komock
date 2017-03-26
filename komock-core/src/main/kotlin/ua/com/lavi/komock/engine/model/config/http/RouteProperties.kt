@@ -20,5 +20,5 @@ open class RouteProperties {
     var logResponse: Boolean = false
     var logBefore: String = ""
     var logAfter: String = ""
-    var basicAuth: BasicAuthProperties = BasicAuthProperties()
+    var headerAuth: HeaderAuthProperties = HeaderAuthProperties()
 }

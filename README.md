@@ -1,5 +1,5 @@
 # Komock [![Build Status](https://travis-ci.org/laviua/komock.svg?branch=master)](https://travis-ci.org/laviua/komock) [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Maven Central](https://img.shields.io/maven-central/v/ua.com.lavi/komock-core.svg?style=plastic)]() [![Code Climate](https://codeclimate.com/github/laviua/komock/badges/gpa.svg)](https://codeclimate.com/github/laviua/komock)
-Here is Simple HTTP/Consul/SpringConfig mocker framework written in Kotlin.  
+Here is HTTP/Consul/SpringConfig mocker framework written in Kotlin.  
 
 This tiny framework is very useful if you need to create REST based client for API service.  
 We use this framework for develop microservices or API integration with third party systems.  
@@ -10,6 +10,8 @@ Main features:
 - Virtual Host support
 - Ability to register in the Consul discovery service
 - Ability to work like a simple spring config server
+- Header based security
+- Variables in the response by request parameters
 
 ## Download
 
@@ -93,3 +95,6 @@ You can use your personal keystore. Just create it by the following command and 
       enabled: true
       keyStoreLocation: mock_keystore.jks
       keyStorePassword: mockpassword
+
+### License ###
+Licensed under Apache 2 License

@@ -55,9 +55,10 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
         val requestHandler = object : RequestHandler {
             override fun handle(request: Request, response: Response) {
 
-                //check request for Basic Authorization header
-                if (routeProperties.basicAuth.enabled) {
-                    if (!checkBasicAuth(request)) {
+                //if enabled property. request should contains a header with appropriate header
+                if (routeProperties.headerAuth.enabled) {
+                    val headerValue = request.httpServletRequest().getHeader(routeProperties.headerAuth.name)
+                    if (routeProperties.headerAuth.value != headerValue) {
                         response.statusCode(401)
                         return
                     }
@@ -77,18 +78,6 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
             }
         }
         return requestHandler
-
-    }
-
-    private fun checkBasicAuth(request: Request): Boolean {
-        val basicUsernamePasswordEncoded = "Basic " + Base64.getEncoder().
-                encodeToString("${routeProperties.basicAuth.username}:${routeProperties.basicAuth.password}"
-                        .toByteArray())
-
-        if (basicUsernamePasswordEncoded != request.authorizationHeader()) {
-            return false
-        }
-        return true
 
     }
 

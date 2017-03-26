@@ -100,12 +100,12 @@ class RoutingTest {
     fun should_ok_get_secured_area() {
 
         val response = Unirest.get("http://127.0.0.1:8081/testGetTextSecuredRoute")
-                .basicAuth("username", "password")
+                .header("X-TOKEN-HEADER", "69b30db6-1238-11e7-93ae-92361f002671")
                 .asString()
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "Hello World. This is a basic secured area")
+        assertTrue(response.body == "Hello World. This is a header based secured area")
     }
 
     @Test

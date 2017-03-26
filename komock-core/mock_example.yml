@@ -50,11 +50,11 @@ httpServers:
         httpMethod: GET
         url: /testGetTextSecuredRoute
         contentType: text/plain
-        basicAuth:
+        headerAuth:
           enabled: true
-          username: username
-          password: password
-        responseBody: Hello World. This is a basic secured area
+          name: X-TOKEN-HEADER
+          value: 69b30db6-1238-11e7-93ae-92361f002671
+        responseBody: Hello World. This is a header based secured area
         code: 200
       -
         httpMethod: GET

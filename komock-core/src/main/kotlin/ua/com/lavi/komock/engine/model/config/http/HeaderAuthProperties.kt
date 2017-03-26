@@ -4,8 +4,8 @@ package ua.com.lavi.komock.engine.model.config.http
  * Created by Oleksandr Loushkin
  */
 
-open class BasicAuthProperties {
+open class HeaderAuthProperties {
     var enabled: Boolean = false
-    var username: String = ""
-    var password: String = ""
+    var name: String = ""
+    var value: String = ""
 }
