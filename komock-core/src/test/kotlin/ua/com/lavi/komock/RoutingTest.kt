@@ -2,10 +2,9 @@ package ua.com.lavi.komock
 
 import com.mashape.unirest.http.Unirest
 import com.mashape.unirest.http.exceptions.UnirestException
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy
+import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.impl.client.HttpClients
-import org.apache.http.ssl.SSLContexts
+import org.apache.http.ssl.SSLContextBuilder
 import org.junit.AfterClass
 import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
@@ -263,8 +262,9 @@ class RoutingTest {
     @Throws(Exception::class)
     fun should_ok_get_plaintext_with_content_on_second_secured_server() {
         val sslHttpClient = HttpClients.custom()
-                .setSSLSocketFactory(SSLConnectionSocketFactory(SSLContexts.custom().
-                        loadTrustMaterial(null, TrustSelfSignedStrategy()).build(), NullHostnameVerifier()))
+                .setSSLContext(SSLContextBuilder()
+                        .loadTrustMaterial(null) { _, _ -> true }.build())
+                .setSSLHostnameVerifier(NoopHostnameVerifier())
                 .build()
 
         Unirest.setHttpClient(sslHttpClient)
@@ -281,8 +281,9 @@ class RoutingTest {
     @Throws(Exception::class)
     fun should_ok_get_plaintext_with_content_on_third_secured_server() {
         val sslHttpClient = HttpClients.custom()
-                .setSSLSocketFactory(SSLConnectionSocketFactory(SSLContexts.custom().
-                        loadTrustMaterial(null, TrustSelfSignedStrategy()).build(), NullHostnameVerifier()))
+                .setSSLContext(SSLContextBuilder()
+                        .loadTrustMaterial(null) { _, _ -> true }.build())
+                .setSSLHostnameVerifier(NoopHostnameVerifier())
                 .build()
 
         Unirest.setHttpClient(sslHttpClient)
@@ -340,8 +341,9 @@ class RoutingTest {
     fun shouldGetSpringConfig() {
 
         val sslHttpClient = HttpClients.custom()
-                .setSSLSocketFactory(SSLConnectionSocketFactory(SSLContexts.custom().
-                        loadTrustMaterial(null, TrustSelfSignedStrategy()).build(), NullHostnameVerifier()))
+                .setSSLContext(SSLContextBuilder()
+                        .loadTrustMaterial(null) { _, _ -> true }.build())
+                .setSSLHostnameVerifier(NoopHostnameVerifier())
                 .build()
 
         Unirest.setHttpClient(sslHttpClient)
