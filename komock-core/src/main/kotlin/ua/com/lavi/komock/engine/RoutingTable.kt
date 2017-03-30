@@ -2,6 +2,7 @@ package ua.com.lavi.komock.engine
 
 import ua.com.lavi.komock.engine.handler.AfterRequestHandler
 import ua.com.lavi.komock.engine.handler.BeforeRequestHandler
+import ua.com.lavi.komock.engine.handler.CallbackHandler
 import ua.com.lavi.komock.engine.handler.RequestHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Route
@@ -21,12 +22,13 @@ internal class RoutingTable {
                  httpMethod: HttpMethod,
                  requestHandler: RequestHandler,
                  beforeRequestHandler: BeforeRequestHandler,
-                 afterRequestHandler: AfterRequestHandler) {
+                 afterRequestHandler: AfterRequestHandler,
+                 callbackHandler: CallbackHandler) {
         var urlMap: HashMap<HttpMethod, Route>? = routeMap[url]
         if (urlMap == null) {
             urlMap = HashMap<HttpMethod, Route>()
         }
-        urlMap.put(httpMethod, Route(url, httpMethod, requestHandler, beforeRequestHandler, afterRequestHandler))
+        urlMap.put(httpMethod, Route(url, httpMethod, requestHandler, beforeRequestHandler, afterRequestHandler, callbackHandler))
         routeMap.put(url, urlMap)
     }
 

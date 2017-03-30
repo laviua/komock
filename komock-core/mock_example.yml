@@ -127,6 +127,20 @@ httpServers:
         contentType: application/json
         responseBody: '{"patchedParameter": "patchedVariable with error"}'
         code: 500
+      -
+        httpMethod: GET
+        url: /testcallback
+        contentType: application/json
+        responseBody: '{}'
+        code: 200
+        callback:
+          enabled: true
+          httpMethod: GET
+          url: http://127.0.0.1:8081/testGetText
+          requestHeaders:
+            - {"X-CALLBACKHEADER" : "X-CALLBACK_VALUE"}
+            - {"X-HEADER1" : "X-HEADER_VALUE"}
+          requestBody: '{Hey, it is a callback}'
   -
     name: secondServer
     port: 8082

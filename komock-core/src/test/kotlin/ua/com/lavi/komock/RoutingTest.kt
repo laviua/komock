@@ -13,6 +13,7 @@ import org.yaml.snakeyaml.Yaml
 import ua.com.lavi.komock.engine.RoutingTable
 import ua.com.lavi.komock.engine.handler.AfterRequestHandler
 import ua.com.lavi.komock.engine.handler.BeforeRequestHandler
+import ua.com.lavi.komock.engine.handler.CallbackHandler
 import ua.com.lavi.komock.engine.handler.RequestHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
@@ -197,6 +198,17 @@ class RoutingTest {
 
     @Test
     @Throws(UnirestException::class)
+    fun should_ok_testCallback() {
+
+        val response = Unirest.get("http://127.0.0.1:8081/testcallback")
+                .asJson()
+
+        assertTrue(response.headers["Content-Type"]!![0] == "application/json")
+        assertTrue(response.status == 200)
+    }
+
+    @Test
+    @Throws(UnirestException::class)
     fun should_ok_post_json_with_headers() {
 
         val response = Unirest.post("http://127.0.0.1:8081/oauth/token")
@@ -311,9 +323,13 @@ class RoutingTest {
             override fun handle(request: Request, response: Response) {}
         }
 
-        routingTable.addRoute("/someRoute", HttpMethod.PUT, routeHandler, beforeRouteHandler, afterRouteHandler)
-        routingTable.addRoute("/mask/*/newroute", HttpMethod.DELETE, routeHandler, beforeRouteHandler, afterRouteHandler)
-        routingTable.addRoute("/newmask/*/routeagain/*/maskagain", HttpMethod.POST, routeHandler, beforeRouteHandler, afterRouteHandler)
+        val callbackHandler = object : CallbackHandler {
+            override fun handle(request: Request, response: Response) {}
+        }
+
+        routingTable.addRoute("/someRoute", HttpMethod.PUT, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
+        routingTable.addRoute("/mask/*/newroute", HttpMethod.DELETE, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
+        routingTable.addRoute("/newmask/*/routeagain/*/maskagain", HttpMethod.POST, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
 
         routingTable.find(HttpMethod.PUT, "/someRoute") ?: fail("It should not be null")
         routingTable.find(HttpMethod.DELETE, "/mask/sdfsdf/newroute") ?: fail("It should not be null")
