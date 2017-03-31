@@ -54,6 +54,17 @@ class RoutingTest {
 
     @Test
     @Throws(UnirestException::class)
+    fun should_ok_testCallback() {
+
+        val response = Unirest.get("http://127.0.0.1:8081/testcallback")
+                .asJson()
+
+        assertTrue(response.headers["Content-Type"]!![0] == "application/json")
+        assertTrue(response.status == 200)
+    }
+
+    @Test
+    @Throws(UnirestException::class)
     fun should_ok_get_noContent() {
 
         val response = Unirest.get("http://127.0.0.1:8081/testNoConent").asString()
@@ -194,17 +205,6 @@ class RoutingTest {
         assertTrue(response.headers["Content-Type"]!![0] == "application/json")
         assertTrue(response.status == 200)
         assertTrue(response.body.`object`.get("name") == "Korben Dallas")
-    }
-
-    @Test
-    @Throws(UnirestException::class)
-    fun should_ok_testCallback() {
-
-        val response = Unirest.get("http://127.0.0.1:8081/testcallback")
-                .asJson()
-
-        assertTrue(response.headers["Content-Type"]!![0] == "application/json")
-        assertTrue(response.status == 200)
     }
 
     @Test

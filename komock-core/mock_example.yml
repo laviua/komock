@@ -106,9 +106,7 @@ httpServers:
         url: /oauth/token
         contentType: "application/json"
         responseBody: '{"access_token" : "ya29S6ZQbiBQpA5Rz8oty00xj-xydfdfddteerer-1eM",  "token_type" : "Bearer",  "expires_in" : 3600}'
-        responseHeaders:
-          - {"X-java-version" : "1.8"}
-          - {"X-builder" : "gradle"}
+        responseHeaders: {"X-java-version" : "1.8", "X-builder" : "gradle"}
         code: 200
         logRequest: true
         logResponse: true
@@ -136,10 +134,8 @@ httpServers:
         callback:
           enabled: true
           httpMethod: GET
-          url: http://127.0.0.1:8081/testGetText
-          requestHeaders:
-            - {"X-CALLBACKHEADER" : "X-CALLBACK_VALUE"}
-            - {"X-HEADER1" : "X-HEADER_VALUE"}
+          url: http://127.0.0.1:8081/callbacks_request
+          requestHeaders: {"X-HEADER1" : "X-HEADER1-VALUE", "X-HEADER2" : "X-HEADER2-VALUE"}
           requestBody: '{Hey, it is a callback}'
   -
     name: secondServer

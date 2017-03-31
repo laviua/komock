@@ -1,12 +1,9 @@
 package ua.com.lavi.komock.engine
 
 
-import java.util.concurrent.Future;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.impl.nio.client.HttpAsyncClients;
+import org.apache.http.HttpResponse
+import org.apache.http.concurrent.FutureCallback
+import org.apache.http.impl.nio.client.HttpAsyncClients
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.handler.AfterRequestHandler
 import ua.com.lavi.komock.engine.handler.BeforeRequestHandler
@@ -14,7 +11,9 @@ import ua.com.lavi.komock.engine.handler.CallbackHandler
 import ua.com.lavi.komock.engine.handler.RequestHandler
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
+import ua.com.lavi.komock.engine.model.config.http.AnyRequest
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
+import java.lang.Exception
 import java.util.regex.Pattern
 
 
@@ -77,9 +76,7 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
                 response.content = replacePlaceholders(request.queryParametersMap(), routeProperties.responseBody)
 
                 // add http headers
-                routeProperties.responseHeaders.forEach { headersMap ->
-                    headersMap.forEach { header -> response.addHeader(header.key, header.value) }
-                }
+                routeProperties.responseHeaders.forEach { header -> response.addHeader(header.key, header.value) }
 
                 //add cookies
                 routeProperties.cookies.forEach { cookie -> response.addCookie(cookie) }
@@ -109,6 +106,27 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
                 if (routeProperties.callback.enabled) {
                     val callbackProperties = routeProperties.callback
 
+                    val httpclient = HttpAsyncClients.createDefault()
+                    httpclient.use { httpclient ->
+                        httpclient.start()
+                        val request = AnyRequest(callbackProperties.httpMethod, callbackProperties.url)
+                        callbackProperties.requestHeaders.forEach { header -> request.addHeader(header.key, header.value) }
+                        httpclient.execute(request, object : FutureCallback<HttpResponse> {
+                            override fun failed(ex: Exception?) {
+                                log.info("Callback request is failed. ${ex!!.message}")
+                            }
+
+                            override fun completed(result: HttpResponse?) {
+                                log.info("Callback request is successfully completed")
+                            }
+
+                            override fun cancelled() {
+                                log.info("Callback request is cancelled")
+                            }
+
+                        })
+                        log.info("Callback sent to: ${callbackProperties.url}")
+                    }
 
 
                 }
@@ -117,13 +135,4 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
         return requestHandler
 
     }
-
-    fun buildHeaders(): Map<String, String> {
-        val headers: Map<String, String> = HashMap()
-        for (requestHeaders in routeProperties.callback.requestHeaders) {
-
-        }
-        return headers
-    }
-
 }
