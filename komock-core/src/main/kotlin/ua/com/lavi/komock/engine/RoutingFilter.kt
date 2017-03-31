@@ -1,6 +1,7 @@
 package ua.com.lavi.komock.engine
 
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletResponse
  * Created by Oleksandr Loushkin
  */
 
-internal class RoutingFilter(val routingTable: RoutingTable) : Filter {
+internal class RoutingFilter(val routingTable: RoutingTable, val serverName: String) : Filter {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
@@ -29,6 +30,7 @@ internal class RoutingFilter(val routingTable: RoutingTable) : Filter {
                           servletResponse: ServletResponse,
                           chain: FilterChain?) {
 
+        MDC.put("serverName", serverName)
         val httpServletRequest = servletRequest as HttpServletRequest
         val httpServletResponse = servletResponse as HttpServletResponse
         val requestUri = httpServletRequest.requestURI

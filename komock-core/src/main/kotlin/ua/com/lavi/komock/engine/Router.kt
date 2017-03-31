@@ -26,7 +26,7 @@ class Router(val serverName: String,
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     init {
-        val httpHandler = HttpHandler(RoutingFilter(routingTable))
+        val httpHandler = HttpHandler(RoutingFilter(routingTable, serverName))
         server = JettyServer(serverName,
                 virtualHosts,
                 httpHandler,
