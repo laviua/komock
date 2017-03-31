@@ -1,30 +1,6 @@
-buildscript {
-    ext.kotlin_version = '1.1.1'
+allprojects {
     repositories {
         mavenCentral()
         jcenter()
     }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
-allprojects {
-    repositories {
-        mavenCentral()
-    }
-}
-
-configure(subprojects) {
-    apply plugin: 'kotlin'
-    apply plugin: 'idea'
-
-    apply from: "$rootDir/gradle-tasks/pmd.gradle"
-
-    version = project.version
-
-    dependencies {
-        compile "org.yaml:snakeyaml:1.17"
-    }
-
 }
