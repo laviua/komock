@@ -44,6 +44,7 @@ internal class RoutingFilter(val routingTable: RoutingTable) : Filter {
             route.beforeRequestHandler.handle(request, response)
             route.requestHandler.handle(request, response)
             route.afterRequestHandler.handle(request, response)
+            route.callbackHandler.handle(request,response)
         }
         serializeContentToResponse(httpServletRequest, httpServletResponse, response.content)
 

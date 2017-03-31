@@ -1,14 +1,21 @@
 package ua.com.lavi.komock.engine
 
+
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
+import org.apache.http.client.config.RequestConfig
+import org.apache.http.impl.client.HttpClients
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.handler.AfterRequestHandler
 import ua.com.lavi.komock.engine.handler.BeforeRequestHandler
+import ua.com.lavi.komock.engine.handler.CallbackHandler
 import ua.com.lavi.komock.engine.handler.RequestHandler
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
+import ua.com.lavi.komock.engine.model.config.http.AnyRequest
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
-import java.util.*
 import java.util.regex.Pattern
+
 
 /**
  * Created by Oleksandr Loushkin
@@ -69,9 +76,7 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
                 response.content = replacePlaceholders(request.queryParametersMap(), routeProperties.responseBody)
 
                 // add http headers
-                routeProperties.responseHeaders.forEach { headersMap ->
-                    headersMap.forEach { header -> response.addHeader(header.key, header.value) }
-                }
+                routeProperties.responseHeaders.forEach { header -> response.addHeader(header.key, header.value) }
 
                 //add cookies
                 routeProperties.cookies.forEach { cookie -> response.addCookie(cookie) }
@@ -94,4 +99,36 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
         return sb.toString()
     }
 
+    fun callbackHandler(): CallbackHandler {
+
+        val requestHandler = object : CallbackHandler {
+            override fun handle(request: Request, response: Response) {
+                if (routeProperties.callback.enabled) {
+
+                    //callback request will be invoked in the another thread
+                    launch(CommonPool) {
+                        val callbackProperties = routeProperties.callback
+
+                        val httpclient = HttpClients.createMinimal()
+                        val anyRequest = AnyRequest(callbackProperties.httpMethod, callbackProperties.url)
+                        val requestConfig = RequestConfig.custom()
+                                .setConnectTimeout(callbackProperties.connectTimeout)
+                                .setConnectionRequestTimeout(callbackProperties.connectionRequestTimeout)
+                                .setSocketTimeout(callbackProperties.socketTimeout)
+                                .build()
+
+                        callbackProperties.requestHeaders.forEach { header -> anyRequest.addHeader(header.key, header.value) }
+                        anyRequest.config = requestConfig
+                        try {
+                            log.info(httpclient.execute(anyRequest).statusLine.toString())
+                        } catch (t: Throwable) {
+                            log.warn(t.message)
+                        }
+                    }
+                }
+            }
+        }
+        return requestHandler
+
+    }
 }

@@ -67,10 +67,16 @@ class Router(val serverName: String,
         val beforeRouteHandler = routeHandlerBuilder.beforeRouteHandler()
         val afterRouteHandler = routeHandlerBuilder.afterRequestHandler()
         val routeHandler = routeHandlerBuilder.routeHandler()
+        val callbackHandler = routeHandlerBuilder.callbackHandler()
 
         val httpMethod = HttpMethod.retrieveMethod(routeProperties.httpMethod)
 
-        routingTable.addRoute(routeProperties.url, httpMethod, routeHandler, beforeRouteHandler, afterRouteHandler)
+        routingTable.addRoute(routeProperties.url,
+                httpMethod,
+                routeHandler,
+                beforeRouteHandler,
+                afterRouteHandler,
+                callbackHandler)
 
         log.info("Registered http route: ${routeProperties.httpMethod} ${routeProperties.url}")
     }
