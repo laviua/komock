@@ -1,6 +1,7 @@
 package ua.com.lavi.komock.engine
 
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.SslKeyStore
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
@@ -44,6 +45,7 @@ class Router(val serverName: String,
             isStarted = true
             log.info("Started server: $serverName on port: $port, virtualHosts: $virtualHosts. " +
                     "maxThreads: $maxThreads, minThreads: $minThreads, idle timeout: $idleTimeout ms")
+            MDC.put("serverName", serverName)
         } else {
             log.info("Unable to start because server is already started!")
         }
@@ -81,21 +83,27 @@ class Router(val serverName: String,
         log.info("Registered http route: ${routeProperties.httpMethod} ${routeProperties.url}")
     }
 
+    fun deleteRoute(url: String, httpMethod: HttpMethod) {
+        routingTable.deleteRoute(url, httpMethod)
+        log.info("Removed route: $httpMethod $url")
+    }
+
+    fun deleteRoute(routeProperties:RouteProperties) {
+        val url = routeProperties.url
+        val httpMethod = HttpMethod.retrieveMethod(routeProperties.httpMethod)
+        deleteRoute(url, httpMethod)
+    }
+
     fun addVirtualHosts(virtualHosts: List<String>) {
         this.virtualHosts.addAll(virtualHosts)
         server.addVirtualHosts(virtualHosts)
-        log.debug("Added virtual hosts: $virtualHosts")
+        log.info("Added virtual hosts: $virtualHosts")
     }
 
     fun removeVirtualHosts(virtualHosts: List<String>) {
         this.virtualHosts.removeAll(virtualHosts)
         server.removeVirtualHosts(virtualHosts)
-        log.debug("Removed virtual hosts: $virtualHosts")
-    }
-
-    fun deleteRoute(url: String, httpMethod: HttpMethod) {
-        routingTable.deleteRoute(url, httpMethod)
-        log.debug("Removed route: $url")
+        log.info("Removed virtual hosts: $virtualHosts")
     }
 
 }

@@ -1,24 +1,20 @@
-package ua.com.lavi.komock.registrar
+package ua.com.lavi.komock.registrar.spring
 
 import com.google.gson.Gson
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.Yaml
 import ua.com.lavi.komock.engine.Router
-import ua.com.lavi.komock.engine.model.ByteResource
-import ua.com.lavi.komock.engine.model.PropertySource
-import ua.com.lavi.komock.engine.model.SpringConfigResponse
-import ua.com.lavi.komock.engine.model.SslKeyStore
+import ua.com.lavi.komock.engine.model.*
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 import ua.com.lavi.komock.engine.model.config.spring.SpringConfigProperties
-import java.io.IOException
 import java.net.BindException
-import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
 import java.util.stream.Collectors
+import kotlin.collections.ArrayList
 
 /**
  * Created by Oleksandr Loushkin
@@ -30,6 +26,7 @@ class SpringConfigRegistrar {
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     private val gson = Gson()
+    private val configWatcher = SpringConfigWatcher()
 
     fun register(springConfigProperties: SpringConfigProperties) {
         val httpServerProp: HttpServerProperties = springConfigProperties.httpServer
@@ -58,31 +55,58 @@ class SpringConfigRegistrar {
                 .filter { it.toFile().isFile }
                 .collect(Collectors.toList<Path>())
 
-        for (springConfigFilePath in springConfigFilePathes) {
-            val serviceName = extractFilenameFromPath(springConfigFilePath)
-            val content = buildContent(springConfigFilePath)
-            val propertySources = buildPropertySources(springConfigFilePath, content)
-            val springConfigResponse = SpringConfigResponse(serviceName, springConfigProperties.profiles, null, null, propertySources)
+        val profiles = springConfigProperties.profiles
 
-            registerSpringConfigurationService(router, springConfigResponse, springConfigFilePath)
+        springConfigFilePathes.forEach({registerSpringConfigurationPath(it, profiles, router)})
 
+        if (springConfigProperties.refreshPeriod > 0) {
+
+            val listener = object : FileListener {
+                override fun onChange(filePath: Path) {
+                    unRegisterSpringConfigurationPath(filePath, profiles, router)
+                    registerSpringConfigurationPath(filePath, profiles, router)
+                }
+            }
+
+            configWatcher.watchFiles(springConfigFilePathes, springConfigProperties.refreshPeriod)
+            configWatcher.setListeners(arrayListOf(listener))
+            configWatcher.start()
         }
+
     }
 
-    private fun registerSpringConfigurationService(springConfigRouter: Router,
-                                                   springConfigResponse: SpringConfigResponse,
-                                                   springConfigFile: Path) {
+    private fun registerSpringConfigurationPath(springConfigFilePath: Path,
+                                                profiles:List<String>,
+                                                router: Router) {
+        val serviceName = extractFilenameFromPath(springConfigFilePath)
+        val textData = String(Files.readAllBytes(springConfigFilePath), Charsets.UTF_8)
+        val content:Map<String,Any> = buildFlatMap(textData)
+        val propertySources = buildPropertySources(springConfigFilePath, content)
+        val springConfigResponse = SpringConfigResponse(serviceName, profiles, null, null, propertySources)
 
-        for (profile in springConfigResponse.profiles) {
+        val jsonConfigResponse = gson.toJson(springConfigResponse)
+
+        for (profile in profiles) {
+
             val routeServerProperties = RouteProperties()
             routeServerProperties.code = 200
             routeServerProperties.httpMethod = "GET"
-            routeServerProperties.responseBody = gson.toJson(springConfigResponse)
+            routeServerProperties.responseBody = jsonConfigResponse
             routeServerProperties.contentType = "application/json"
-            routeServerProperties.url = "/${springConfigResponse.name}/$profile"
-            springConfigRouter.addRoute(routeServerProperties)
+            routeServerProperties.url = "/$serviceName/$profile"
+
+            router.addRoute(routeServerProperties)
         }
-        log.info("Registered spring config file: $springConfigFile")
+
+        log.info("Registered spring config file: $springConfigFilePath")
+    }
+
+    private fun unRegisterSpringConfigurationPath(springConfigFilePath: Path, profiles: List<String>, router: Router) {
+        profiles.forEach({
+            val serviceName = extractFilenameFromPath(springConfigFilePath)
+            val url = "/$serviceName/$it"
+            router.deleteRoute(url, HttpMethod.GET)
+        })
     }
 
     private fun buildPropertySources(springConfigFile: Path, propertySourceBody: Map<String, Any>): ArrayList<PropertySource> {
@@ -92,21 +116,19 @@ class SpringConfigRegistrar {
         return propertySources
     }
 
-    @Throws(IOException::class)
-    private fun buildContent(springConfigFile: Path): Map<String, Any> {
-        val content = String(Files.readAllBytes(springConfigFile), Charset.defaultCharset())
-        val map = Yaml().load(content) as Map<String, Any>
-        return convert(map, "")
+    private fun buildFlatMap(textData: String): Map<String, Any> {
+        val map = Yaml().load(textData) as Map<String, Any>
+        return convertPropertyMap(map, "")
     }
 
-    private fun convert(input: Map<String, Any>, key: String): Map<String, Any> {
+    private fun convertPropertyMap(input: Map<String, Any>, key: String): Map<String, Any> {
         val res = TreeMap<String, Any>()
 
         for ((key1, value) in input) {
             val newKey = if (key == "") key1 else key + "." + key1
 
             if (value is Map<*, *>) {
-                res.putAll(convert(value as Map<String, Any>, newKey))
+                res.putAll(convertPropertyMap(value as Map<String, Any>, newKey))
             } else {
                 res.put(newKey, value)
             }

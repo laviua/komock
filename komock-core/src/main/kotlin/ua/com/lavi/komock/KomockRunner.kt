@@ -3,7 +3,7 @@ package ua.com.lavi.komock
 import ua.com.lavi.komock.engine.model.config.KomockConfiguration
 import ua.com.lavi.komock.registrar.ConsulRegistrar
 import ua.com.lavi.komock.registrar.ServerRegistrar
-import ua.com.lavi.komock.registrar.SpringConfigRegistrar
+import ua.com.lavi.komock.registrar.spring.SpringConfigRegistrar
 
 /**
  * Created by Oleksandr Loushkin
