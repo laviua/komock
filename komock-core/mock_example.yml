@@ -133,9 +133,10 @@ httpServers:
         code: 200
         callback:
           enabled: true
-          httpMethod: GET
+          httpMethod: POST
           url: http://127.0.0.1:8081/callbacks_request
           requestHeaders: {"X-HEADER1" : "X-HEADER1-VALUE", "X-HEADER2" : "X-HEADER2-VALUE"}
+          requestBody: "{yo}"
   -
     name: secondServer
     port: 8082

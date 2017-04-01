@@ -4,6 +4,7 @@ package ua.com.lavi.komock.engine
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import org.apache.http.client.config.RequestConfig
+import org.apache.http.entity.ByteArrayEntity
 import org.apache.http.impl.client.HttpClients
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.handler.AfterRequestHandler
@@ -86,19 +87,6 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
 
     }
 
-    fun replacePlaceholders(parametersMap: Map<String, String>, str: String): String {
-        val m = parameterRegexp.matcher(str)
-        val sb = StringBuffer()
-        while (m.find()) {
-            val value = parametersMap[m.group(1)]
-            if (value != null) {
-                m.appendReplacement(sb, value)
-            }
-        }
-        m.appendTail(sb)
-        return sb.toString()
-    }
-
     fun callbackHandler(): CallbackHandler {
 
         val requestHandler = object : CallbackHandler {
@@ -117,8 +105,14 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
                                 .setSocketTimeout(callbackProperties.socketTimeout)
                                 .build()
 
+                        // add body to the request. it needs for the POST callback
+                        if (callbackProperties.requestBody.isNotBlank()) {
+                            anyRequest.entity = ByteArrayEntity(callbackProperties.requestBody.toByteArray(Charsets.UTF_8))
+                        }
                         callbackProperties.requestHeaders.forEach { header -> anyRequest.addHeader(header.key, header.value) }
                         anyRequest.config = requestConfig
+
+                        //perform request and log if something went wrong
                         try {
                             log.info(httpclient.execute(anyRequest).statusLine.toString())
                         } catch (t: Throwable) {
@@ -130,5 +124,18 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
         }
         return requestHandler
 
+    }
+
+    fun replacePlaceholders(parametersMap: Map<String, String>, str: String): String {
+        val m = parameterRegexp.matcher(str)
+        val sb = StringBuffer()
+        while (m.find()) {
+            val value = parametersMap[m.group(1)]
+            if (value != null) {
+                m.appendReplacement(sb, value)
+            }
+        }
+        m.appendTail(sb)
+        return sb.toString()
     }
 }
