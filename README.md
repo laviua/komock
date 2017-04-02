@@ -8,17 +8,18 @@ Main features:
 - Configurable response for any kind of HTTP request/response with wildcards, cookies and custom headers.
 - SSL support
 - Virtual Host support
-- Ability to register in the Consul discovery service
-- Ability to work like a simple spring config server
+- Consul discovery service support.
+- Ability to work like a simple Spring Configuration Server
 - Header based security
 - Variables in the response by request parameters
+- Callback support
 
 ## Download
 
 Binaries are available at
 https://github.com/laviua/komock/releases/latest
 
-[Changelog] (https://github.com/laviua/komock/blob/master/changelog.md)
+[Changelog](https://github.com/laviua/komock/blob/master/changelog.md)
 
 ## Maven Central repository
 
@@ -81,9 +82,33 @@ Run standalone application:
               serviceAddress: 127.0.0.1
               checkInterval: 30s
               checkTimeout: 30s
-          
+              
+**Spring config server**
+
+    springConfig:
+      enabled: true
+      refreshPeriod: 10000
+      sourceFolder: /somedirectory/configs/springconfig/
+      profiles:
+        - dev
+        - qa
+        - default
+      httpServer:
+        name: spring-config-server
+        port: 8888
+        host: 127.0.0.1
+        ssl:
+          enabled: true
+          keyStoreLocation: mock_keystore.jks
+          keyStorePassword: mockpassword
+
+refreshPeriod: 0 - disable config watcher.
+
 **Full config**
-Look at self-describable configuration file [Link] (https://github.com/laviua/komock/blob/master/komock-core/mock_example.yml):
+
+Callbacks, Mask patterns, cookies, virtualhosts, etc
+
+Look at self-describable configuration file [Link](https://github.com/laviua/komock/blob/master/komock-core/mock_example.yml):
 
 ## HTTPS / SSL:
 

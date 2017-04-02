@@ -15,7 +15,7 @@ consulAgents:
 springConfig:
   enabled: true
   refreshPeriod: 10000
-  sourceFolder: ./src/test/resources/springconfig
+  sourceFolder: ./src/test/resources/springconfig/
   profiles:
     - dev
     - qa
