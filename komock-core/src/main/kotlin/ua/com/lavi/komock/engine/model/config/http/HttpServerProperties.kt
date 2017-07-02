@@ -9,6 +9,7 @@ import java.util.*
 
 open class HttpServerProperties {
     var enabled: Boolean = true
+    var contextPath = "/"
     var name = "defaultInstanceName" // default name
     var virtualHosts:List<String> = ArrayList()
     var host = "0.0.0.0" // listen on all interfaces

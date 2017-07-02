@@ -1,7 +1,6 @@
 package ua.com.lavi.komock
 
 import com.mashape.unirest.http.Unirest
-import com.mashape.unirest.http.exceptions.UnirestException
 import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.ssl.SSLContextBuilder
@@ -22,6 +21,7 @@ import ua.com.lavi.komock.engine.model.config.KomockConfiguration
 import ua.com.lavi.komock.registrar.ServerRegistrar
 import java.nio.file.Files
 import java.nio.file.Paths
+import kotlin.test.assertEquals
 import kotlin.test.fail
 
 
@@ -53,7 +53,6 @@ class RoutingTest {
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_testCallback() {
 
         val response = Unirest.get("http://127.0.0.1:8081/testcallback")
@@ -64,50 +63,45 @@ class RoutingTest {
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_get_noContent() {
 
         val response = Unirest.get("http://127.0.0.1:8081/testNoConent").asString()
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 204)
-        assertTrue(response.body == null)
+        assertEquals(response.body, null)
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_get_plaintext_with_content() {
 
         val response = Unirest.get("http://127.0.0.1:8081/testGetText").asString()
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "Hello World. Plain Text.")
+        assertEquals(response.body, "Hello World. Plain Text.")
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_get_plaintext_with_content_by_parameters() {
 
         val response = Unirest.get("http://127.0.0.1:8081/testGetTextWithParameters?testP=blabla&someElse=abc").asString()
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "Here is the parameter blabla and other abc")
+        assertEquals(response.body, "Here is the parameter blabla and other abc")
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_get_plaintext_with_content_by_parameters_empty_request() {
 
         val response = Unirest.get("http://127.0.0.1:8081/testGetTextWithParameters").asString()
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "Here is the parameter \${testP} and other \${someElse}")
+        assertEquals(response.body, "Here is the parameter \${testP} and other \${someElse}")
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_get_secured_area() {
 
         val response = Unirest.get("http://127.0.0.1:8081/testGetTextSecuredRoute")
@@ -116,79 +110,69 @@ class RoutingTest {
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "Hello World. This is a header based secured area")
+        assertEquals(response.body, "Hello World. This is a header based secured area")
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_forbidden_get_secured_area() {
 
         val response = Unirest.get("http://127.0.0.1:8081/testGetTextSecuredRoute")
                 .asString()
 
         assertTrue(response.status == 401)
-        assertTrue(response.body == "")
+        assertEquals(response.body, "")
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_post_plaintext_with_content() {
 
         val response = Unirest.post("http://127.0.0.1:8081/testGetText").asString()
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "Hello World Again. Plain Text.")
+        assertEquals(response.body, "Hello World Again. Plain Text.")
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_get_plaintext_with_content_by_url_mask_and_additional_text() {
 
         val response = Unirest.get("http://127.0.0.1:8081/anymask/blablabla/anypath/").asString()
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "Hello World. Test url mask with additional text")
+        assertEquals(response.body, "Hello World. Test url mask with additional text")
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_get_plaintext_with_content_by_url_mask_and_additional_text2() {
 
         val response = Unirest.get("http://127.0.0.1:8081/somemask/xxx/somepath/yyy/somepath").asString()
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "Some Complicated Path")
+        assertEquals(response.body, "Some Complicated Path")
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_not_ok_get_plaintext_with_content_by_url_mask_and_additional_text2() {
-
         val response = Unirest.get("http://127.0.0.1:8081/somemas/xxx/somepath/yyy/somepath").asString()
-
         assertTrue(response.status == 404)
     }
 
 
     @Test
-    @Throws(UnirestException::class)
     fun should_not_found_get_plaintext_with_content_by_url_mask() {
         val response = Unirest.get("http://127.0.0.1:8081/blabla/anymask/anyurl").asString()
         assertTrue(response.status == 404)
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_not_found_get_plaintext_with_content_by_url_mask2() {
         val response = Unirest.get("http://127.0.0.1:8081/anymas").asString()
         assertTrue(response.status == 404)
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_not_found_get_unmappedUrl() {
         val response = Unirest.get("http://127.0.0.1:8081/unexistedurl").asString()
         assertTrue(response.status == 404)
@@ -196,7 +180,6 @@ class RoutingTest {
 
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_get_json() {
 
         val response = Unirest.get("http://127.0.0.1:8081/testGetJson")
@@ -208,7 +191,6 @@ class RoutingTest {
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_post_json_with_headers() {
 
         val response = Unirest.post("http://127.0.0.1:8081/oauth/token")
@@ -222,7 +204,6 @@ class RoutingTest {
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_delete_text_plain_with_text_ok() {
 
         val response = Unirest.delete("http://127.0.0.1:8081/deleteResource")
@@ -230,11 +211,10 @@ class RoutingTest {
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "OK")
+        assertEquals(response.body, "OK")
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_internal_error_patch() {
 
         val response = Unirest.patch("http://127.0.0.1:8081/patchResource")
@@ -246,7 +226,6 @@ class RoutingTest {
     }
 
     @Test
-    @Throws(UnirestException::class)
     fun should_ok_give_cookies() {
 
         val response = Unirest.get("http://127.0.0.1:8081/giveMeCookies")
@@ -254,7 +233,7 @@ class RoutingTest {
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "Hello. Take your cookies")
+        assertEquals(response.body, "Hello. Take your cookies")
         val cookieValues = response.headers["Set-Cookie"]!![0].split(";")
         assertTrue(cookieValues[0].split("=")[0] == "cookieName")
         assertTrue(cookieValues[0].split("=")[1] == "cookieValue")
@@ -271,7 +250,6 @@ class RoutingTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun should_ok_get_plaintext_with_content_on_second_secured_server() {
         val sslHttpClient = HttpClients.custom()
                 .setSSLContext(SSLContextBuilder()
@@ -286,11 +264,10 @@ class RoutingTest {
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
-        assertTrue(response.body == "Content from the second server")
+        assertEquals(response.body, "Content from the second server")
     }
 
     @Test
-    @Throws(Exception::class)
     fun should_ok_get_plaintext_with_content_on_third_secured_server() {
         val sslHttpClient = HttpClients.custom()
                 .setSSLContext(SSLContextBuilder()
@@ -304,6 +281,15 @@ class RoutingTest {
                 .asString()
 
         assertTrue(response.status == 404)
+    }
+
+    @Test
+    fun should_ok_delay_at_least_time() {
+        val start = System.currentTimeMillis()
+        val response = Unirest.get("http://127.0.0.1:8081/delayTest").asString()
+        val execTime = System.currentTimeMillis() - start
+        assertTrue(response.status == 200)
+        assertTrue(execTime >= 1000)
     }
 
     @Test
@@ -330,6 +316,7 @@ class RoutingTest {
         routingTable.addRoute("/someRoute", HttpMethod.PUT, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
         routingTable.addRoute("/mask/*/newroute", HttpMethod.DELETE, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
         routingTable.addRoute("/newmask/*/routeagain/*/maskagain", HttpMethod.POST, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
+        assertTrue(routingTable.getFullRouteMap().size == 3)
 
         routingTable.find(HttpMethod.PUT, "/someRoute") ?: fail("It should not be null")
         routingTable.find(HttpMethod.DELETE, "/mask/sdfsdf/newroute") ?: fail("It should not be null")
@@ -353,7 +340,6 @@ class RoutingTest {
 
 
     @Test
-    @Throws(UnirestException::class)
     fun shouldGetSpringConfig() {
 
         val sslHttpClient = HttpClients.custom()

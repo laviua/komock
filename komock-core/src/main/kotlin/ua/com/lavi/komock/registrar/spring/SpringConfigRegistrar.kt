@@ -37,10 +37,7 @@ class SpringConfigRegistrar {
                     ByteResource(Files.readAllBytes(Paths.get(httpServerProp.ssl.keyStoreLocation))),
                     httpServerProp.ssl.keyStorePassword)
         }
-        val router = Router(httpServerProp.name,
-                httpServerProp.host, httpServerProp.port,
-                httpServerProp.minThreads, httpServerProp.maxThreads,
-                httpServerProp.idleTimeout, sslKeyStore, httpServerProp.virtualHosts.toMutableList())
+        val router = Router(httpServerProp, sslKeyStore)
 
         try {
             router.start()
@@ -71,6 +68,11 @@ class SpringConfigRegistrar {
             configWatcher.watchFiles(springConfigFilePathes, springConfigProperties.refreshPeriod)
             configWatcher.setListeners(arrayListOf(listener))
             configWatcher.start()
+        }
+
+        //register only enabled routeHolders
+        if (!httpServerProp.routes.isEmpty()) {
+            httpServerProp.routes.filter { it.enabled }.forEach { router.addRoute(it) }
         }
 
     }

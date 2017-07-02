@@ -1,9 +1,9 @@
 package ua.com.lavi.komock.engine
 
-
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import org.apache.http.client.config.RequestConfig
+import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.entity.ByteArrayEntity
 import org.apache.http.impl.client.HttpClients
 import org.slf4j.LoggerFactory
@@ -19,6 +19,7 @@ import java.util.regex.Pattern
 
 
 /**
+ * Class represents logic for request performing
  * Created by Oleksandr Loushkin
  */
 
@@ -32,7 +33,7 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
         val beforeRequestHandler = object : BeforeRequestHandler {
             override fun handle(request: Request, response: Response) {
                 if (routeProperties.logRequest) {
-                    log.info("url: ${routeProperties.url}. RequestBody: ${request.requestBody()}")
+                    log.info("requestURL: ${request.httpServletRequest().requestURL}. requestBody: ${request.requestBody()}")
                 }
                 if (routeProperties.logBefore.isNotEmpty()) {
                     log.info(routeProperties.logBefore)
@@ -47,7 +48,7 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
         val afterRequestHandler = object : AfterRequestHandler {
             override fun handle(request: Request, response: Response) {
                 if (routeProperties.logResponse) {
-                    log.info("url: ${routeProperties.url}. ResponseBody: ${response.content}")
+                    log.info("requestURL: ${request.httpServletRequest().requestURL}. responseBody: ${response.content}")
                 }
 
                 if (routeProperties.logAfter.isNotEmpty()) {
@@ -63,7 +64,7 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
         val requestHandler = object : RequestHandler {
             override fun handle(request: Request, response: Response) {
 
-                //if enabled property. request should contains a header with appropriate header
+                //if enabled headerAuth property. request should contains a header with appropriate header
                 if (routeProperties.headerAuth.enabled) {
                     val headerValue = request.httpServletRequest().getHeader(routeProperties.headerAuth.name)
                     if (routeProperties.headerAuth.value != headerValue) {
@@ -81,12 +82,20 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
 
                 //add cookies
                 routeProperties.cookies.forEach { cookie -> response.addCookie(cookie) }
+
+                //response delay
+                if (routeProperties.delay > 0) {
+                    Thread.sleep(routeProperties.delay)
+                }
             }
         }
         return requestHandler
 
     }
 
+    /**
+     * Invoke http call by apache http client
+     */
     fun callbackHandler(): CallbackHandler {
 
         val requestHandler = object : CallbackHandler {
@@ -114,7 +123,8 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
 
                         //perform request and log if something went wrong
                         try {
-                            log.info(httpclient.execute(anyRequest).statusLine.toString())
+                            val response: CloseableHttpResponse = httpclient.execute(anyRequest)
+                            log.info("Request to: {}. Got response: {}", callbackProperties.url, response.statusLine.toString())
                         } catch (t: Throwable) {
                             log.warn(t.message)
                         }
@@ -126,16 +136,21 @@ class RequestHandlerBuilder(val routeProperties: RouteProperties) {
 
     }
 
+    /**
+     * Replace response body text by parameters from the http request testP: blabla and someElse: abc
+     * Example body source: Here is the parameter ${testP} and other ${someElse}
+     * Example body response: Here is the parameter blabla and other abc
+     */
     fun replacePlaceholders(parametersMap: Map<String, String>, str: String): String {
-        val m = parameterRegexp.matcher(str)
+        val matcher = parameterRegexp.matcher(str)
         val sb = StringBuffer()
-        while (m.find()) {
-            val value = parametersMap[m.group(1)]
+        while (matcher.find()) {
+            val value = parametersMap[matcher.group(1)]
             if (value != null) {
-                m.appendReplacement(sb, value)
+                matcher.appendReplacement(sb, value)
             }
         }
-        m.appendTail(sb)
+        matcher.appendTail(sb)
         return sb.toString()
     }
 }

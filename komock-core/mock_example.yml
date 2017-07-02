@@ -135,9 +135,16 @@ httpServers:
         callback:
           enabled: true
           httpMethod: POST
-          url: http://127.0.0.1:8081/callbacks_request
+          url: http://127.0.0.1:8084/callbacks_request
           requestHeaders: {"X-HEADER1" : "X-HEADER1-VALUE", "X-HEADER2" : "X-HEADER2-VALUE"}
           requestBody: "{yo}"
+      -
+        httpMethod: GET
+        url: /delayTest
+        delay: 1000
+        contentType: text/plain
+        responseBody: This content will be ignored
+        code: 200
   -
     name: secondServer
     port: 8082
@@ -173,4 +180,14 @@ httpServers:
         url: /testGetText
         contentType: text/plain
         responseBody: Content from the third server
+        code: 200
+  -
+    name: callbackserver
+    port: 8084
+    routes:
+      -
+        httpMethod: POST
+        url: /callbacks_request
+        contentType: text/plain
+        responseBody: Content from the second server
         code: 200

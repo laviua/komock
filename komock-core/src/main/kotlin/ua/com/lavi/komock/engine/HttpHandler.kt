@@ -4,16 +4,13 @@ import org.eclipse.jetty.server.Request
 import org.eclipse.jetty.server.session.SessionHandler
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-
-import javax.servlet.Filter
-import javax.servlet.ServletException
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-import java.io.IOException
 import java.io.InputStream
+import javax.servlet.Filter
 import javax.servlet.ReadListener
 import javax.servlet.ServletInputStream
+import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletRequestWrapper
+import javax.servlet.http.HttpServletResponse
 
 /**
  * Created by Oleksandr Loushkin
@@ -21,7 +18,6 @@ import javax.servlet.http.HttpServletRequestWrapper
 
 internal class HttpHandler(private val routingFilter: Filter) : SessionHandler() {
 
-    @Throws(IOException::class, ServletException::class)
     override fun doHandle(
             target: String,
             baseRequest: Request,
@@ -34,7 +30,6 @@ internal class HttpHandler(private val routingFilter: Filter) : SessionHandler()
     class HttpRequestWrapper(request: HttpServletRequest) : HttpServletRequestWrapper(request) {
         private var cachedBytes: ByteArray? = null
 
-        @Throws(IOException::class)
         override fun getInputStream(): ServletInputStream {
             if (cachedBytes == null) {
                 cachedBytes = toByteArray(super.getInputStream())
@@ -63,7 +58,7 @@ internal class HttpHandler(private val routingFilter: Filter) : SessionHandler()
 
             override fun setReadListener(readListener: ReadListener) {}
         }
-        @Throws(IOException::class)
+
         fun toByteArray(input: InputStream): ByteArray {
             val os = ByteArrayOutputStream()
             val buf = ByteArray(1024)

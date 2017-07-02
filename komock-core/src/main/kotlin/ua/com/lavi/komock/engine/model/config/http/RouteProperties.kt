@@ -22,4 +22,5 @@ open class RouteProperties {
     var logAfter: String = ""
     var headerAuth: HeaderAuthProperties = HeaderAuthProperties()
     var callback: CallbackProperties = CallbackProperties()
+    var delay: Long = 0
 }

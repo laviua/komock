@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.SslKeyStore
+import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 
 /**
@@ -11,14 +12,8 @@ import ua.com.lavi.komock.engine.model.config.http.RouteProperties
  * This class represents all logic according to manage server and link route with the server
  */
 
-class Router(val serverName: String,
-             val host: String,
-             val port: Int,
-             var minThreads: Int,
-             var maxThreads: Int,
-             var idleTimeout: Int,
-             var sslKeyStore: SslKeyStore?,
-             var virtualHosts: MutableList<String>) {
+class Router(val serverProps: HttpServerProperties,
+             val sslKeyStore: SslKeyStore?) {
 
     private var isStarted: Boolean = false
     private var server: JettyServer
@@ -27,25 +22,19 @@ class Router(val serverName: String,
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     init {
-        val httpHandler = HttpHandler(RoutingFilter(routingTable, serverName))
-        server = JettyServer(serverName,
-                virtualHosts,
-                httpHandler,
-                host,
-                port,
-                sslKeyStore,
-                maxThreads,
-                minThreads,
-                idleTimeout)
+        server = JettyServer(serverProps, HttpHandler(RoutingFilter(routingTable)), sslKeyStore)
     }
 
     fun start() {
         if (!isStarted) {
             server.start()
             isStarted = true
-            log.info("Started server: $serverName on port: $port, virtualHosts: $virtualHosts. " +
-                    "maxThreads: $maxThreads, minThreads: $minThreads, idle timeout: $idleTimeout ms")
-            MDC.put("serverName", serverName)
+            log.info("Started server: ${serverProps.name} on port: ${serverProps.port}. " +
+                    "VirtualHosts: ${serverProps.virtualHosts}. " +
+                    "MaxThreads: ${serverProps.maxThreads}. " +
+                    "MinThreads: ${serverProps.minThreads}. " +
+                    "Idle timeout: ${serverProps.idleTimeout} ms")
+            MDC.put("serverName", serverProps.name)
         } else {
             log.info("Unable to start because server is already started!")
         }
@@ -95,13 +84,11 @@ class Router(val serverName: String,
     }
 
     fun addVirtualHosts(virtualHosts: List<String>) {
-        this.virtualHosts.addAll(virtualHosts)
         server.addVirtualHosts(virtualHosts)
         log.info("Added virtual hosts: $virtualHosts")
     }
 
     fun removeVirtualHosts(virtualHosts: List<String>) {
-        this.virtualHosts.removeAll(virtualHosts)
         server.removeVirtualHosts(virtualHosts)
         log.info("Removed virtual hosts: $virtualHosts")
     }

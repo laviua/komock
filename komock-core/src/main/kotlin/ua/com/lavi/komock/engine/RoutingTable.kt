@@ -28,32 +28,25 @@ internal class RoutingTable {
         if (urlMap == null) {
             urlMap = HashMap<HttpMethod, Route>()
         }
+        if (find(httpMethod, url) != null) {
+            throw RuntimeException("Route with httpMethod: '" + httpMethod.name + "' and requestedUrl: '" + url + "' is already exists in the routing table")
+        }
         urlMap.put(httpMethod, Route(url, httpMethod, requestHandler, beforeRequestHandler, afterRequestHandler, callbackHandler))
         routeMap.put(url, urlMap)
     }
 
-    fun find(httpMethod: HttpMethod, url: String): Route? {
-        val httpMethodsMap = routeMap[url]
+    fun find(httpMethod: HttpMethod, requestedUrl: String): Route? {
+        val httpMethodsMap = routeMap[requestedUrl]
         if (httpMethodsMap == null) {
             for (routeKey in routeMap.keys) {
                 val pattern = routeKey.replace("*", REGEX_URL_WILDCARD)
-                if (Regex(pattern).matchEntire(url) != null) {
-                    val route = routeMap[routeKey]!![httpMethod]
-                    if (route == null) {
-                        return null
-                    } else {
-                        return route
-                    }
+                if (Regex(pattern).matchEntire(requestedUrl) != null) {
+                    return routeMap[routeKey]!![httpMethod]
                 }
             }
             return null
         } else {
-            val route = httpMethodsMap[httpMethod]
-            if (route == null) {
-                return null
-            } else {
-                return route
-            }
+            return httpMethodsMap[httpMethod]
         }
     }
 

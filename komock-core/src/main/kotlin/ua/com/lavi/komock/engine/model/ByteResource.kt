@@ -3,9 +3,7 @@ package ua.com.lavi.komock.engine.model
 import org.eclipse.jetty.util.resource.Resource
 import java.io.ByteArrayInputStream
 import java.io.File
-import java.io.IOException
 import java.io.InputStream
-import java.net.MalformedURLException
 import java.net.URL
 import java.nio.channels.ReadableByteChannel
 
@@ -15,7 +13,6 @@ import java.nio.channels.ReadableByteChannel
 
 class ByteResource(private val content: ByteArray) : Resource() {
 
-    @Throws(MalformedURLException::class)
     override fun isContainedIn(resource: Resource): Boolean {
         return false
     }
@@ -44,7 +41,6 @@ class ByteResource(private val content: ByteArray) : Resource() {
         return null
     }
 
-    @Throws(IOException::class)
     override fun getFile(): File? {
         return null
     }
@@ -53,22 +49,18 @@ class ByteResource(private val content: ByteArray) : Resource() {
         return null
     }
 
-    @Throws(IOException::class)
     override fun getInputStream(): InputStream {
         return ByteArrayInputStream(content)
     }
-
-    @Throws(IOException::class)
+   
     override fun getReadableByteChannel(): ReadableByteChannel? {
         return null
     }
 
-    @Throws(SecurityException::class)
     override fun delete(): Boolean {
         return false
     }
 
-    @Throws(SecurityException::class)
     override fun renameTo(dest: Resource): Boolean {
         return false
     }
@@ -77,7 +69,6 @@ class ByteResource(private val content: ByteArray) : Resource() {
         return arrayOf("")
     }
 
-    @Throws(IOException::class)
     override fun addPath(path: String): Resource? {
         return null
     }

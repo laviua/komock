@@ -2,8 +2,8 @@
 <configuration>
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
-    <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %yellow([%thread]) %green([%X{serverName}]) %highlight(%-5level) %cyan(%logger{36}) - %msg%n"/>
-    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] [%X{serverName}] %-5level %logger{36} - %msg%n"/>
+    <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %yellow([%thread]) %highlight(%-5level) %cyan(%logger{36}) - %msg%n"/>
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"/>
     <property name="LOG_DIRECTORY" value="${LOG_DIRECTORY:-./logs}"/>
     <property name="LOG_FILENAME" value="komock"/>
     <property name="LOG_FILE" value="${LOG_DIRECTORY}/${LOG_FILENAME}"/>
