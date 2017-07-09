@@ -8,7 +8,7 @@ import ua.com.lavi.komock.engine.model.Response
  * Created by Oleksandr Loushkin
  */
 
-interface AfterRequestHandler {
+interface AfterResponseHandler {
     fun handle(request: Request, response: Response)
 }
 
