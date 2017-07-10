@@ -1,16 +1,16 @@
 package ua.com.lavi.komock.engine.handler
 
+import ua.com.lavi.komock.engine.VariableResolver
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
-import java.util.regex.Pattern
 
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
  */
 class ResponseBodyHandler(val routeProperties: RouteProperties): ResponseHandler {
 
-    private val parameterRegexp = Pattern.compile("\\$\\{(.+?)}")
+    private val templateResolver: VariableResolver = VariableResolver()
 
     override fun handle(request: Request, response: Response) {
 
@@ -25,7 +25,7 @@ class ResponseBodyHandler(val routeProperties: RouteProperties): ResponseHandler
 
         response.contentType(routeProperties.contentType)
         response.statusCode(routeProperties.code)
-        response.content = replacePlaceholders(request.queryParametersMap(), routeProperties.responseBody)
+        response.content = templateResolver.resolve(request.queryParametersMap(), routeProperties.responseBody)
 
         // add http headers
         routeProperties.responseHeaders.forEach { header -> response.addHeader(header.key, header.value) }
@@ -39,22 +39,4 @@ class ResponseBodyHandler(val routeProperties: RouteProperties): ResponseHandler
         }
     }
 
-
-    /**
-     * Replace response body text by parameters from the http request testP: blabla and someElse: abc
-     * Example body source: Here is the parameter ${testP} and other ${someElse}
-     * Example body response: Here is the parameter blabla and other abc
-     */
-    fun replacePlaceholders(parametersMap: Map<String, String>, str: String): String {
-        val matcher = parameterRegexp.matcher(str)
-        val sb = StringBuffer()
-        while (matcher.find()) {
-            val value = parametersMap[matcher.group(1)]
-            if (value != null) {
-                matcher.appendReplacement(sb, value)
-            }
-        }
-        matcher.appendTail(sb)
-        return sb.toString()
-    }
 }

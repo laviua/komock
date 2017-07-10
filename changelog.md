@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.7] - not released
+### Changes
+- Add variables for log request/response
+- Add request counter
+- Add delay for response
+- Add documentation and unit tests
+- Refactoring
+
 ## [1.6] - 2017-04-02
 ### Changes
 - Reloadable spring config by period

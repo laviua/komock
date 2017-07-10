@@ -17,6 +17,8 @@ open class RouteProperties {
     var cookies: List<CookieProperties> = ArrayList()
     var code: Int = 0
     var logRequest: Boolean = false
+    var logRequestTemplate: String = "url: \${url}. body: \${body}"
+    var logResponseTemplate: String = "url: \${url}. body: \${body}"
     var logResponse: Boolean = false
     var logBefore: String = ""
     var logAfter: String = ""
