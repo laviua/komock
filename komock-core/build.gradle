@@ -1,0 +1,126 @@
+group 'ua.com.lavi'
+
+apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'kotlin'
+apply plugin: 'idea'
+apply from: "$rootDir/gradle-tasks/pmd.gradle"
+buildscript {
+    ext.kotlin_version = '1.1.3'
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.novoda:bintray-release:0.3.4"
+    }
+}
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+ext {
+    ARTIFACT_ID = 'komock-core'
+    VERSION_NAME = project.version
+    VERSION_CODE = project.version
+
+    DESCRIPTION = 'Komock - mocker framework for REST'
+
+    SITE_URL = 'https://github.com/laviua/komock'
+    GIT_URL = 'https://github.com/laviua/komock'
+    GROUP_NAME = 'ua.com.lavi'
+
+    LICENSE = 'APACHE-2.0'
+
+    DEVELOPER_ID = 'Oleksandr Loushkin'
+    DEVELOPER_NAME = 'Oleksandr Loushkin'
+    DEVELOPER_EMAIL = 'developer@lavi.com.ua'
+
+    IS_UPLOADING = project.getGradle().startParameter.taskNames.any{it.contains('bintrayUpload')}
+}
+
+repositories {
+    maven {
+        url 'https://dl.bintray.com/laviua/maven/'
+    }
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile "org.slf4j:slf4j-api:1.7.22"
+    compile "org.yaml:snakeyaml:1.17"
+    compile "com.google.code.gson:gson:2.8.0"
+    compile "com.ecwid.consul:consul-api:1.1.10"
+    compile "org.eclipse.jetty:jetty-server:9.4.0.v20161208"
+    compile "org.eclipse.jetty:jetty-servlet:9.4.0.v20161208"
+    compile "org.apache.httpcomponents:httpclient:4.5.3"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.16"
+    testCompile "junit:junit:4.12"
+    testCompile "com.mashape.unirest:unirest-java:1.4.9"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testCompile "ch.qos.logback:logback-classic:1.1.7"
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
+
+if (IS_UPLOADING) {
+    println project.name
+    apply plugin: 'maven'
+
+    gradle.taskGraph.whenReady { taskGraph ->
+        taskGraph.getAllTasks().find {
+            it.path == ":$project.name:generatePomFileForMavenPublication"
+        }.doLast {
+            file("build/publications/maven/pom-default.xml").delete()
+            println 'Overriding pom-file to make sure we can sync to maven central!'
+            pom {
+                //noinspection GroovyAssignabilityCheck
+                project {
+                    name "$project.name"
+                    artifactId ARTIFACT_ID
+                    packaging project.name == 'compiler' ? 'jar' : 'aar'
+                    description DESCRIPTION
+                    url SITE_URL
+                    version VERSION_NAME
+
+                    scm {
+                        url GIT_URL
+                        connection GIT_URL
+                        developerConnection GIT_URL
+                    }
+
+                    licenses {
+                        license {
+                            name LICENSE
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id DEVELOPER_ID
+                            name DEVELOPER_NAME
+                            email DEVELOPER_EMAIL
+                        }
+                    }
+                }
+            }.writeTo("build/publications/maven/pom-default.xml")
+        }
+    }
+}
+
+publish {
+    groupId = 'ua.com.lavi'
+    artifactId = 'komock-core'
+    publishVersion = project.version
+    desc = 'Komock - mocker framework for REST'
+    licences = ['APACHE-2.0']
+    website = 'https://github.com/laviua/komock'
+}

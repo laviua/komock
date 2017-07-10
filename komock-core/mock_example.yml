@@ -1,0 +1,193 @@
+consulAgents:
+    -
+      enabled: false
+      consulHost: 127.0.0.1
+      consulPort: 8500
+      services:
+        -
+          serviceId: customer-data-service
+          serviceName: customer-data-service
+          servicePort: 8081
+          serviceAddress: 127.0.0.1
+          checkInterval: 30s
+          checkTimeout: 30s
+
+springConfig:
+  enabled: true
+  refreshPeriod: 10000
+  sourceFolder: ./src/test/resources/springconfig/
+  profiles:
+    - dev
+    - qa
+    - default
+  httpServer:
+    name: spring-config-httpServer
+    port: 8888
+    host: 127.0.0.1
+    ssl:
+      enabled: true
+      keyStoreLocation: mock_keystore.jks
+      keyStorePassword: mockpassword
+
+httpServers:
+  -
+    enabled: true
+    name: firstServer
+    port: 8081
+    routes:
+      -
+        httpMethod: GET
+        url: /testNoConent
+        contentType: text/plain
+        responseBody: This content will be ignored
+        code: 204
+      -
+        httpMethod: GET
+        url: /testGetText
+        contentType: text/plain
+        responseBody: Hello World. Plain Text.
+        code: 200
+      -
+        httpMethod: GET
+        url: /testGetTextSecuredRoute
+        contentType: text/plain
+        headerAuth:
+          enabled: true
+          name: X-TOKEN-HEADER
+          value: 69b30db6-1238-11e7-93ae-92361f002671
+        responseBody: Hello World. This is a header based secured area
+        code: 200
+      -
+        httpMethod: GET
+        url: /testGetTextWithParameters
+        contentType: text/plain
+        responseBody: Here is the parameter ${testP} and other ${someElse}
+        code: 200
+      -
+        httpMethod: GET
+        url: /giveMeCookies
+        contentType: text/plain
+        responseBody: Hello. Take your cookies
+        code: 200
+        cookies:
+          -
+            name: cookieName
+            value: cookieValue
+            path: /
+            maxAge: 3600
+            secure: true
+            domain: 127.0.0.1
+            comment: someComment
+      -
+        httpMethod: GET
+        url: /anymask/*/anypath/
+        contentType: text/plain
+        responseBody: Hello World. Test url mask with additional text
+        code: 200
+      -
+        httpMethod: GET
+        url: /somemask/*/somepath/*/somepath
+        contentType: text/plain
+        responseBody: Some Complicated Path
+        code: 200
+      -
+        httpMethod: POST
+        url: /testGetText
+        contentType: text/plain
+        responseBody: Hello World Again. Plain Text.
+        code: 200
+      -
+        httpMethod: GET
+        url: /testGetJson
+        contentType: application/json
+        responseBody: '{"name": "Korben Dallas"}'
+        code: 200
+      -
+        httpMethod: POST
+        url: /oauth/token
+        contentType: "application/json"
+        responseBody: '{"access_token" : "ya29S6ZQbiBQpA5Rz8oty00xj-xydfdfddteerer-1eM",  "token_type" : "Bearer",  "expires_in" : 3600}'
+        responseHeaders: {"X-java-version" : "1.8", "X-builder" : "gradle"}
+        code: 200
+        logRequest: true
+        logResponse: true
+        logBefore: "textBefore"
+        logAfter: "textAfter"
+
+      -
+        httpMethod: DELETE
+        url: /deleteResource
+        contentType: text/plain
+        responseBody: OK
+        code: 200
+      -
+        httpMethod: PATCH
+        url: /patchResource
+        contentType: application/json
+        responseBody: '{"patchedParameter": "patchedVariable with error"}'
+        code: 500
+      -
+        httpMethod: GET
+        url: /testcallback
+        contentType: application/json
+        responseBody: '{}'
+        code: 200
+        callback:
+          enabled: true
+          httpMethod: POST
+          url: http://127.0.0.1:8084/callbacks_request
+          requestHeaders: {"X-HEADER1" : "X-HEADER1-VALUE", "X-HEADER2" : "X-HEADER2-VALUE"}
+          requestBody: "{yo}"
+      -
+        httpMethod: GET
+        url: /delayTest
+        delay: 1000
+        contentType: text/plain
+        responseBody: This content will be ignored
+        code: 200
+  -
+    name: secondServer
+    port: 8082
+    minThreads: 10
+    maxThreads: 20
+    idleTimeout: 60000
+    ssl:
+      enabled: true
+      keyStoreLocation: mock_keystore.jks
+      keyStorePassword: mockpassword
+    routes:
+      -
+        httpMethod: GET
+        url: /testGetText
+        contentType: text/plain
+        responseBody: Content from the second server
+        code: 200
+  -
+    name: thirdServer
+    port: 8083
+    minThreads: 10
+    maxThreads: 20
+    idleTimeout: 60000
+    virtualHosts:
+      - "vhost.mocka"
+    ssl:
+      enabled: true
+      keyStoreLocation: mock_keystore.jks
+      keyStorePassword: mockpassword
+    routes:
+      -
+        httpMethod: GET
+        url: /testGetText
+        contentType: text/plain
+        responseBody: Content from the third server
+        code: 200
+  -
+    name: callbackserver
+    port: 8084
+    routes:
+      -
+        httpMethod: POST
+        url: /callbacks_request
+        contentType: text/plain
+        responseBody: Content from the second server
+        code: 200
