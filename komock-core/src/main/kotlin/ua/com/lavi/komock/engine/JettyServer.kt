@@ -4,7 +4,6 @@ import org.eclipse.jetty.server.*
 import org.eclipse.jetty.server.handler.ContextHandler
 import org.eclipse.jetty.server.handler.HandlerList
 import org.eclipse.jetty.util.ssl.SslContextFactory
-import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.model.SslKeyStore
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
@@ -21,10 +20,11 @@ internal class JettyServer(val serverProps: HttpServerProperties,
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    private var jettyServer: Server = Server(QueuedThreadPool(
+    private var jettyServer: Server = Server(NamedQueuedThreadPool(
             serverProps.maxThreads,
             serverProps.minThreads,
-            serverProps.idleTimeout)
+            serverProps.idleTimeout,
+            serverProps.name)
     )
 
     init {
