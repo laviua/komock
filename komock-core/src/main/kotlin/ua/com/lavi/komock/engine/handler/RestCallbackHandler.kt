@@ -1,7 +1,5 @@
 package ua.com.lavi.komock.engine.handler
 
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.entity.ByteArrayEntity
@@ -11,6 +9,7 @@ import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
 import ua.com.lavi.komock.engine.model.config.http.AnyRequest
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
+import kotlin.concurrent.thread
 
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
@@ -23,7 +22,7 @@ class RestCallbackHandler(val routeProperties: RouteProperties) : CallbackHandle
         if (routeProperties.callback.enabled) {
 
             //callback request will be invoked in the another thread
-            launch(CommonPool) {
+            thread {
                 val callbackProperties = routeProperties.callback
 
                 val httpclient = HttpClients.createMinimal()
