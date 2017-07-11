@@ -40,9 +40,9 @@ internal class RoutingFilter(val routingTable: RoutingTable) : Filter {
             httpServletResponse.status = HttpServletResponse.SC_NOT_FOUND
         } else {
             val request: Request = Request(httpServletRequest)
-            route.beforeRequestHandler.handle(request, response)
-            route.requestHandler.handle(request, response)
-            route.afterRequestHandler.handle(request, response)
+            route.beforeResponseHandlers.forEach { beforeResponseHandler -> beforeResponseHandler.handle(request,response)}
+            route.responseHandler.handle(request, response)
+            route.afterResponseHandlers.forEach { afterResponseHandler -> afterResponseHandler.handle(request,response)}
             route.callbackHandler.handle(request, response)
         }
         serializeContentToResponse(httpServletRequest, httpServletResponse, response.content)

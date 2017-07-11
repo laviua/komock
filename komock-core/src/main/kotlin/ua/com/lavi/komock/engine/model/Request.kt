@@ -40,4 +40,13 @@ class Request(private val httpServletRequest: HttpServletRequest) {
                 }
         return queryParameters
     }
+
+
+    fun getHeaders(): MutableMap<String, String> {
+        val headers: MutableMap<String,String> = HashMap()
+        for (headerName in httpServletRequest.headerNames) {
+            headers.put(headerName, httpServletRequest.getHeader(headerName))
+        }
+        return headers
+    }
 }

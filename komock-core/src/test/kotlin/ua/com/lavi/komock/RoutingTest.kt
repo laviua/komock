@@ -10,10 +10,10 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.yaml.snakeyaml.Yaml
 import ua.com.lavi.komock.engine.RoutingTable
-import ua.com.lavi.komock.engine.handler.AfterRequestHandler
-import ua.com.lavi.komock.engine.handler.BeforeRequestHandler
+import ua.com.lavi.komock.engine.handler.AfterResponseHandler
+import ua.com.lavi.komock.engine.handler.BeforeResponseHandler
 import ua.com.lavi.komock.engine.handler.CallbackHandler
-import ua.com.lavi.komock.engine.handler.RequestHandler
+import ua.com.lavi.komock.engine.handler.ResponseHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
@@ -299,13 +299,13 @@ class RoutingTest {
 
         assertTrue(routingTable.getFullRouteMap().isEmpty())
 
-        val beforeRouteHandler = object : BeforeRequestHandler {
+        val beforeRouteHandler = object : BeforeResponseHandler {
             override fun handle(request: Request, response: Response) {}
         }
-        val afterRouteHandler = object : AfterRequestHandler {
+        val afterRouteHandler = object : AfterResponseHandler {
             override fun handle(request: Request, response: Response) {}
         }
-        val routeHandler = object : RequestHandler {
+        val routeHandler = object : ResponseHandler {
             override fun handle(request: Request, response: Response) {}
         }
 
@@ -313,9 +313,9 @@ class RoutingTest {
             override fun handle(request: Request, response: Response) {}
         }
 
-        routingTable.addRoute("/someRoute", HttpMethod.PUT, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
-        routingTable.addRoute("/mask/*/newroute", HttpMethod.DELETE, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
-        routingTable.addRoute("/newmask/*/routeagain/*/maskagain", HttpMethod.POST, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
+        routingTable.addRoute("/someRoute", HttpMethod.PUT, routeHandler, arrayListOf(beforeRouteHandler), arrayListOf(afterRouteHandler), callbackHandler)
+        routingTable.addRoute("/mask/*/newroute", HttpMethod.DELETE, routeHandler, arrayListOf(beforeRouteHandler), arrayListOf(afterRouteHandler), callbackHandler)
+        routingTable.addRoute("/newmask/*/routeagain/*/maskagain", HttpMethod.POST, routeHandler, arrayListOf(beforeRouteHandler), arrayListOf(afterRouteHandler), callbackHandler)
         assertTrue(routingTable.getFullRouteMap().size == 3)
 
         routingTable.find(HttpMethod.PUT, "/someRoute") ?: fail("It should not be null")

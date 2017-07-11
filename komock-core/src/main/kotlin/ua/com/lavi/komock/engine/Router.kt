@@ -2,6 +2,7 @@ package ua.com.lavi.komock.engine
 
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
+import ua.com.lavi.komock.engine.handler.ResponseHandlerBuilder
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.SslKeyStore
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
@@ -53,20 +54,20 @@ class Router(val serverProps: HttpServerProperties,
 
     fun addRoute(routeProperties: RouteProperties) {
 
-        val routeHandlerBuilder = RequestHandlerBuilder(routeProperties)
+        val handlerBuilder = ResponseHandlerBuilder(routeProperties)
 
-        val beforeRouteHandler = routeHandlerBuilder.beforeRouteHandler()
-        val afterRouteHandler = routeHandlerBuilder.afterRequestHandler()
-        val routeHandler = routeHandlerBuilder.routeHandler()
-        val callbackHandler = routeHandlerBuilder.callbackHandler()
+        val beforeRouteHandlers = handlerBuilder.beforeRouteHandlers()
+        val afterRouteHandlers = handlerBuilder.afterRequestHandlers()
+        val routeHandler = handlerBuilder.routeHandler()
+        val callbackHandler = handlerBuilder.callbackHandler()
 
         val httpMethod = HttpMethod.retrieveMethod(routeProperties.httpMethod)
 
         routingTable.addRoute(routeProperties.url,
                 httpMethod,
                 routeHandler,
-                beforeRouteHandler,
-                afterRouteHandler,
+                beforeRouteHandlers,
+                afterRouteHandlers,
                 callbackHandler)
 
         log.info("Registered http route: ${routeProperties.httpMethod} ${routeProperties.url}")

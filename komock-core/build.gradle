@@ -17,11 +17,6 @@ buildscript {
         classpath "com.novoda:bintray-release:0.3.4"
     }
 }
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
 
 ext {
     ARTIFACT_ID = 'komock-core'
@@ -60,7 +55,6 @@ dependencies {
     compile "org.eclipse.jetty:jetty-servlet:9.4.0.v20161208"
     compile "org.apache.httpcomponents:httpclient:4.5.3"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.16"
     testCompile "junit:junit:4.12"
     testCompile "com.mashape.unirest:unirest-java:1.4.9"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"

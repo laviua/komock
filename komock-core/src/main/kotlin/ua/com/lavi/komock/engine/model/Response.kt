@@ -34,4 +34,12 @@ class Response(private val servletResponse: HttpServletResponse) {
         cookie.comment = cookieProperties.comment
         servletResponse.addCookie(cookie)
     }
+
+    fun getHeaders(): MutableMap<String, String> {
+        val headers: MutableMap<String,String> = HashMap()
+        for (headerName in servletResponse.headerNames) {
+            headers.put(headerName, servletResponse.getHeader(headerName))
+        }
+        return headers
+    }
 }

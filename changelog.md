@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.6.1] - 2017-07-11
+### Changes
+- Add variables for log request/response
+- Add request counter
+- Add delay for response
+- Add documentation and unit tests
+- Remove kotlinx package
+- Refactoring
+
 ## [1.6] - 2017-04-02
 ### Changes
 - Reloadable spring config by period

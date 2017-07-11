@@ -1,9 +1,9 @@
 package ua.com.lavi.komock.engine
 
-import ua.com.lavi.komock.engine.handler.AfterRequestHandler
-import ua.com.lavi.komock.engine.handler.BeforeRequestHandler
+import ua.com.lavi.komock.engine.handler.AfterResponseHandler
+import ua.com.lavi.komock.engine.handler.BeforeResponseHandler
 import ua.com.lavi.komock.engine.handler.CallbackHandler
-import ua.com.lavi.komock.engine.handler.RequestHandler
+import ua.com.lavi.komock.engine.handler.ResponseHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Route
 import java.util.*
@@ -20,9 +20,9 @@ internal class RoutingTable {
 
     fun addRoute(url: String,
                  httpMethod: HttpMethod,
-                 requestHandler: RequestHandler,
-                 beforeRequestHandler: BeforeRequestHandler,
-                 afterRequestHandler: AfterRequestHandler,
+                 responseHandler: ResponseHandler,
+                 beforeResponseHandlers: List<BeforeResponseHandler>,
+                 afterResponseHandlers: List<AfterResponseHandler>,
                  callbackHandler: CallbackHandler) {
         var urlMap: HashMap<HttpMethod, Route>? = routeMap[url]
         if (urlMap == null) {
@@ -31,7 +31,7 @@ internal class RoutingTable {
         if (find(httpMethod, url) != null) {
             throw RuntimeException("Route with httpMethod: '" + httpMethod.name + "' and requestedUrl: '" + url + "' is already exists in the routing table")
         }
-        urlMap.put(httpMethod, Route(url, httpMethod, requestHandler, beforeRequestHandler, afterRequestHandler, callbackHandler))
+        urlMap.put(httpMethod, Route(url, httpMethod, responseHandler, beforeResponseHandlers, afterResponseHandlers, callbackHandler))
         routeMap.put(url, urlMap)
     }
 
