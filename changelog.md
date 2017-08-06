@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.6.2] - 2017-08-06
+### Changes
+- Refactoring.
+- Increase performance
+- Improve builders for java code configuration
+- Improve data structures
+- Remove unused functionality
+- Add gradle wrapper
+- Add ktlint
+
 ## [1.6.1] - 2017-07-11
 ### Changes
 - Add variables for log request/response

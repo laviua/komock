@@ -1,4 +1,4 @@
-package ua.com.lavi.komock.engine.handler
+package ua.com.lavi.komock.engine.handler.response
 
 import ua.com.lavi.komock.engine.VariableResolver
 import ua.com.lavi.komock.engine.model.Request
@@ -8,9 +8,7 @@ import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
  */
-class ResponseBodyHandler(val routeProperties: RouteProperties): ResponseHandler {
-
-    private val templateResolver: VariableResolver = VariableResolver()
+open class RoutedResponseHandlerImpl(val routeProperties: RouteProperties) : ResponseHandler {
 
     override fun handle(request: Request, response: Response) {
 
@@ -18,14 +16,14 @@ class ResponseBodyHandler(val routeProperties: RouteProperties): ResponseHandler
         if (routeProperties.headerAuth.enabled) {
             val headerValue = request.httpServletRequest().getHeader(routeProperties.headerAuth.name)
             if (routeProperties.headerAuth.value != headerValue) {
-                response.statusCode(401)
+                response.code(401)
                 return
             }
         }
 
         response.contentType(routeProperties.contentType)
-        response.statusCode(routeProperties.code)
-        response.content = templateResolver.resolve(request.queryParametersMap(), routeProperties.responseBody)
+        response.code(routeProperties.code)
+        response.content = VariableResolver.resolve(request.queryParametersMap(), routeProperties.responseBody)
 
         // add http headers
         routeProperties.responseHeaders.forEach { header -> response.addHeader(header.key, header.value) }

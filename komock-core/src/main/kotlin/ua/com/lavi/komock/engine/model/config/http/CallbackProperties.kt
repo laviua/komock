@@ -11,5 +11,5 @@ class CallbackProperties {
     var connectTimeout: Int = 250000
     var connectionRequestTimeout: Int = 30000
     var socketTimeout: Int = 25000
-    var requestHeaders:Map<String,String> = HashMap()
+    var requestHeaders: Map<String, String> = HashMap()
 }

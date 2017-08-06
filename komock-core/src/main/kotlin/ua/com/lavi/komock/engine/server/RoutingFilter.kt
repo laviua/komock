@@ -1,9 +1,10 @@
-package ua.com.lavi.komock.engine
+package ua.com.lavi.komock.engine.server
 
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
+import ua.com.lavi.komock.engine.router.RoutingTable
 import java.io.OutputStream
 import java.util.*
 import java.util.zip.GZIPOutputStream
@@ -12,12 +13,12 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * This is an entry point of the mock service for http request
+ * This is an entry point of thw application
  * Serialize route properties content to the http response
  * Should be ThreadSafe
  * Created by Oleksandr Loushkin
  */
-internal class RoutingFilter(val routingTable: RoutingTable) : Filter {
+class RoutingFilter(val routingTable: RoutingTable) : Filter {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
@@ -40,9 +41,9 @@ internal class RoutingFilter(val routingTable: RoutingTable) : Filter {
             httpServletResponse.status = HttpServletResponse.SC_NOT_FOUND
         } else {
             val request: Request = Request(httpServletRequest)
-            route.beforeResponseHandlers.forEach { beforeResponseHandler -> beforeResponseHandler.handle(request,response)}
+            route.beforeResponseHandler.handle(request, response)
             route.responseHandler.handle(request, response)
-            route.afterResponseHandlers.forEach { afterResponseHandler -> afterResponseHandler.handle(request,response)}
+            route.afterResponseHandler.handle(request, response)
             route.callbackHandler.handle(request, response)
         }
         serializeContentToResponse(httpServletRequest, httpServletResponse, response.content)

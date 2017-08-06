@@ -1,9 +1,9 @@
-package ua.com.lavi.komock.engine
+package ua.com.lavi.komock.engine.router
 
-import ua.com.lavi.komock.engine.handler.AfterResponseHandler
-import ua.com.lavi.komock.engine.handler.BeforeResponseHandler
-import ua.com.lavi.komock.engine.handler.CallbackHandler
-import ua.com.lavi.komock.engine.handler.ResponseHandler
+import ua.com.lavi.komock.engine.handler.after.AfterResponseHandler
+import ua.com.lavi.komock.engine.handler.before.BeforeResponseHandler
+import ua.com.lavi.komock.engine.handler.callback.CallbackHandler
+import ua.com.lavi.komock.engine.handler.response.ResponseHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Route
 import java.util.*
@@ -13,7 +13,7 @@ import java.util.*
  * Class represents routing table. It should add route. find a route by direct url or by url mask.
  */
 
-internal class RoutingTable {
+class RoutingTable {
 
     private val routeMap = HashMap<String, HashMap<HttpMethod, Route>>()
     private val REGEX_URL_WILDCARD = "([A-Za-z0-9_.-~]+)"
@@ -21,8 +21,8 @@ internal class RoutingTable {
     fun addRoute(url: String,
                  httpMethod: HttpMethod,
                  responseHandler: ResponseHandler,
-                 beforeResponseHandlers: List<BeforeResponseHandler>,
-                 afterResponseHandlers: List<AfterResponseHandler>,
+                 beforeResponseHandler: BeforeResponseHandler,
+                 afterResponseHandler: AfterResponseHandler,
                  callbackHandler: CallbackHandler) {
         var urlMap: HashMap<HttpMethod, Route>? = routeMap[url]
         if (urlMap == null) {
@@ -31,7 +31,7 @@ internal class RoutingTable {
         if (find(httpMethod, url) != null) {
             throw RuntimeException("Route with httpMethod: '" + httpMethod.name + "' and requestedUrl: '" + url + "' is already exists in the routing table")
         }
-        urlMap.put(httpMethod, Route(url, httpMethod, responseHandler, beforeResponseHandlers, afterResponseHandlers, callbackHandler))
+        urlMap.put(httpMethod, Route(url, httpMethod, responseHandler, beforeResponseHandler, afterResponseHandler, callbackHandler))
         routeMap.put(url, urlMap)
     }
 

@@ -1,4 +1,4 @@
-package ua.com.lavi.komock.engine.handler
+package ua.com.lavi.komock.engine.handler.callback
 
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.CloseableHttpResponse
@@ -14,7 +14,7 @@ import kotlin.concurrent.thread
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
  */
-class RestCallbackHandler(val routeProperties: RouteProperties) : CallbackHandler {
+class CallbackHandlerImpl(val routeProperties: RouteProperties) : CallbackHandler {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 

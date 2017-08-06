@@ -23,7 +23,7 @@ class SpringConfigWatcher {
     val timer = Timer(this.javaClass.simpleName, false)
 
     fun start() {
-        log.info("Start watching files: ${watchedFiles} with period: $period ms")
+        log.info("Start watching files: $watchedFiles with period: $period ms")
         timer.scheduleAtFixedRate(0, period) {
             checkChangedFiles()
         }
@@ -46,7 +46,7 @@ class SpringConfigWatcher {
     }
 
     fun stop() {
-        log.info("Stop watching files: ${watchedFiles} with period: $period ms")
+        log.info("Stop watching files: $watchedFiles with period: $period ms")
         timer.cancel()
     }
 

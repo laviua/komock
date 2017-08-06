@@ -37,7 +37,7 @@ httpServers:
     routes:
       -
         httpMethod: GET
-        url: /testNoConent
+        url: /testNoContent
         contentType: text/plain
         responseBody: This content will be ignored
         code: 204
@@ -111,8 +111,6 @@ httpServers:
         code: 200
         logRequest: true
         logResponse: true
-        logBefore: "textBefore"
-        logAfter: "textAfter"
 
       -
         httpMethod: DELETE

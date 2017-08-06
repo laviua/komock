@@ -6,7 +6,7 @@ import java.util.regex.Pattern
  * Replace input line by parameters map
  * Created by oleu on 10.07.2017.
  */
-class VariableResolver {
+object VariableResolver {
 
     private val parameterRegexp = Pattern.compile("\\$\\{(.+?)}")
 

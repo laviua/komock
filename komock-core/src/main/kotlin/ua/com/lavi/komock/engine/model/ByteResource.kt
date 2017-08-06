@@ -52,7 +52,7 @@ class ByteResource(private val content: ByteArray) : Resource() {
     override fun getInputStream(): InputStream {
         return ByteArrayInputStream(content)
     }
-   
+
     override fun getReadableByteChannel(): ReadableByteChannel? {
         return null
     }

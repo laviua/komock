@@ -1,11 +1,11 @@
-package ua.com.lavi.komock.engine
+package ua.com.lavi.komock.engine.server
 
 import org.eclipse.jetty.server.Request
 import org.eclipse.jetty.server.session.SessionHandler
+import ua.com.lavi.komock.engine.router.RoutingTable
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
-import javax.servlet.Filter
 import javax.servlet.ReadListener
 import javax.servlet.ServletInputStream
 import javax.servlet.http.HttpServletRequest
@@ -16,7 +16,11 @@ import javax.servlet.http.HttpServletResponse
  * Created by Oleksandr Loushkin
  */
 
-internal class HttpHandler(private val routingFilter: Filter) : SessionHandler() {
+class HttpHandler : SessionHandler() {
+
+    //One routing table per one http server
+    val routingTable: RoutingTable = RoutingTable()
+    private val routingFilter: RoutingFilter = RoutingFilter(routingTable)
 
     override fun doHandle(
             target: String,

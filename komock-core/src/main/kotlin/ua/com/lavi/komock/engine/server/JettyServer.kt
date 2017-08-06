@@ -1,22 +1,24 @@
-package ua.com.lavi.komock.engine
+package ua.com.lavi.komock.engine.server
 
 import org.eclipse.jetty.server.*
 import org.eclipse.jetty.server.handler.ContextHandler
 import org.eclipse.jetty.server.handler.HandlerList
 import org.eclipse.jetty.util.ssl.SslContextFactory
 import org.slf4j.LoggerFactory
+import ua.com.lavi.komock.engine.router.RoutingTable
 import ua.com.lavi.komock.engine.model.SslKeyStore
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import java.util.concurrent.TimeUnit
-
 
 /**
  * Created by Oleksandr Loushkin
  */
 
-internal class JettyServer(val serverProps: HttpServerProperties,
-                           val httpHandler: Handler,
-                           val sslKeyStore: SslKeyStore?) {
+class JettyServer(val serverProps: HttpServerProperties,
+                  private val httpHandler: HttpHandler,
+                  private val sslKeyStore: SslKeyStore?) {
+
+    constructor(serverProps: HttpServerProperties, httpHandler: HttpHandler) : this(serverProps, httpHandler, null)
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
@@ -36,8 +38,6 @@ internal class JettyServer(val serverProps: HttpServerProperties,
         jettyServer.handler = handlerList
         jettyServer.connectors = arrayOf(buildServerConnector(serverProps.host, serverProps.port, sslKeyStore))
     }
-
-
 
     fun start() {
         jettyServer.start()
@@ -93,7 +93,9 @@ internal class JettyServer(val serverProps: HttpServerProperties,
         serverConnector.port = port
         return serverConnector
     }
+
+    fun routingTable(): RoutingTable {
+        return httpHandler.routingTable
+    }
 }
-
-
 

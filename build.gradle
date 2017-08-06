@@ -3,4 +3,6 @@ allprojects {
         mavenCentral()
         jcenter()
     }
+    apply plugin: 'idea'
+    idea.module.inheritOutputDirs = true
 }

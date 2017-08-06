@@ -1,8 +1,8 @@
 package ua.com.lavi.komock
 
 import ua.com.lavi.komock.engine.model.config.KomockConfiguration
-import ua.com.lavi.komock.registrar.ConsulRegistrar
-import ua.com.lavi.komock.registrar.ServerRegistrar
+import ua.com.lavi.komock.registrar.consul.ConsulRegistrar
+import ua.com.lavi.komock.registrar.http.HttpServerRegistrar
 import ua.com.lavi.komock.registrar.spring.SpringConfigRegistrar
 
 /**
@@ -14,7 +14,7 @@ class KomockRunner {
     fun run(komockConfiguration: KomockConfiguration) {
 
         //Server instances
-        val serverRegistrar = ServerRegistrar()
+        val serverRegistrar = HttpServerRegistrar()
         komockConfiguration.httpServers.
                 filter { it.enabled }.
                 forEach { serverRegistrar.register(it) }

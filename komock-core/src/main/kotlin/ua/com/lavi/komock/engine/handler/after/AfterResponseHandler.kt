@@ -1,5 +1,4 @@
-package ua.com.lavi.komock.engine.handler
-
+package ua.com.lavi.komock.engine.handler.after
 
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response

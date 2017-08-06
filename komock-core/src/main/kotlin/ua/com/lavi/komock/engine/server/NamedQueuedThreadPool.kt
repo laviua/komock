@@ -1,4 +1,4 @@
-package ua.com.lavi.komock.engine
+package ua.com.lavi.komock.engine.server
 
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 

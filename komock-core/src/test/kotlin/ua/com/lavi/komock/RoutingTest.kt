@@ -9,21 +9,18 @@ import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import org.yaml.snakeyaml.Yaml
-import ua.com.lavi.komock.engine.RoutingTable
-import ua.com.lavi.komock.engine.handler.AfterResponseHandler
-import ua.com.lavi.komock.engine.handler.BeforeResponseHandler
-import ua.com.lavi.komock.engine.handler.CallbackHandler
-import ua.com.lavi.komock.engine.handler.ResponseHandler
+import ua.com.lavi.komock.engine.router.RoutingTable
+import ua.com.lavi.komock.engine.handler.after.EmptyAfterResponseHandlerImpl
+import ua.com.lavi.komock.engine.handler.before.EmptyBeforeResponseHandlerImpl
+import ua.com.lavi.komock.engine.handler.callback.EmptyCallbackHandlerImpl
+import ua.com.lavi.komock.engine.handler.response.EmptyResponseHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
-import ua.com.lavi.komock.engine.model.Request
-import ua.com.lavi.komock.engine.model.Response
 import ua.com.lavi.komock.engine.model.config.KomockConfiguration
-import ua.com.lavi.komock.registrar.ServerRegistrar
+import ua.com.lavi.komock.registrar.http.HttpServerRegistrar
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.test.assertEquals
 import kotlin.test.fail
-
 
 /**
  * Created by Oleksandr Loushkin
@@ -48,7 +45,7 @@ class RoutingTest {
 
         @AfterClass @JvmStatic
         fun stopServer() {
-            ServerRegistrar.stopAllServers()
+            HttpServerRegistrar.stopAllServers()
         }
     }
 
@@ -65,7 +62,7 @@ class RoutingTest {
     @Test
     fun should_ok_get_noContent() {
 
-        val response = Unirest.get("http://127.0.0.1:8081/testNoConent").asString()
+        val response = Unirest.get("http://127.0.0.1:8081/testNoContent").asString()
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 204)
@@ -159,7 +156,6 @@ class RoutingTest {
         assertTrue(response.status == 404)
     }
 
-
     @Test
     fun should_not_found_get_plaintext_with_content_by_url_mask() {
         val response = Unirest.get("http://127.0.0.1:8081/blabla/anymask/anyurl").asString()
@@ -177,7 +173,6 @@ class RoutingTest {
         val response = Unirest.get("http://127.0.0.1:8081/unexistedurl").asString()
         assertTrue(response.status == 404)
     }
-
 
     @Test
     fun should_ok_get_json() {
@@ -299,23 +294,15 @@ class RoutingTest {
 
         assertTrue(routingTable.getFullRouteMap().isEmpty())
 
-        val beforeRouteHandler = object : BeforeResponseHandler {
-            override fun handle(request: Request, response: Response) {}
-        }
-        val afterRouteHandler = object : AfterResponseHandler {
-            override fun handle(request: Request, response: Response) {}
-        }
-        val routeHandler = object : ResponseHandler {
-            override fun handle(request: Request, response: Response) {}
-        }
+        val beforeRouteHandler = EmptyBeforeResponseHandlerImpl()
+        val afterRouteHandler = EmptyAfterResponseHandlerImpl()
+        val routeHandler = EmptyResponseHandler()
 
-        val callbackHandler = object : CallbackHandler {
-            override fun handle(request: Request, response: Response) {}
-        }
+        val callbackHandler = EmptyCallbackHandlerImpl()
 
-        routingTable.addRoute("/someRoute", HttpMethod.PUT, routeHandler, arrayListOf(beforeRouteHandler), arrayListOf(afterRouteHandler), callbackHandler)
-        routingTable.addRoute("/mask/*/newroute", HttpMethod.DELETE, routeHandler, arrayListOf(beforeRouteHandler), arrayListOf(afterRouteHandler), callbackHandler)
-        routingTable.addRoute("/newmask/*/routeagain/*/maskagain", HttpMethod.POST, routeHandler, arrayListOf(beforeRouteHandler), arrayListOf(afterRouteHandler), callbackHandler)
+        routingTable.addRoute("/someRoute", HttpMethod.PUT, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
+        routingTable.addRoute("/mask/*/newroute", HttpMethod.DELETE, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
+        routingTable.addRoute("/newmask/*/routeagain/*/maskagain", HttpMethod.POST, routeHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
         assertTrue(routingTable.getFullRouteMap().size == 3)
 
         routingTable.find(HttpMethod.PUT, "/someRoute") ?: fail("It should not be null")
@@ -337,7 +324,6 @@ class RoutingTest {
         assertTrue(routingTable.getFullRouteMap().isEmpty())
 
     }
-
 
     @Test
     fun shouldGetSpringConfig() {
@@ -373,6 +359,5 @@ class RoutingTest {
         assertTrue(jsonObject.getString("spring.datasource.url") == "\${POSTGRES_URL:jdbc:postgresql://localhost:5432/test_database}")
 
     }
-
 
 }

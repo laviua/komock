@@ -1,13 +1,11 @@
-package ua.com.lavi.komock.engine.handler
-
+package ua.com.lavi.komock.engine.handler.callback
 
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
 
 /**
- * Created by Oleksandr Loushkin
+ * Created by Oleksandr Loushkin on 30.03.17.
  */
-
-interface BeforeResponseHandler {
+interface CallbackHandler {
     fun handle(request: Request, response: Response)
 }
