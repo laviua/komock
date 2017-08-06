@@ -5,6 +5,7 @@ import org.eclipse.jetty.server.handler.ContextHandler
 import org.eclipse.jetty.server.handler.HandlerList
 import org.eclipse.jetty.util.ssl.SslContextFactory
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import ua.com.lavi.komock.engine.router.RoutingTable
 import ua.com.lavi.komock.engine.model.SslKeyStore
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
@@ -41,13 +42,18 @@ class JettyServer(val serverProps: HttpServerProperties,
 
     fun start() {
         jettyServer.start()
-        log.debug("${serverProps.name} - listening on ${serverProps.host}:${serverProps.port}")
+        log.info("Started server: ${serverProps.name} on port: ${serverProps.port}. " +
+                "VirtualHosts: ${serverProps.virtualHosts}. " +
+                "MaxThreads: ${serverProps.maxThreads}. " +
+                "MinThreads: ${serverProps.minThreads}. " +
+                "Idle timeout: ${serverProps.idleTimeout} ms")
+        MDC.put("serverName", serverProps.name)
     }
 
     fun stop() {
-        log.debug("Stopping ${serverProps.name}")
+        log.info("Stopping server: ${serverProps.name}")
         jettyServer.stop()
-        log.debug("${serverProps.name} is stopped")
+        log.info("Server: ${serverProps.name} is stopped")
     }
 
     /**

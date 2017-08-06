@@ -1,7 +1,6 @@
 package ua.com.lavi.komock.engine.router
 
 import org.slf4j.LoggerFactory
-import org.slf4j.MDC
 import ua.com.lavi.komock.engine.handler.after.AfterResponseHandler
 import ua.com.lavi.komock.engine.handler.after.EmptyAfterResponseHandlerImpl
 import ua.com.lavi.komock.engine.handler.after.LogAfterResponseHandlerImpl
@@ -11,10 +10,9 @@ import ua.com.lavi.komock.engine.handler.before.LogBeforeResponseHandlerImpl
 import ua.com.lavi.komock.engine.handler.callback.CallbackHandler
 import ua.com.lavi.komock.engine.handler.callback.CallbackHandlerImpl
 import ua.com.lavi.komock.engine.handler.callback.EmptyCallbackHandlerImpl
-import ua.com.lavi.komock.engine.handler.response.RoutedResponseHandlerImpl
 import ua.com.lavi.komock.engine.handler.response.ResponseHandler
+import ua.com.lavi.komock.engine.handler.response.RoutedResponseHandlerImpl
 import ua.com.lavi.komock.engine.model.HttpMethod
-import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 import ua.com.lavi.komock.engine.server.JettyServer
 
@@ -24,7 +22,6 @@ import ua.com.lavi.komock.engine.server.JettyServer
 abstract class AbstractHttpRouter(val server: JettyServer) : HttpRouter {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
-    private val serverProps: HttpServerProperties = server.serverProps
 
     private var isStarted: Boolean = false
 
@@ -32,12 +29,6 @@ abstract class AbstractHttpRouter(val server: JettyServer) : HttpRouter {
         if (!isStarted) {
             server.start()
             isStarted = true
-            log.info("Started server: ${serverProps.name} on port: ${server.serverProps.port}. " +
-                    "VirtualHosts: ${serverProps.virtualHosts}. " +
-                    "MaxThreads: ${serverProps.maxThreads}. " +
-                    "MinThreads: ${serverProps.minThreads}. " +
-                    "Idle timeout: ${serverProps.idleTimeout} ms")
-            MDC.put("serverName", serverProps.name)
         } else {
             log.info("Unable to start because server is already started!")
         }
@@ -47,7 +38,6 @@ abstract class AbstractHttpRouter(val server: JettyServer) : HttpRouter {
         if (isStarted) {
             server.stop()
             isStarted = false
-            log.info("Server is stopped")
         } else {
             log.info("Unable to stop because server was not started!")
         }
