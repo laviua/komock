@@ -104,6 +104,67 @@ Run standalone application:
 
 refreshPeriod: 0 - disable config watcher.
 
+Http Server can be configured in Wiremock style for unit testing like this
+
+**Unit testing**
+
+    import com.mashape.unirest.http.Unirest
+    import org.junit.After
+    import org.junit.Assert.assertEquals
+    import org.junit.Assert.assertTrue
+    import org.junit.Before
+    import org.junit.Test
+    import ua.com.lavi.komock.engine.handler.response.ResponseHandler
+    import ua.com.lavi.komock.engine.model.HttpMethod
+    import ua.com.lavi.komock.engine.model.Request
+    import ua.com.lavi.komock.engine.model.Response
+    import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
+    import ua.com.lavi.komock.engine.router.HttpRouter
+    import ua.com.lavi.komock.engine.router.UnsecuredHttpRouter
+    class HttpRouterKotlinConfigTest {
+
+    private val host = "localhost"
+    private val port = 9090
+
+    private val httpRouter: HttpRouter = UnsecuredHttpRouter(HttpServerProperties()
+                .withHost(host)
+                .withPort(port))
+
+    @Before
+    fun setUp() {
+        httpRouter.start()
+    }
+
+    @Test
+    fun should_run_kotlin_config() {
+
+        httpRouter.addRoute("/testNoContent", HttpMethod.GET, responseHandler = customHandler())
+
+        val response = Unirest.get("http://$host:$port/testNoContent").asString()
+
+        assertTrue(response.status == 200)
+        assertEquals("blablabla", response.body)
+
+    }
+
+    @After
+    fun tearDown() {
+        httpRouter.stop()
+    }
+
+    private fun customHandler(): ResponseHandler {
+        val responseHandler: ResponseHandler = object : ResponseHandler {
+            override fun handle(request: Request, response: Response) {
+                response.code(200)
+                response.contentType("text/plain")
+                response.content = "blablabla"
+            }
+        }
+        return responseHandler
+    }
+
+    }
+
 **Full config**
 
 Callbacks, Mask patterns, cookies, virtualhosts, etc
