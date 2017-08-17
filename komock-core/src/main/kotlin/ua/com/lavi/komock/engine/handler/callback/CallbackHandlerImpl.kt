@@ -40,6 +40,12 @@ class CallbackHandlerImpl(val routeProperties: RouteProperties) : CallbackHandle
                 callbackProperties.requestHeaders.forEach { header -> anyRequest.addHeader(header.key, header.value) }
                 anyRequest.config = requestConfig
 
+                //delay before callback
+                if (callbackProperties.delay > 0) {
+                    log.info("Delay before callback request: ${callbackProperties.delay} ms")
+                    Thread.sleep(callbackProperties.delay)
+                }
+
                 //perform request and log if something went wrong
                 try {
                     val httpResponse: CloseableHttpResponse = httpclient.execute(anyRequest)
