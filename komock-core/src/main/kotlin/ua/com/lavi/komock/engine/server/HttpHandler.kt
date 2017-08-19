@@ -4,8 +4,6 @@ import org.eclipse.jetty.server.Request
 import org.eclipse.jetty.server.session.SessionHandler
 import ua.com.lavi.komock.engine.router.RoutingTable
 import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
 import javax.servlet.ReadListener
 import javax.servlet.ServletInputStream
 import javax.servlet.http.HttpServletRequest
@@ -36,7 +34,7 @@ class HttpHandler : SessionHandler() {
 
         override fun getInputStream(): ServletInputStream {
             if (cachedBytes == null) {
-                cachedBytes = toByteArray(super.getInputStream())
+                cachedBytes = super.getInputStream().readBytes()
             }
             return CachedServletInputStream()
         }
@@ -61,17 +59,6 @@ class HttpHandler : SessionHandler() {
             }
 
             override fun setReadListener(readListener: ReadListener) {}
-        }
-
-        private fun toByteArray(input: InputStream): ByteArray {
-            val os = ByteArrayOutputStream()
-            val buf = ByteArray(1024)
-            var n = input.read(buf)
-            while (n != -1) {
-                os.write(buf, 0, n)
-                n = input.read(buf)
-            }
-            return os.toByteArray()
         }
     }
 }
