@@ -10,7 +10,6 @@ import ua.com.lavi.komock.engine.handler.response.ResponseHandler
  */
 
 class Route(val url: String,
-            val httpMethod: HttpMethod,
             val responseHandler: ResponseHandler,
             val beforeResponseHandler: BeforeResponseHandler,
             val afterResponseHandler: AfterResponseHandler,

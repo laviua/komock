@@ -43,6 +43,9 @@ abstract class AbstractHttpRouter(val server: JettyServer) : HttpRouter {
         }
     }
 
+    /**
+     * Add route by route properties configuration. It will create before, after, callback handlers
+     */
     override fun addRoute(routeProperties: RouteProperties) {
 
         val beforeRouteHandler = if (routeProperties.logRequest) {
@@ -72,14 +75,12 @@ abstract class AbstractHttpRouter(val server: JettyServer) : HttpRouter {
                           httpMethod: HttpMethod,
                           responseHandler: ResponseHandler) {
 
-        server.routingTable().addRoute(url,
+        addRoute(url,
                 httpMethod,
                 responseHandler,
                 EmptyBeforeResponseHandlerImpl(),
                 EmptyAfterResponseHandlerImpl(),
                 EmptyCallbackHandlerImpl())
-
-        log.info("Registered http route: $httpMethod $url")
     }
 
     override fun addRoute(url: String,

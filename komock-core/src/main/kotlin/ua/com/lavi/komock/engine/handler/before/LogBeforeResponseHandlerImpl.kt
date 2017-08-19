@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
  */
-class LogBeforeResponseHandlerImpl(val routeProperties: RouteProperties) : BeforeResponseHandler {
+class LogBeforeResponseHandlerImpl(private val routeProperties: RouteProperties) : BeforeResponseHandler {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
     private val counter: AtomicInteger = AtomicInteger(1)
@@ -27,7 +27,7 @@ class LogBeforeResponseHandlerImpl(val routeProperties: RouteProperties) : Befor
         }
     }
 
-    fun parametersMap(request: Request): MutableMap<String, String> {
+    private fun parametersMap(request: Request): MutableMap<String, String> {
         val parametersMap: MutableMap<String, String> = HashMap()
         parametersMap.put(KEY_COUNTER, counter.getAndIncrement().toString())
         parametersMap.put(KEY_URL, request.httpServletRequest().requestURL.toString())

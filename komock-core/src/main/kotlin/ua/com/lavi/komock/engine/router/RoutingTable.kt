@@ -26,12 +26,12 @@ class RoutingTable {
                  callbackHandler: CallbackHandler) {
         var urlMap: HashMap<HttpMethod, Route>? = routeMap[url]
         if (urlMap == null) {
-            urlMap = HashMap<HttpMethod, Route>()
+            urlMap = HashMap()
         }
         if (find(httpMethod, url) != null) {
-            throw RuntimeException("Route with httpMethod: '" + httpMethod.name + "' and requestedUrl: '" + url + "' is already exists in the routing table")
+            throw RuntimeException("Route with httpMethod: ${httpMethod.name} and requestedUrl: $url is already exists in the routing table")
         }
-        urlMap.put(httpMethod, Route(url, httpMethod, responseHandler, beforeResponseHandler, afterResponseHandler, callbackHandler))
+        urlMap.put(httpMethod, Route(url, responseHandler, beforeResponseHandler, afterResponseHandler, callbackHandler))
         routeMap.put(url, urlMap)
     }
 

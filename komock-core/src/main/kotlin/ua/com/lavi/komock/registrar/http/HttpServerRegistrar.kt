@@ -1,11 +1,10 @@
 package ua.com.lavi.komock.registrar.http
 
 import org.slf4j.LoggerFactory
+import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.router.HttpRouter
 import ua.com.lavi.komock.engine.router.SecuredHttpRouter
 import ua.com.lavi.komock.engine.router.UnsecuredHttpRouter
-import ua.com.lavi.komock.engine.model.SslKeyStore
-import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import java.net.BindException
 import java.util.*
 
@@ -37,7 +36,7 @@ class HttpServerRegistrar {
 
         //SSL SecuredHttpRouter or not
         val router = if (httpServerProperties.ssl.enabled) {
-            SecuredHttpRouter(httpServerProperties, SslKeyStore(httpServerProperties.ssl.keyStoreLocation, httpServerProperties.ssl.keyStorePassword))
+            SecuredHttpRouter(httpServerProperties)
         } else {
             UnsecuredHttpRouter(httpServerProperties)
         }

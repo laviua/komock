@@ -46,7 +46,9 @@ public class HttpRouterJavaConfigTest {
     private static final String MERCHANT_CODE_BAD_REQUEST_ODM07 = "ODM07";
     private static final String MERCHANT_CODE_CONFLICT_ODM08 = "ODM08";
 
-    private final HttpRouter httpRouter = httpRouter();
+    private final HttpRouter httpRouter = new UnsecuredHttpRouter(new HttpServerProperties()
+            .withHost(host)
+            .withPort(port));
 
     @Before
     public void setUp() {
@@ -62,7 +64,8 @@ public class HttpRouterJavaConfigTest {
                 return gson.toJson(value);
             }
         });
-        httpRouter.addRoute(VERIFY_URL, HttpMethod.POST, customHandler());
+
+        httpRouter.addRoute(VERIFY_URL, HttpMethod.POST, custimResponseHandler());
     }
 
     @Test
@@ -110,7 +113,7 @@ public class HttpRouterJavaConfigTest {
         assertEquals(RiskCheckStatus.APPROVED, response.getBody().getStatus());
     }
 
-    private ResponseHandler customHandler() {
+    private ResponseHandler custimResponseHandler() {
         return (request, response) -> {
             Object merchantCode = new JSONObject(request.requestBody()).get(MERCHANT_CODE_PATH);
 
@@ -161,12 +164,5 @@ public class HttpRouterJavaConfigTest {
 
     private OdmRequest odmRequest(String merchantCode) {
         return new OdmRequest(UUID.randomUUID().toString(), merchantCode, BigDecimal.TEN, Currency.getInstance("EUR"));
-    }
-
-
-    private HttpRouter httpRouter() {
-        return new UnsecuredHttpRouter(new HttpServerProperties()
-                .withHost(host)
-                .withPort(port));
     }
 }

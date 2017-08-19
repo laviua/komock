@@ -3,19 +3,21 @@ package ua.com.lavi.komock.registrar.spring
 import com.google.gson.Gson
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.Yaml
-import ua.com.lavi.komock.engine.router.HttpRouter
-import ua.com.lavi.komock.engine.router.SecuredHttpRouter
-import ua.com.lavi.komock.engine.router.UnsecuredHttpRouter
-import ua.com.lavi.komock.engine.model.*
+import ua.com.lavi.komock.engine.model.HttpMethod
+import ua.com.lavi.komock.engine.model.PropertySource
+import ua.com.lavi.komock.engine.model.SpringConfigResponse
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 import ua.com.lavi.komock.engine.model.config.spring.SpringConfigProperties
+import ua.com.lavi.komock.engine.router.HttpRouter
+import ua.com.lavi.komock.engine.router.SecuredHttpRouter
+import ua.com.lavi.komock.engine.router.UnsecuredHttpRouter
+import ua.com.lavi.komock.registrar.FileChangedHandler
+import ua.com.lavi.komock.registrar.FileWatcher
 import java.net.BindException
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.*
-import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 
 /**
@@ -28,13 +30,12 @@ class SpringConfigRegistrar {
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     private val gson = Gson()
-    private val configWatcher = SpringConfigWatcher()
 
     fun register(springConfigProperties: SpringConfigProperties) {
         val httpServerProp: HttpServerProperties = springConfigProperties.httpServer
 
         val router = if (httpServerProp.ssl.enabled) {
-            SecuredHttpRouter(httpServerProp, SslKeyStore(httpServerProp.ssl.keyStoreLocation, httpServerProp.ssl.keyStorePassword))
+            SecuredHttpRouter(httpServerProp)
         } else {
             UnsecuredHttpRouter(httpServerProp)
         }
@@ -48,42 +49,36 @@ class SpringConfigRegistrar {
 
         log.info("Started httpServer: ${httpServerProp.name} on port: ${httpServerProp.port}. virtualHosts: ${httpServerProp.virtualHosts}")
 
-        val springConfigFilePathes = Files.walk(Paths.get(springConfigProperties.sourceFolder))
-                .filter { it.toFile().isFile }
-                .collect(Collectors.toList<Path>())
-
         val profiles = springConfigProperties.profiles
 
-        springConfigFilePathes.forEach({ registerSpringConfigurationPath(it, profiles, router) })
+        val fileList = springConfigProperties.fileList()
+        fileList.forEach({ configFilePath -> registerPath(configFilePath, profiles, router) })
 
         if (springConfigProperties.refreshPeriod > 0) {
 
-            val listener = object : FileListener {
+            val fileListener = object : FileChangedHandler {
                 override fun onChange(filePath: Path) {
-                    unRegisterSpringConfigurationPath(filePath, profiles, router)
-                    registerSpringConfigurationPath(filePath, profiles, router)
+                    unregisterPath(filePath, profiles, router)
+                    registerPath(filePath, profiles, router)
                 }
             }
-
-            configWatcher.watchFiles(springConfigFilePathes, springConfigProperties.refreshPeriod)
-            configWatcher.setListeners(arrayListOf(listener))
-            configWatcher.start()
+            FileWatcher(fileListener, fileList, springConfigProperties.refreshPeriod).start()
         }
 
         //register only enabled routeHolders
-        if (!httpServerProp.routes.isEmpty()) {
+        if (httpServerProp.hasRoutes()) {
             httpServerProp.routes.filter { it.enabled }.forEach { router.addRoute(it) }
         }
 
     }
 
-    private fun registerSpringConfigurationPath(springConfigFilePath: Path,
-                                                profiles: List<String>,
-                                                httpRouter: HttpRouter) {
-        val serviceName = extractFilenameFromPath(springConfigFilePath)
-        val textData = String(Files.readAllBytes(springConfigFilePath), Charsets.UTF_8)
+    private fun registerPath(configFilePath: Path,
+                             profiles: List<String>,
+                             httpRouter: HttpRouter) {
+        val serviceName = extractFilenameFromPath(configFilePath)
+        val textData = String(Files.readAllBytes(configFilePath), Charsets.UTF_8)
         val content: Map<String, Any> = buildFlatMap(textData)
-        val propertySources = buildPropertySources(springConfigFilePath, content)
+        val propertySources = buildPropertySources(configFilePath, content)
         val springConfigResponse = SpringConfigResponse(serviceName, profiles, null, null, propertySources)
 
         val jsonConfigResponse = gson.toJson(springConfigResponse)
@@ -100,10 +95,10 @@ class SpringConfigRegistrar {
             httpRouter.addRoute(routeServerProperties)
         }
 
-        log.info("Registered spring config file: $springConfigFilePath")
+        log.info("Registered spring config file: $configFilePath")
     }
 
-    private fun unRegisterSpringConfigurationPath(springConfigFilePath: Path, profiles: List<String>, httpRouter: HttpRouter) {
+    private fun unregisterPath(springConfigFilePath: Path, profiles: List<String>, httpRouter: HttpRouter) {
         profiles.forEach({
             val serviceName = extractFilenameFromPath(springConfigFilePath)
             val url = "/$serviceName/$it"

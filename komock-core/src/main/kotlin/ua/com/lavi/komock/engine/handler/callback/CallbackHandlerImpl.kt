@@ -14,7 +14,7 @@ import kotlin.concurrent.thread
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
  */
-class CallbackHandlerImpl(val routeProperties: RouteProperties) : CallbackHandler {
+class CallbackHandlerImpl(private val routeProperties: RouteProperties) : CallbackHandler {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 

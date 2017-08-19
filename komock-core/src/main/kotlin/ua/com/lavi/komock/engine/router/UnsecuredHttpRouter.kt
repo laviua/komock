@@ -8,5 +8,4 @@ import ua.com.lavi.komock.engine.server.JettyServer
  * Created by Oleksandr Loushkin on 05.08.17.
  */
 
-class UnsecuredHttpRouter(serverProps: HttpServerProperties)
-    : AbstractHttpRouter(JettyServer(serverProps, HttpHandler()))
+class UnsecuredHttpRouter(serverProps: HttpServerProperties) : AbstractHttpRouter(JettyServer(serverProps, HttpHandler()))

@@ -1,5 +1,7 @@
 package ua.com.lavi.komock.engine.model.config.http
 
+import ua.com.lavi.komock.engine.model.SslKeyStore
+
 /**
  * Created by Oleksandr Loushkin
  */
@@ -25,6 +27,17 @@ open class HttpServerProperties {
     fun withPort(port: Int): HttpServerProperties {
         this.port = port
         return this
+    }
+
+    fun hasRoutes(): Boolean {
+        if (routes.isEmpty()) {
+            return false
+        }
+        return true
+    }
+
+    fun keyStore(): SslKeyStore {
+        return SslKeyStore(ssl.keyStoreLocation, ssl.keyStorePassword)
     }
 
 }

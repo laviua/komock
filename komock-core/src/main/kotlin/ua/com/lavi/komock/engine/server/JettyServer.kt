@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
  * Created by Oleksandr Loushkin
  */
 
-class JettyServer(val serverProps: HttpServerProperties,
+class JettyServer(private val serverProps: HttpServerProperties,
                   private val httpHandler: HttpHandler,
                   private val sslKeyStore: SslKeyStore?) {
 
@@ -34,7 +34,7 @@ class JettyServer(val serverProps: HttpServerProperties,
         val contextHandler = ContextHandler(serverProps.contextPath)
         contextHandler.virtualHosts = serverProps.virtualHosts.toTypedArray()
         contextHandler.handler = httpHandler
-        val handlerList: HandlerList = HandlerList()
+        val handlerList = HandlerList()
         handlerList.handlers = arrayOf(contextHandler)
         jettyServer.handler = handlerList
         jettyServer.connectors = arrayOf(buildServerConnector(serverProps.host, serverProps.port, sslKeyStore))

@@ -63,7 +63,7 @@ class HttpHandler : SessionHandler() {
             override fun setReadListener(readListener: ReadListener) {}
         }
 
-        fun toByteArray(input: InputStream): ByteArray {
+        private fun toByteArray(input: InputStream): ByteArray {
             val os = ByteArrayOutputStream()
             val buf = ByteArray(1024)
             var n = input.read(buf)

@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse
  * Should be ThreadSafe
  * Created by Oleksandr Loushkin
  */
-class RoutingFilter(val routingTable: RoutingTable) : Filter {
+class RoutingFilter(private val routingTable: RoutingTable) : Filter {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
@@ -40,7 +40,7 @@ class RoutingFilter(val routingTable: RoutingTable) : Filter {
             log.info("Requested route $requestUri is not mapped")
             httpServletResponse.status = HttpServletResponse.SC_NOT_FOUND
         } else {
-            val request: Request = Request(httpServletRequest)
+            val request = Request(httpServletRequest)
             route.beforeResponseHandler.handle(request, response)
             route.responseHandler.handle(request, response)
             route.afterResponseHandler.handle(request, response)
@@ -51,7 +51,7 @@ class RoutingFilter(val routingTable: RoutingTable) : Filter {
         chain?.doFilter(httpServletRequest, httpServletResponse)
     }
 
-    fun serializeContentToResponse(httpServletRequest: HttpServletRequest, httpServletResponse: HttpServletResponse, content: String) {
+    private fun serializeContentToResponse(httpServletRequest: HttpServletRequest, httpServletResponse: HttpServletResponse, content: String) {
         if (!httpServletResponse.isCommitted) {
             val responseStream = gzip(httpServletRequest, httpServletResponse)
             responseStream.write(content.toByteArray())
@@ -60,7 +60,7 @@ class RoutingFilter(val routingTable: RoutingTable) : Filter {
         }
     }
 
-    fun gzip(httpRequest: HttpServletRequest, httpResponse: HttpServletResponse): OutputStream {
+    private fun gzip(httpRequest: HttpServletRequest, httpResponse: HttpServletResponse): OutputStream {
         var responseStream: OutputStream = httpResponse.outputStream
 
         if (isGzipAccepted(httpRequest) && httpResponse.getHeaders("Content-Encoding").contains("gzip")) {
