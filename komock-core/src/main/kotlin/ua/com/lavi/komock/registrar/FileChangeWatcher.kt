@@ -10,9 +10,9 @@ import kotlin.concurrent.scheduleAtFixedRate
 /**
  * Created by Oleksandr Loushkin on 01.04.17.
  */
-class FileWatcher(private val fileChangedHandler: FileChangedHandler,
-                  private val files: List<Path>,
-                  private val period: Long) {
+class FileChangeWatcher(private val fileChangeHandler: FileChangeHandler,
+                        private val files: List<Path>,
+                        private val period: Long) {
 
     private var threadName = this.javaClass.simpleName + "_" + System.currentTimeMillis()
     private val log = LoggerFactory.getLogger(this.javaClass)
@@ -32,7 +32,7 @@ class FileWatcher(private val fileChangedHandler: FileChangedHandler,
                     if (oldHash != currentHash) {
                         log.debug("File has been changed! $currentHash")
                         fileHashes.put(file, currentHash)
-                        fileChangedHandler.onChange(file)
+                        fileChangeHandler.onFileChange(file)
                     }
                 }
             }

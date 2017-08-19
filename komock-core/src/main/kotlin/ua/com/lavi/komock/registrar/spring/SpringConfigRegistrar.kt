@@ -12,8 +12,8 @@ import ua.com.lavi.komock.engine.model.config.spring.SpringConfigProperties
 import ua.com.lavi.komock.engine.router.HttpRouter
 import ua.com.lavi.komock.engine.router.SecuredHttpRouter
 import ua.com.lavi.komock.engine.router.UnsecuredHttpRouter
-import ua.com.lavi.komock.registrar.FileChangedHandler
-import ua.com.lavi.komock.registrar.FileWatcher
+import ua.com.lavi.komock.registrar.FileChangeHandler
+import ua.com.lavi.komock.registrar.FileChangeWatcher
 import java.net.BindException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -56,13 +56,13 @@ class SpringConfigRegistrar {
 
         if (springConfigProperties.refreshPeriod > 0) {
 
-            val fileListener = object : FileChangedHandler {
-                override fun onChange(filePath: Path) {
+            val fileListener = object : FileChangeHandler {
+                override fun onFileChange(filePath: Path) {
                     unregisterPath(filePath, profiles, router)
                     registerPath(filePath, profiles, router)
                 }
             }
-            FileWatcher(fileListener, fileList, springConfigProperties.refreshPeriod).start()
+            FileChangeWatcher(fileListener, fileList, springConfigProperties.refreshPeriod).start()
         }
 
         //register only enabled routeHolders
@@ -118,10 +118,10 @@ class SpringConfigRegistrar {
         return convertPropertyMap(map, "")
     }
 
-    private fun convertPropertyMap(input: Map<String, Any>, key: String): Map<String, Any> {
+    private fun convertPropertyMap(inputMap: Map<String, Any>, key: String): Map<String, Any> {
         val res = TreeMap<String, Any>()
 
-        for ((key1, value) in input) {
+        for ((key1, value) in inputMap) {
             val newKey = if (key == "") key1 else key + "." + key1
 
             if (value is Map<*, *>) {
