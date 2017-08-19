@@ -8,7 +8,7 @@ import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 /**
  * Created by Oleksandr Loushkin on 19.08.17.
  */
-class SecuredJettyServer(serverProps: HttpServerProperties, httpHandler: HttpHandler) : AbstractJettyServer(serverProps, httpHandler) {
+class SecuredJettyServer(serverProps: HttpServerProperties) : AbstractJettyServer(serverProps, HttpHandler()) {
 
     override fun buildServerConnector(): ServerConnector {
         val httpFactory = HttpConnectionFactory(httpConfig())
