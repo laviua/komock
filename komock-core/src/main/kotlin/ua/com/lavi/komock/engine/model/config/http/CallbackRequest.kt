@@ -6,7 +6,7 @@ import java.net.URI
 /**
  * Created by Oleksandr Loushkin on 30.03.17.
  */
-class AnyRequest(private val methodName: String, private val uri: String) : HttpEntityEnclosingRequestBase() {
+class CallbackRequest(private val methodName: String, private val uri: String) : HttpEntityEnclosingRequestBase() {
 
     override fun getMethod(): String {
         return methodName

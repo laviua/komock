@@ -7,7 +7,8 @@ import org.apache.http.impl.client.HttpClients
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
-import ua.com.lavi.komock.engine.model.config.http.AnyRequest
+import ua.com.lavi.komock.engine.model.config.http.CallbackProperties
+import ua.com.lavi.komock.engine.model.config.http.CallbackRequest
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 import kotlin.concurrent.thread
 
@@ -24,36 +25,38 @@ class CallbackHandlerImpl(private val routeProperties: RouteProperties) : Callba
             //callback request will be invoked in the another thread
             thread {
                 val callbackProperties = routeProperties.callback
-
-                val httpclient = HttpClients.createMinimal()
-                val anyRequest = AnyRequest(callbackProperties.httpMethod, callbackProperties.url)
-                val requestConfig = RequestConfig.custom()
-                        .setConnectTimeout(callbackProperties.connectTimeout)
-                        .setConnectionRequestTimeout(callbackProperties.connectionRequestTimeout)
-                        .setSocketTimeout(callbackProperties.socketTimeout)
-                        .build()
-
                 // add body to the request. it needs for the POST callback
-                if (callbackProperties.requestBody.isNotBlank()) {
-                    anyRequest.entity = ByteArrayEntity(callbackProperties.requestBody.toByteArray(Charsets.UTF_8))
-                }
-                callbackProperties.requestHeaders.forEach { header -> anyRequest.addHeader(header.key, header.value) }
-                anyRequest.config = requestConfig
-
+                val callbackRequest = callbackRequest(callbackProperties)
                 //delay before callback
                 if (callbackProperties.delay > 0) {
                     log.info("Delay before callback request: ${callbackProperties.delay} ms")
                     Thread.sleep(callbackProperties.delay)
                 }
+                val httpclient = HttpClients.createMinimal()
 
                 //perform request and log if something went wrong
                 try {
-                    val httpResponse: CloseableHttpResponse = httpclient.execute(anyRequest)
+                    val httpResponse: CloseableHttpResponse = httpclient.execute(callbackRequest)
                     log.info("Request to: {}. Got response: {}", callbackProperties.url, httpResponse.statusLine.toString())
                 } catch (t: Throwable) {
                     log.warn(t.message)
                 }
             }
         }
+    }
+
+
+    private fun callbackRequest(callbackProperties: CallbackProperties) : CallbackRequest {
+        val anyRequest = CallbackRequest(callbackProperties.httpMethod, callbackProperties.url)
+        callbackProperties.requestHeaders.forEach { header -> anyRequest.addHeader(header.key, header.value) }
+        if (callbackProperties.requestBody.isNotBlank()) {
+            anyRequest.entity = ByteArrayEntity(callbackProperties.requestBody.toByteArray(Charsets.UTF_8))
+        }
+        anyRequest.config = RequestConfig.custom()
+                .setConnectTimeout(callbackProperties.connectTimeout)
+                .setConnectionRequestTimeout(callbackProperties.connectionRequestTimeout)
+                .setSocketTimeout(callbackProperties.socketTimeout)
+                .build()
+        return anyRequest
     }
 }

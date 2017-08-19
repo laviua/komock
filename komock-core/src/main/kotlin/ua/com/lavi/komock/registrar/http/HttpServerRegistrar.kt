@@ -21,12 +21,10 @@ class HttpServerRegistrar {
 
         private val routers: MutableList<HttpRouter> = ArrayList()
 
-        @JvmStatic
         fun startAllServers() {
             routers.forEach(HttpRouter::start)
         }
 
-        @JvmStatic
         fun stopAllServers() {
             routers.forEach(HttpRouter::stop)
         }
@@ -51,8 +49,6 @@ class HttpServerRegistrar {
         }
 
         //register only enabled routes
-        if (!httpServerProperties.routes.isEmpty()) {
-            httpServerProperties.routes.filter { it.enabled }.forEach { router.addRoute(it) }
-        }
+        httpServerProperties.routes.filter { it.enabled }.forEach { router.addRoute(it) }
     }
 }
