@@ -60,7 +60,7 @@ abstract class AbstractHttpRouter(val server: JettyServer) : HttpRouter {
         }
 
         val responseHandler = RoutedResponseHandlerImpl(routeProperties)
-        val callbackHandler = CallbackHandlerImpl(routeProperties)
+        val callbackHandler = CallbackHandlerImpl(routeProperties.callback)
 
         val httpMethod = HttpMethod.retrieveMethod(routeProperties.httpMethod)
         val url = routeProperties.url

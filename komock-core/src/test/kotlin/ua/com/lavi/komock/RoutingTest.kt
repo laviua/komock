@@ -52,8 +52,7 @@ class RoutingTest {
     @Test
     fun should_ok_testCallback() {
 
-        val response = Unirest.get("http://127.0.0.1:8081/testcallback")
-                .asJson()
+        val response = Unirest.get("http://127.0.0.1:8081/testcallback").asJson()
 
         assertTrue(response.headers["Content-Type"]!![0] == "application/json")
         assertTrue(response.status == 200)
@@ -177,8 +176,7 @@ class RoutingTest {
     @Test
     fun should_ok_get_json() {
 
-        val response = Unirest.get("http://127.0.0.1:8081/testGetJson")
-                .asJson()
+        val response = Unirest.get("http://127.0.0.1:8081/testGetJson").asJson()
 
         assertTrue(response.headers["Content-Type"]!![0] == "application/json")
         assertTrue(response.status == 200)
@@ -188,8 +186,7 @@ class RoutingTest {
     @Test
     fun should_ok_post_json_with_headers() {
 
-        val response = Unirest.post("http://127.0.0.1:8081/oauth/token")
-                .asJson()
+        val response = Unirest.post("http://127.0.0.1:8081/oauth/token").asJson()
 
         assertTrue(response.headers["Content-Type"]!![0] == "application/json")
         assertTrue(response.status == 200)
@@ -201,8 +198,7 @@ class RoutingTest {
     @Test
     fun should_delete_text_plain_with_text_ok() {
 
-        val response = Unirest.delete("http://127.0.0.1:8081/deleteResource")
-                .asString()
+        val response = Unirest.delete("http://127.0.0.1:8081/deleteResource").asString()
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
@@ -212,8 +208,7 @@ class RoutingTest {
     @Test
     fun should_internal_error_patch() {
 
-        val response = Unirest.patch("http://127.0.0.1:8081/patchResource")
-                .asJson()
+        val response = Unirest.patch("http://127.0.0.1:8081/patchResource").asJson()
 
         assertTrue(response.headers["Content-Type"]!![0] == "application/json")
         assertTrue(response.status == 500)
@@ -223,8 +218,7 @@ class RoutingTest {
     @Test
     fun should_ok_give_cookies() {
 
-        val response = Unirest.get("http://127.0.0.1:8081/giveMeCookies")
-                .asString()
+        val response = Unirest.get("http://127.0.0.1:8081/giveMeCookies").asString()
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
@@ -254,8 +248,7 @@ class RoutingTest {
 
         Unirest.setHttpClient(sslHttpClient)
 
-        val response = Unirest.get("https://127.0.0.1:8082/testGetText")
-                .asString()
+        val response = Unirest.get("https://127.0.0.1:8082/testGetText").asString()
 
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
@@ -336,8 +329,7 @@ class RoutingTest {
 
         Unirest.setHttpClient(sslHttpClient)
 
-        val response = Unirest.get("https://127.0.0.1:8888/example-service/dev")
-                .asJson()
+        val response = Unirest.get("https://127.0.0.1:8888/example-service/dev").asJson()
 
         assertTrue(response.headers["Content-Type"]!![0] == "application/json")
         assertTrue(response.status == 200)
