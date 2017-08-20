@@ -11,7 +11,7 @@ import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
-import ua.com.lavi.komock.engine.server.MockServer
+import ua.com.lavi.komock.engine.server.handler.MockServer
 import ua.com.lavi.komock.engine.server.UnsecuredMockServer
 
 class HttpRouterKotlinConfigTest {

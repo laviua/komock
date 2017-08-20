@@ -1,4 +1,4 @@
-package ua.com.lavi.komock.engine.server
+package ua.com.lavi.komock.engine.server.handler
 
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.model.HttpMethod
@@ -12,20 +12,13 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * This is an entry point of thw application
- * Serialize route properties content to the http response
- * Should be ThreadSafe
  * Created by Oleksandr Loushkin
  */
-class RoutingFilter(private val routingTable: RoutingTable) : Filter {
+class RoutingFilter(private val routingTable: RoutingTable)  {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    override fun init(config: FilterConfig) {
-        //
-    }
-
-    override fun doFilter(servletRequest: ServletRequest,
+    fun doFilter(servletRequest: ServletRequest,
                           servletResponse: ServletResponse,
                           chain: FilterChain?) {
         val httpServletRequest = servletRequest as HttpServletRequest
@@ -77,6 +70,4 @@ class RoutingFilter(private val routingTable: RoutingTable) : Filter {
         }
         return false
     }
-
-    override fun destroy() {}
 }

@@ -1,6 +1,7 @@
 package ua.com.lavi.komock
 
 import com.mashape.unirest.http.Unirest
+import com.mashape.unirest.http.exceptions.UnirestException
 import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.ssl.SSLContextBuilder
@@ -9,13 +10,13 @@ import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import org.yaml.snakeyaml.Yaml
-import ua.com.lavi.komock.engine.server.RoutingTable
 import ua.com.lavi.komock.engine.handler.after.EmptyAfterResponseHandlerImpl
 import ua.com.lavi.komock.engine.handler.before.EmptyBeforeResponseHandlerImpl
 import ua.com.lavi.komock.engine.handler.callback.EmptyCallbackHandlerImpl
 import ua.com.lavi.komock.engine.handler.response.EmptyResponseHandler
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.config.KomockConfiguration
+import ua.com.lavi.komock.engine.server.handler.RoutingTable
 import ua.com.lavi.komock.registrar.http.HttpServerRegistrar
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -32,7 +33,8 @@ class RoutingTest {
 
         private const val MOCK_EXAMPLE_YAML = "mock_example.yml"
 
-        @BeforeClass @JvmStatic
+        @BeforeClass
+        @JvmStatic
         fun startServer() {
             runApplication(MOCK_EXAMPLE_YAML)
         }
@@ -43,7 +45,8 @@ class RoutingTest {
             }
         }
 
-        @AfterClass @JvmStatic
+        @AfterClass
+        @JvmStatic
         fun stopServer() {
             HttpServerRegistrar.stopAllServers()
         }
@@ -253,6 +256,11 @@ class RoutingTest {
         assertTrue(response.headers["Content-Type"]!![0] == "text/plain")
         assertTrue(response.status == 200)
         assertEquals(response.body, "Content from the second server")
+    }
+
+    @Test(expected = UnirestException::class)
+    fun should_not_ok_get_plaintext_with_content_on_second_secured_server() {
+        Unirest.get("http://127.0.0.1:8082/testGetText").asString()
     }
 
     @Test

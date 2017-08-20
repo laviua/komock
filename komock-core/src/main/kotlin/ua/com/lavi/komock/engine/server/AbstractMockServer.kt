@@ -5,6 +5,7 @@ import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.ServerConnector
 import org.eclipse.jetty.server.handler.ContextHandler
 import org.eclipse.jetty.server.handler.HandlerList
+import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import ua.com.lavi.komock.engine.handler.after.AfterResponseHandler
@@ -21,17 +22,20 @@ import ua.com.lavi.komock.engine.handler.response.RoutedResponseHandlerImpl
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
+import ua.com.lavi.komock.engine.server.handler.HttpHandler
+import ua.com.lavi.komock.engine.server.handler.MockServer
+import ua.com.lavi.komock.engine.server.handler.RoutingTable
 import java.util.concurrent.TimeUnit
 
 /**
  * Created by Oleksandr Loushkin
  */
 
-abstract class AbstractMockServer(val serverProps: HttpServerProperties,
-                                  val httpHandler: HttpHandler) : MockServer {
+abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockServer {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
     private var isStarted: Boolean = false
+    private val routingTable: RoutingTable = RoutingTable()
 
     var jettyServer: Server = Server(NamedQueuedThreadPool(
             serverProps.maxThreads,
@@ -43,7 +47,7 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties,
     init {
         val contextHandler = ContextHandler(serverProps.contextPath)
         contextHandler.virtualHosts = serverProps.virtualHosts.toTypedArray()
-        contextHandler.handler = httpHandler
+        contextHandler.handler = HttpHandler(routingTable)
         val handlerList = HandlerList()
         handlerList.handlers = arrayOf(contextHandler)
         jettyServer.handler = handlerList
@@ -146,13 +150,13 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties,
                           afterRouteHandler: AfterResponseHandler,
                           callbackHandler: CallbackHandler) {
 
-        httpHandler.routingTable.addRoute(url, httpMethod, responseHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
+        routingTable.addRoute(url, httpMethod, responseHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
 
         log.info("Registered http route: $httpMethod $url")
     }
 
     override fun deleteRoute(url: String, httpMethod: HttpMethod) {
-        httpHandler.routingTable.deleteRoute(url, httpMethod)
+        routingTable.deleteRoute(url, httpMethod)
         log.info("Removed route: $httpMethod $url")
     }
 
@@ -172,6 +176,14 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties,
         val httpConfig = HttpConfiguration()
         httpConfig.sendServerVersion = false // do not show jetty version
         return httpConfig
+    }
+
+    private inner class NamedQueuedThreadPool(maxThreads: Int, minThreads: Int, idleTimeout: Int, threadName: String) :
+            QueuedThreadPool(maxThreads, minThreads, idleTimeout) {
+
+        init {
+            name = threadName
+        }
     }
 }
 

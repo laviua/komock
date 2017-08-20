@@ -1,4 +1,4 @@
-package ua.com.lavi.komock.engine.server
+package ua.com.lavi.komock.engine.server.handler
 
 import ua.com.lavi.komock.engine.handler.after.AfterResponseHandler
 import ua.com.lavi.komock.engine.handler.before.BeforeResponseHandler
