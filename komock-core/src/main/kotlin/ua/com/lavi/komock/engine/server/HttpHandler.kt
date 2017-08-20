@@ -2,7 +2,6 @@ package ua.com.lavi.komock.engine.server
 
 import org.eclipse.jetty.server.Request
 import org.eclipse.jetty.server.session.SessionHandler
-import ua.com.lavi.komock.engine.router.RoutingTable
 import java.io.ByteArrayInputStream
 import javax.servlet.ReadListener
 import javax.servlet.ServletInputStream

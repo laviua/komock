@@ -7,7 +7,7 @@ import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 /**
  * Created by Oleksandr Loushkin on 19.08.17.
  */
-class UnsecuredJettyServer(serverProps: HttpServerProperties) : AbstractJettyServer(serverProps, HttpHandler()) {
+class UnsecuredMockServer(serverProps: HttpServerProperties) : AbstractMockServer(serverProps, HttpHandler()) {
 
     override fun buildServerConnector(): ServerConnector {
         val httpFactory = HttpConnectionFactory(httpConfig())

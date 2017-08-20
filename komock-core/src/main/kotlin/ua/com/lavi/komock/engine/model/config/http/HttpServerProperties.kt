@@ -19,6 +19,11 @@ open class HttpServerProperties {
     var maxThreads: Int = 100
     var idleTimeout: Int = 60000
 
+    fun withName(name: String): HttpServerProperties {
+        this.name = name
+        return this
+    }
+
     fun withHost(host: String): HttpServerProperties {
         this.host = host
         return this
@@ -26,6 +31,11 @@ open class HttpServerProperties {
 
     fun withPort(port: Int): HttpServerProperties {
         this.port = port
+        return this
+    }
+
+    fun withSsl(sslServerProperties: SSLServerProperties): HttpServerProperties {
+        this.ssl = sslServerProperties
         return this
     }
 

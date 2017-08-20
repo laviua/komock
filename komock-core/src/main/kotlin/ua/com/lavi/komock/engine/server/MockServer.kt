@@ -1,4 +1,4 @@
-package ua.com.lavi.komock.engine.router
+package ua.com.lavi.komock.engine.server
 
 import ua.com.lavi.komock.engine.handler.after.AfterResponseHandler
 import ua.com.lavi.komock.engine.handler.before.BeforeResponseHandler
@@ -8,11 +8,14 @@ import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 
 /**
- * Created by Oleksandr Loushkin on 05.08.17.
+ * Created by Oleksandr Loushkin on 19.08.17.
  */
-interface HttpRouter {
+interface MockServer {
+
     fun start()
     fun stop()
+    fun addVirtualHosts(virtualHosts: List<String>)
+    fun removeVirtualHosts(virtualHosts: List<String>)
     fun addRoute(routeProperties: RouteProperties)
     fun addRoute(url: String,
                  httpMethod: HttpMethod,
@@ -27,6 +30,4 @@ interface HttpRouter {
 
     fun deleteRoute(url: String, httpMethod: HttpMethod)
     fun deleteRoute(routeProperties: RouteProperties)
-    fun addVirtualHosts(virtualHosts: List<String>)
-    fun deleteVirtualHosts(virtualHosts: List<String>)
 }

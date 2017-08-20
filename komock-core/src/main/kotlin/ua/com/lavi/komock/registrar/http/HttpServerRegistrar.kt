@@ -2,9 +2,9 @@ package ua.com.lavi.komock.registrar.http
 
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
-import ua.com.lavi.komock.engine.router.HttpRouter
-import ua.com.lavi.komock.engine.router.SecuredHttpRouter
-import ua.com.lavi.komock.engine.router.UnsecuredHttpRouter
+import ua.com.lavi.komock.engine.server.MockServer
+import ua.com.lavi.komock.engine.server.SecuredMockServer
+import ua.com.lavi.komock.engine.server.UnsecuredMockServer
 import java.net.BindException
 import java.util.*
 
@@ -19,14 +19,14 @@ class HttpServerRegistrar {
     //Helper object.
     companion object {
 
-        private val routers: MutableList<HttpRouter> = ArrayList()
+        private val ROUTERS: MutableList<MockServer> = ArrayList()
 
         fun startAllServers() {
-            routers.forEach(HttpRouter::start)
+            ROUTERS.forEach(MockServer::start)
         }
 
         fun stopAllServers() {
-            routers.forEach(HttpRouter::stop)
+            ROUTERS.forEach(MockServer::stop)
         }
     }
 
@@ -34,12 +34,12 @@ class HttpServerRegistrar {
 
         //SSL SecuredHttpRouter or not
         val router = if (httpServerProperties.ssl.enabled) {
-            SecuredHttpRouter(httpServerProperties)
+            SecuredMockServer(httpServerProperties)
         } else {
-            UnsecuredHttpRouter(httpServerProperties)
+            UnsecuredMockServer(httpServerProperties)
         }
 
-        routers.add(router)
+        ROUTERS.add(router)
 
         try {
             router.start()

@@ -9,7 +9,7 @@ import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import org.yaml.snakeyaml.Yaml
-import ua.com.lavi.komock.engine.router.RoutingTable
+import ua.com.lavi.komock.engine.server.RoutingTable
 import ua.com.lavi.komock.engine.handler.after.EmptyAfterResponseHandlerImpl
 import ua.com.lavi.komock.engine.handler.before.EmptyBeforeResponseHandlerImpl
 import ua.com.lavi.komock.engine.handler.callback.EmptyCallbackHandlerImpl

@@ -4,7 +4,6 @@ import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
-import ua.com.lavi.komock.engine.router.RoutingTable
 import java.io.OutputStream
 import java.util.*
 import java.util.zip.GZIPOutputStream

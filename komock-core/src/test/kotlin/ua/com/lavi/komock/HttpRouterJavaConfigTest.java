@@ -1,8 +1,6 @@
 package ua.com.lavi.komock;
 
-import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONObject;
@@ -12,8 +10,8 @@ import org.junit.Test;
 import ua.com.lavi.komock.engine.handler.response.ResponseHandler;
 import ua.com.lavi.komock.engine.model.HttpMethod;
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties;
-import ua.com.lavi.komock.engine.router.HttpRouter;
-import ua.com.lavi.komock.engine.router.UnsecuredHttpRouter;
+import ua.com.lavi.komock.engine.server.MockServer;
+import ua.com.lavi.komock.engine.server.UnsecuredMockServer;
 import ua.com.lavi.komock.model.odm.OdmRemoteApiResponse;
 import ua.com.lavi.komock.model.odm.OdmRequest;
 import ua.com.lavi.komock.model.odm.RiskCheckStatus;
@@ -46,26 +44,20 @@ public class HttpRouterJavaConfigTest {
     private static final String MERCHANT_CODE_BAD_REQUEST_ODM07 = "ODM07";
     private static final String MERCHANT_CODE_CONFLICT_ODM08 = "ODM08";
 
-    private final HttpRouter httpRouter = new UnsecuredHttpRouter(new HttpServerProperties()
+    private final MockServer httpRouter = new UnsecuredMockServer(new HttpServerProperties()
             .withHost(host)
             .withPort(port));
 
     @Before
     public void setUp() {
         httpRouter.start();
-        Unirest.setObjectMapper(new ObjectMapper() {
-            private Gson gson = new Gson();
+        Unirest.setObjectMapper(GsonObjectMapper.INSTANCE);
+        httpRouter.addRoute(VERIFY_URL, HttpMethod.POST, customResponseHandler());
+    }
 
-            public <T> T readValue(String value, Class<T> valueType) {
-                return gson.fromJson(value, valueType);
-            }
-
-            public String writeValue(Object value) {
-                return gson.toJson(value);
-            }
-        });
-
-        httpRouter.addRoute(VERIFY_URL, HttpMethod.POST, custimResponseHandler());
+    @After
+    public void tearDown() {
+        httpRouter.stop();
     }
 
     @Test
@@ -113,7 +105,7 @@ public class HttpRouterJavaConfigTest {
         assertEquals(RiskCheckStatus.APPROVED, response.getBody().getStatus());
     }
 
-    private ResponseHandler custimResponseHandler() {
+    private ResponseHandler customResponseHandler() {
         return (request, response) -> {
             Object merchantCode = new JSONObject(request.requestBody()).get(MERCHANT_CODE_PATH);
 
@@ -155,11 +147,6 @@ public class HttpRouterJavaConfigTest {
                 response.code(409);
             }
         };
-    }
-
-    @After
-    public void tearDown() {
-        httpRouter.stop();
     }
 
     private OdmRequest odmRequest(String merchantCode) {

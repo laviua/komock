@@ -9,9 +9,9 @@ import ua.com.lavi.komock.engine.model.SpringConfigResponse
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 import ua.com.lavi.komock.engine.model.config.spring.SpringConfigProperties
-import ua.com.lavi.komock.engine.router.HttpRouter
-import ua.com.lavi.komock.engine.router.SecuredHttpRouter
-import ua.com.lavi.komock.engine.router.UnsecuredHttpRouter
+import ua.com.lavi.komock.engine.server.MockServer
+import ua.com.lavi.komock.engine.server.SecuredMockServer
+import ua.com.lavi.komock.engine.server.UnsecuredMockServer
 import ua.com.lavi.komock.registrar.FileChangeHandler
 import ua.com.lavi.komock.registrar.FileChangeWatcher
 import java.net.BindException
@@ -35,9 +35,9 @@ class SpringConfigRegistrar {
         val httpServerProp: HttpServerProperties = springConfigProperties.httpServer
 
         val router = if (httpServerProp.ssl.enabled) {
-            SecuredHttpRouter(httpServerProp)
+            SecuredMockServer(httpServerProp)
         } else {
-            UnsecuredHttpRouter(httpServerProp)
+            UnsecuredMockServer(httpServerProp)
         }
 
         try {
@@ -74,7 +74,7 @@ class SpringConfigRegistrar {
 
     private fun registerPath(configFilePath: Path,
                              profiles: List<String>,
-                             httpRouter: HttpRouter) {
+                             server: MockServer) {
         val serviceName = extractFilenameFromPath(configFilePath)
         val textData = String(Files.readAllBytes(configFilePath), Charsets.UTF_8)
         val content: Map<String, Any> = buildFlatMap(textData)
@@ -92,17 +92,17 @@ class SpringConfigRegistrar {
             routeServerProperties.contentType = "application/json"
             routeServerProperties.url = "/$serviceName/$profile"
 
-            httpRouter.addRoute(routeServerProperties)
+            server.addRoute(routeServerProperties)
         }
 
         log.info("Registered spring config file: $configFilePath")
     }
 
-    private fun unregisterPath(springConfigFilePath: Path, profiles: List<String>, httpRouter: HttpRouter) {
+    private fun unregisterPath(springConfigFilePath: Path, profiles: List<String>, server: MockServer) {
         profiles.forEach({
             val serviceName = extractFilenameFromPath(springConfigFilePath)
             val url = "/$serviceName/$it"
-            httpRouter.deleteRoute(url, HttpMethod.GET)
+            server.deleteRoute(url, HttpMethod.GET)
         })
     }
 

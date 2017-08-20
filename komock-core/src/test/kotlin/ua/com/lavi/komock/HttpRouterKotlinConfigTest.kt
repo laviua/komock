@@ -11,15 +11,17 @@ import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
-import ua.com.lavi.komock.engine.router.HttpRouter
-import ua.com.lavi.komock.engine.router.UnsecuredHttpRouter
+import ua.com.lavi.komock.engine.server.MockServer
+import ua.com.lavi.komock.engine.server.UnsecuredMockServer
 
 class HttpRouterKotlinConfigTest {
 
     private val host = "localhost"
     private val port = 9090
 
-    private val httpRouter: HttpRouter = httpRouter()
+    private val httpRouter: MockServer = UnsecuredMockServer(HttpServerProperties()
+            .withHost(host)
+            .withPort(port))
 
     @Before
     fun setUp() {
@@ -52,11 +54,4 @@ class HttpRouterKotlinConfigTest {
         }
         return responseHandler
     }
-
-    private fun httpRouter() : HttpRouter {
-        return UnsecuredHttpRouter(HttpServerProperties()
-                .withHost(host)
-                .withPort(port))
-    }
-
 }
