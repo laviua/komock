@@ -1,26 +1,22 @@
 package ua.com.lavi.komock.engine.server.handler
 
-import org.eclipse.jetty.server.Request
-import org.eclipse.jetty.server.session.SessionHandler
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * Created by Oleksandr Loushkin
- * This is an entry point of thw application
- * Serialize route properties content to the http response
+ * Default http handler
  */
-
-open class HttpHandler(routingTable: RoutingTable) : SessionHandler() {
-
-    private val routingFilter: RoutingFilter = RoutingFilter(routingTable)
+open class HttpHandler(routingTable: RoutingTable) : AbstractHttpHandler(routingTable) {
 
     override fun doHandle(
             target: String,
-            baseRequest: Request,
-            request: HttpServletRequest,
-            response: HttpServletResponse) {
+            jettyRequest: org.eclipse.jetty.server.Request,
+            httpServletRequest: HttpServletRequest,
+            httpServletResponse: HttpServletResponse) {
 
-        routingFilter.doFilter(HttpRequestWrapper(request), response, null)
+        val cachedHttpServletRequest = HttpRequestWrapper(httpServletRequest)
+        val response = handle(cachedHttpServletRequest, httpServletResponse)
+
+        serializeResponse(cachedHttpServletRequest, httpServletResponse, response)
     }
 }

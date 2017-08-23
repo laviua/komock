@@ -291,7 +291,7 @@ class RoutingTest {
     @Test
     fun testRoutingTable() {
 
-        val routingTable: RoutingTable = RoutingTable()
+        val routingTable = RoutingTable()
 
         assertTrue(routingTable.getFullRouteMap().isEmpty())
 

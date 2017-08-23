@@ -20,10 +20,11 @@ import ua.com.lavi.komock.engine.handler.callback.EmptyCallbackHandlerImpl
 import ua.com.lavi.komock.engine.handler.response.ResponseHandler
 import ua.com.lavi.komock.engine.handler.response.RoutedResponseHandlerImpl
 import ua.com.lavi.komock.engine.model.HttpMethod
+import ua.com.lavi.komock.engine.model.config.http.CapturedData
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
+import ua.com.lavi.komock.engine.server.handler.CaptureHttpHandler
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 import ua.com.lavi.komock.engine.server.handler.HttpHandler
-import ua.com.lavi.komock.engine.server.handler.MockServer
 import ua.com.lavi.komock.engine.server.handler.RoutingTable
 import java.util.concurrent.TimeUnit
 
@@ -47,7 +48,11 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
     init {
         val contextHandler = ContextHandler(serverProps.contextPath)
         contextHandler.virtualHosts = serverProps.virtualHosts.toTypedArray()
-        contextHandler.handler = HttpHandler(routingTable)
+        if (serverProps.capture.enabled) {
+            contextHandler.handler = CaptureHttpHandler(serverProps.capture, routingTable)
+        } else {
+            contextHandler.handler = HttpHandler(routingTable)
+        }
         val handlerList = HandlerList()
         handlerList.handlers = arrayOf(contextHandler)
         jettyServer.handler = handlerList
@@ -166,11 +171,20 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
         deleteRoute(url, httpMethod)
     }
 
+    abstract fun buildServerConnector(): ServerConnector
+
+    override fun getCapturedData(): List<CapturedData> {
+        return if (serverProps.capture.enabled) {
+            val captureHttpHandler = getContextHandler().handler as CaptureHttpHandler
+            return captureHttpHandler.getCapturedData()
+        } else {
+            emptyList()
+        }
+    }
+
     private fun getContextHandler(): ContextHandler {
         return (jettyServer.handler as HandlerList).handlers[0] as ContextHandler
     }
-
-    abstract fun buildServerConnector(): ServerConnector
 
     open fun httpConfig(): HttpConfiguration {
         val httpConfig = HttpConfiguration()
@@ -186,4 +200,3 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
         }
     }
 }
-

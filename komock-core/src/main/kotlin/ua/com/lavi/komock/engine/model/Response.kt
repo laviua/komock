@@ -10,13 +10,21 @@ import javax.servlet.http.HttpServletResponse
 
 class Response(private val servletResponse: HttpServletResponse) {
 
-    var content: String = ""
+    private var content: String = ""
 
-    fun code(code: Int) {
+    fun getContent(): String {
+        return content
+    }
+
+    fun setContent(content: String) {
+        this.content = content
+    }
+
+    fun setCode(code: Int) {
         servletResponse.status = code
     }
 
-    fun contentType(contentType: String?) {
+    fun setContentType(contentType: String?) {
         servletResponse.contentType = contentType
     }
 

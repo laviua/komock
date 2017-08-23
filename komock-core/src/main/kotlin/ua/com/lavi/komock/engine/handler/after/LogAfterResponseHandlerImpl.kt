@@ -24,8 +24,8 @@ class LogAfterResponseHandlerImpl(private val routeProperties: RouteProperties) 
 
     private fun parametersMap(request: Request, response: Response): MutableMap<String, String> {
         val parametersMap: MutableMap<String, String> = HashMap()
-        parametersMap.put("url", request.httpServletRequest().requestURL.toString())
-        parametersMap.put("body", response.content)
+        parametersMap.put("url", request.getHttpServletRequest().requestURL.toString())
+        parametersMap.put("body", response.getContent())
         parametersMap.put("headers", response.getHeaders().toString())
         return parametersMap
     }

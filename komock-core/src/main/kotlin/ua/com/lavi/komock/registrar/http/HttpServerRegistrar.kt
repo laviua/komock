@@ -2,7 +2,7 @@ package ua.com.lavi.komock.registrar.http
 
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
-import ua.com.lavi.komock.engine.server.handler.MockServer
+import ua.com.lavi.komock.engine.server.MockServer
 import ua.com.lavi.komock.engine.server.SecuredMockServer
 import ua.com.lavi.komock.engine.server.UnsecuredMockServer
 import java.net.BindException

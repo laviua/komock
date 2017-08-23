@@ -10,7 +10,7 @@ import org.junit.Test;
 import ua.com.lavi.komock.engine.handler.response.ResponseHandler;
 import ua.com.lavi.komock.engine.model.HttpMethod;
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties;
-import ua.com.lavi.komock.engine.server.handler.MockServer;
+import ua.com.lavi.komock.engine.server.MockServer;
 import ua.com.lavi.komock.engine.server.UnsecuredMockServer;
 import ua.com.lavi.komock.model.odm.OdmRemoteApiResponse;
 import ua.com.lavi.komock.model.odm.OdmRequest;
@@ -107,44 +107,44 @@ public class HttpRouterJavaConfigTest {
 
     private ResponseHandler customResponseHandler() {
         return (request, response) -> {
-            Object merchantCode = new JSONObject(request.requestBody()).get(MERCHANT_CODE_PATH);
+            Object merchantCode = new JSONObject(request.getRequestBody()).get(MERCHANT_CODE_PATH);
 
             if (MERCHANT_CODE_SUCCESS_ODM01.equals(merchantCode)) {
-                response.code(200);
+                response.setCode(200);
                 response.setContent("{\"uuid\":null,\"status\":\"APPROVED\",\"failedReason\":null}");
-                response.contentType(APPLICATION_JSON);
+                response.setContentType(APPLICATION_JSON);
             }
             if (MERCHANT_CODE_REJECT_ODM02.equals(merchantCode)) {
-                response.code(200);
+                response.setCode(200);
                 response.setContent("{\"uuid\":null,\"status\":\"REJECTED\",\"failedReason\":null}");
-                response.contentType(APPLICATION_JSON);
+                response.setContentType(APPLICATION_JSON);
             }
             if (MERCHANT_CODE_NOT_FOUND_ODM03.equals(merchantCode)) {
-                response.code(404);
+                response.setCode(404);
             }
             if (MERCHANT_CODE_INTERNAL_ERROR_ODM04.equals(merchantCode)) {
-                response.code(500);
+                response.setCode(500);
             }
             if (MERCHANT_CODE_DELAY_1_SEC_ODM05.equals(merchantCode)) {
                 try {
                     Thread.sleep(1000);
-                    response.code(200);
+                    response.setCode(200);
                     response.setContent("{\"uuid\":null,\"status\":\"APPROVED\",\"failedReason\":null}");
-                    response.contentType(APPLICATION_JSON);
+                    response.setContentType(APPLICATION_JSON);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
             }
             if (MERCHANT_CODE_SERVER_UNAVAILABLE_ODM06.equals(merchantCode)) {
-                response.code(503);
+                response.setCode(503);
             }
             if (MERCHANT_CODE_BAD_REQUEST_ODM07.equals(merchantCode)) {
-                response.code(400);
-                response.contentType(APPLICATION_JSON);
+                response.setCode(400);
+                response.setContentType(APPLICATION_JSON);
             }
             if (MERCHANT_CODE_CONFLICT_ODM08.equals(merchantCode)) {
-                response.code(409);
+                response.setCode(409);
             }
         };
     }

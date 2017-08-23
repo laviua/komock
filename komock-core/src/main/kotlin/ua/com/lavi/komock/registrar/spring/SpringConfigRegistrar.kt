@@ -9,7 +9,7 @@ import ua.com.lavi.komock.engine.model.SpringConfigResponse
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 import ua.com.lavi.komock.engine.model.config.spring.SpringConfigProperties
-import ua.com.lavi.komock.engine.server.handler.MockServer
+import ua.com.lavi.komock.engine.server.MockServer
 import ua.com.lavi.komock.engine.server.SecuredMockServer
 import ua.com.lavi.komock.engine.server.UnsecuredMockServer
 import ua.com.lavi.komock.registrar.FileChangeHandler

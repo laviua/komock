@@ -15,6 +15,7 @@ open class HttpServerProperties {
     var port = 8080 // default port;
     var routes: List<RouteProperties> = ArrayList()
     var ssl: SSLServerProperties = SSLServerProperties()
+    var capture: CaptureProperties = CaptureProperties()
     var minThreads: Int = 10
     var maxThreads: Int = 100
     var idleTimeout: Int = 60000
@@ -36,6 +37,10 @@ open class HttpServerProperties {
 
     fun withSsl(sslServerProperties: SSLServerProperties): HttpServerProperties {
         this.ssl = sslServerProperties
+        return this
+    }
+    fun withCapture(captureProperties: CaptureProperties): HttpServerProperties {
+        this.capture = captureProperties
         return this
     }
 

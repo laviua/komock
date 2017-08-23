@@ -9,15 +9,15 @@ import javax.servlet.http.HttpServletRequest
 
 class Request(private val httpServletRequest: HttpServletRequest) {
 
-    fun requestBody(): String {
+    fun getRequestBody(): String {
         return httpServletRequest.inputStream.bufferedReader().use { it.readText() }
     }
 
-    fun httpServletRequest(): HttpServletRequest {
+    fun getHttpServletRequest(): HttpServletRequest {
         return httpServletRequest
     }
 
-    fun queryParametersMap(): Map<String, String> {
+    fun getQueryParametersMap(): Map<String, String> {
         val queryParameters = HashMap<String, String>()
         val queryString = httpServletRequest.queryString
 

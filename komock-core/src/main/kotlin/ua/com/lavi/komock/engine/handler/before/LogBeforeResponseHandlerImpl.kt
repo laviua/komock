@@ -30,8 +30,8 @@ class LogBeforeResponseHandlerImpl(private val routeProperties: RouteProperties)
     private fun parametersMap(request: Request): MutableMap<String, String> {
         val parametersMap: MutableMap<String, String> = HashMap()
         parametersMap.put(KEY_COUNTER, counter.getAndIncrement().toString())
-        parametersMap.put(KEY_URL, request.httpServletRequest().requestURL.toString())
-        parametersMap.put(KEY_BODY, request.requestBody())
+        parametersMap.put(KEY_URL, request.getHttpServletRequest().requestURL.toString())
+        parametersMap.put(KEY_BODY, request.getRequestBody())
         parametersMap.put(KEY_HEADERS, request.getHeaders().toString())
         return parametersMap
     }
