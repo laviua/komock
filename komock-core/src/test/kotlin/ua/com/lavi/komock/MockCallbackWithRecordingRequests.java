@@ -68,7 +68,7 @@ public class MockCallbackWithRecordingRequests {
                 .asString();
         assertTrue(response.getStatus() == 200);
         assertTrue(response.getHeaders().get("Content-Type").get(0).equals(APPLICATION_JSON));
-        Thread.sleep(500L); //wait for callback
+        Thread.sleep(100L); //wait for callback
         List<CapturedData> capturedDataList = captureServer.getCapturedData();
         assertTrue(capturedDataList.size() == 1);
         CapturedData capturedData = capturedDataList.get(0);

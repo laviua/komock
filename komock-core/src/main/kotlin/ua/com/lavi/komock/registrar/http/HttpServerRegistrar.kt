@@ -19,14 +19,18 @@ class HttpServerRegistrar {
     //Helper object.
     companion object {
 
-        private val ROUTERS: MutableList<MockServer> = ArrayList()
+        private val mockServers: MutableList<MockServer> = ArrayList()
 
         fun startAllServers() {
-            ROUTERS.forEach(MockServer::start)
+            mockServers.forEach(MockServer::start)
         }
 
         fun stopAllServers() {
-            ROUTERS.forEach(MockServer::stop)
+            mockServers.forEach(MockServer::stop)
+        }
+
+        fun getServers(): MutableList<MockServer> {
+            return mockServers
         }
     }
 
@@ -39,7 +43,7 @@ class HttpServerRegistrar {
             UnsecuredMockServer(httpServerProperties)
         }
 
-        ROUTERS.add(router)
+        mockServers.add(router)
 
         try {
             router.start()

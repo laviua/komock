@@ -55,10 +55,24 @@ class RoutingTest {
     @Test
     fun should_ok_testCallback() {
 
-        val response = Unirest.get("http://127.0.0.1:8081/testcallback").asJson()
+        Unirest.get("http://127.0.0.1:8081/testcallback").asJson()
 
-        assertTrue(response.headers["Content-Type"]!![0] == "application/json")
-        assertTrue(response.status == 200)
+        val capturedDataList = HttpServerRegistrar.getServers().filter { it.getName() == "callbackserver" }[0].getCapturedData()
+        Thread.sleep(100L)
+        val capturedData = capturedDataList[0]
+
+        assertEquals("{yo}", capturedData.requestBody)
+        assertEquals("Content from the callback server", capturedData.responseBody)
+
+        val requestHeaders = capturedData.requestHeaders
+        val responseHeaders = capturedData.responseHeaders
+        assertEquals("X-HEADER1-VALUE", requestHeaders["X-HEADER1"])
+        assertEquals("X-HEADER2-VALUE", requestHeaders["X-HEADER2"])
+
+        assertEquals("gradle", responseHeaders["X-Builder"])
+        assertEquals("1.8", responseHeaders["X-Java-Version"])
+
+
     }
 
     @Test

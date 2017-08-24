@@ -102,7 +102,7 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
     /**
      * Remove virtual host from the running server
      */
-    override fun removeVirtualHosts(virtualHosts: List<String>) {
+    override fun deleteVirtualHosts(virtualHosts: List<String>) {
         getContextHandler().removeVirtualHosts(virtualHosts.toTypedArray())
         log.info("Removed virtual hosts: $virtualHosts")
     }
@@ -180,6 +180,10 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
         } else {
             emptyList()
         }
+    }
+
+    override fun getName(): String {
+        return serverProps.name
     }
 
     private fun getContextHandler(): ContextHandler {
