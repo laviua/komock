@@ -28,20 +28,18 @@ class CallbackHandlerImpl(private val callbackProperties: CallbackProperties) : 
             thread {
                 //delay before callback
                 if (callbackProperties.delay > 0) {
-                    log.info("Delay before callback request: ${callbackProperties.delay} ms")
+                    log.info("Delay before callback request: ${callbackProperties.delay} ms.")
                     Thread.sleep(callbackProperties.delay)
                 }
-                val httpclient = HttpClients.custom()
-                        .setSSLContext(SSLContextBuilder()
-                                .loadTrustMaterial(null) { _, _ -> true }.build())
+                val httpClient = HttpClients.custom()
+                        .setSSLContext(SSLContextBuilder().loadTrustMaterial(null) { _, _ -> true }.build())
                         .setSSLHostnameVerifier(NoopHostnameVerifier())
                         .build()
 
-                // add body to the request. it needs for the POST callback
                 val callbackRequest = callbackRequest(callbackProperties)
                 //perform request and log if something went wrong
                 try {
-                    val httpResponse: CloseableHttpResponse = httpclient.execute(callbackRequest)
+                    val httpResponse: CloseableHttpResponse = httpClient.execute(callbackRequest)
                     log.info("Request to: {}. Got response: {}", callbackProperties.url, httpResponse.statusLine.toString())
                 } catch (t: Throwable) {
                     log.warn("Error", t)
@@ -57,6 +55,7 @@ class CallbackHandlerImpl(private val callbackProperties: CallbackProperties) : 
     private fun callbackRequest(callbackProperties: CallbackProperties) : CallbackRequest {
         val anyRequest = CallbackRequest(callbackProperties.httpMethod, callbackProperties.url)
         callbackProperties.requestHeaders.forEach { header -> anyRequest.addHeader(header.key, header.value) }
+        // add body to the request. it needs for the POST callback
         if (callbackProperties.requestBody.isNotBlank()) {
             anyRequest.entity = ByteArrayEntity(callbackProperties.requestBody.toByteArray(Charsets.UTF_8))
         }

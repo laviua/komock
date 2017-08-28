@@ -14,7 +14,7 @@ import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.server.MockServer
 import ua.com.lavi.komock.engine.server.UnsecuredMockServer
 
-class HttpRouterKotlinConfigTest {
+class MockServerKotlinConfigTest {
 
     private val host = "localhost"
     private val port = 8090

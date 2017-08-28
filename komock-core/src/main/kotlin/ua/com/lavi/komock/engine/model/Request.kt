@@ -25,18 +25,16 @@ class Request(private val httpServletRequest: HttpServletRequest) {
             return queryParameters
         }
 
-        val parameters = queryString.split("&".toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
+        queryString
+                .split("&".toRegex())
+                .dropLastWhile(String::isEmpty)
+                .toTypedArray()
+                .map { it.split("=".toRegex())
+                .dropLastWhile(String::isEmpty)
+                .toTypedArray() }
+                .filter { it.size == 2 }
+                .forEach { queryParameters.put(it[0], it[1]) }
 
-        parameters
-                .map { it.split("=".toRegex()).dropLastWhile(String::isEmpty).toTypedArray() }
-                .forEach {
-                    if (it.size == 1) {
-                        queryParameters.put(it[0], "")
-                    }
-                    if (it.size == 2) {
-                        queryParameters.put(it[0], it[1])
-                    }
-                }
         return queryParameters
     }
 

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Oleksandr Loushkin on 20.08.17.
  */
-public class MockCallbackWithRecordingRequests {
+public class MockServerJavaCallbackCaptureTest {
 
     private static final String TEST_CALLBACK_BODY = "{'testCallbackBody': true}";
     private static final String TEST_RESPONSE_BODY = "{'testResponseBody': true}";
