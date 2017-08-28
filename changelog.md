@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.6.3] - 2017-08-28
+### Changes
+- Create mechanism for request recording
+- Refactoring.
+- Increase performance
+
 ## [1.6.2] - 2017-08-06
 ### Changes
 - Refactoring.
