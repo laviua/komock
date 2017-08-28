@@ -9,7 +9,7 @@ import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
  */
-class LogAfterResponseHandlerImpl(val routeProperties: RouteProperties) : AfterResponseHandler {
+class LogAfterResponseHandlerImpl(private val routeProperties: RouteProperties) : AfterResponseHandler {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
@@ -22,10 +22,10 @@ class LogAfterResponseHandlerImpl(val routeProperties: RouteProperties) : AfterR
         }
     }
 
-    fun parametersMap(request: Request, response: Response): MutableMap<String, String> {
+    private fun parametersMap(request: Request, response: Response): MutableMap<String, String> {
         val parametersMap: MutableMap<String, String> = HashMap()
-        parametersMap.put("url", request.httpServletRequest().requestURL.toString())
-        parametersMap.put("body", response.content)
+        parametersMap.put("url", request.getHttpServletRequest().requestURL.toString())
+        parametersMap.put("body", response.getContent())
         parametersMap.put("headers", response.getHeaders().toString())
         return parametersMap
     }

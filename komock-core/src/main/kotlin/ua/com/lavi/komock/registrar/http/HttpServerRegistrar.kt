@@ -1,11 +1,10 @@
 package ua.com.lavi.komock.registrar.http
 
 import org.slf4j.LoggerFactory
-import ua.com.lavi.komock.engine.router.HttpRouter
-import ua.com.lavi.komock.engine.router.SecuredHttpRouter
-import ua.com.lavi.komock.engine.router.UnsecuredHttpRouter
-import ua.com.lavi.komock.engine.model.SslKeyStore
 import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
+import ua.com.lavi.komock.engine.server.MockServer
+import ua.com.lavi.komock.engine.server.SecuredMockServer
+import ua.com.lavi.komock.engine.server.UnsecuredMockServer
 import java.net.BindException
 import java.util.*
 
@@ -20,16 +19,18 @@ class HttpServerRegistrar {
     //Helper object.
     companion object {
 
-        private val routers: MutableList<HttpRouter> = ArrayList()
+        private val mockServers: MutableList<MockServer> = ArrayList()
 
-        @JvmStatic
         fun startAllServers() {
-            routers.forEach(HttpRouter::start)
+            mockServers.forEach(MockServer::start)
         }
 
-        @JvmStatic
         fun stopAllServers() {
-            routers.forEach(HttpRouter::stop)
+            mockServers.forEach(MockServer::stop)
+        }
+
+        fun getServers(): MutableList<MockServer> {
+            return mockServers
         }
     }
 
@@ -37,12 +38,12 @@ class HttpServerRegistrar {
 
         //SSL SecuredHttpRouter or not
         val router = if (httpServerProperties.ssl.enabled) {
-            SecuredHttpRouter(httpServerProperties, SslKeyStore(httpServerProperties.ssl.keyStoreLocation, httpServerProperties.ssl.keyStorePassword))
+            SecuredMockServer(httpServerProperties)
         } else {
-            UnsecuredHttpRouter(httpServerProperties)
+            UnsecuredMockServer(httpServerProperties)
         }
 
-        routers.add(router)
+        mockServers.add(router)
 
         try {
             router.start()
@@ -52,8 +53,6 @@ class HttpServerRegistrar {
         }
 
         //register only enabled routes
-        if (!httpServerProperties.routes.isEmpty()) {
-            httpServerProperties.routes.filter { it.enabled }.forEach { router.addRoute(it) }
-        }
+        httpServerProperties.routes.filter { it.enabled }.forEach { router.addRoute(it) }
     }
 }

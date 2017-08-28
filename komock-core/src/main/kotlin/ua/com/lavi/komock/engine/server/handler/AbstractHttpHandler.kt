@@ -1,36 +1,33 @@
-package ua.com.lavi.komock.engine.server
+package ua.com.lavi.komock.engine.server.handler
 
+import org.eclipse.jetty.server.session.SessionHandler
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.Request
 import ua.com.lavi.komock.engine.model.Response
-import ua.com.lavi.komock.engine.router.RoutingTable
 import java.io.OutputStream
 import java.util.*
 import java.util.zip.GZIPOutputStream
-import javax.servlet.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * This is an entry point of thw application
- * Serialize route properties content to the http response
- * Should be ThreadSafe
  * Created by Oleksandr Loushkin
+ * This is an entry point of the request
+ * Serialize route properties content to the http response
  */
-class RoutingFilter(val routingTable: RoutingTable) : Filter {
+abstract class AbstractHttpHandler(private val routingTable: RoutingTable) : SessionHandler() {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    override fun init(config: FilterConfig) {
-        //
-    }
+    abstract override fun doHandle(
+            target: String,
+            jettyRequest: org.eclipse.jetty.server.Request,
+            httpServletRequest: HttpServletRequest,
+            httpServletResponse: HttpServletResponse)
 
-    override fun doFilter(servletRequest: ServletRequest,
-                          servletResponse: ServletResponse,
-                          chain: FilterChain?) {
-        val httpServletRequest = servletRequest as HttpServletRequest
-        val httpServletResponse = servletResponse as HttpServletResponse
+
+    open fun handle(httpServletRequest: HttpServletRequest, httpServletResponse: HttpServletResponse): Response {
         val requestUri = httpServletRequest.requestURI
         val response = Response(httpServletResponse)
         val httpMethod = HttpMethod.retrieveMethod(httpServletRequest.method)
@@ -39,28 +36,28 @@ class RoutingFilter(val routingTable: RoutingTable) : Filter {
         if (route == null) {
             log.info("Requested route $requestUri is not mapped")
             httpServletResponse.status = HttpServletResponse.SC_NOT_FOUND
+            return response
         } else {
-            val request: Request = Request(httpServletRequest)
+            val request = Request(httpServletRequest)
             route.beforeResponseHandler.handle(request, response)
             route.responseHandler.handle(request, response)
             route.afterResponseHandler.handle(request, response)
             route.callbackHandler.handle(request, response)
         }
-        serializeContentToResponse(httpServletRequest, httpServletResponse, response.content)
-
-        chain?.doFilter(httpServletRequest, httpServletResponse)
+        return response
     }
 
-    fun serializeContentToResponse(httpServletRequest: HttpServletRequest, httpServletResponse: HttpServletResponse, content: String) {
+
+    open fun serializeResponse(httpServletRequest: HttpServletRequest, httpServletResponse: HttpServletResponse, response: Response) {
         if (!httpServletResponse.isCommitted) {
             val responseStream = gzip(httpServletRequest, httpServletResponse)
-            responseStream.write(content.toByteArray())
+            responseStream.write(response.getContent().toByteArray())
             responseStream.flush()
             responseStream.close()
         }
     }
 
-    fun gzip(httpRequest: HttpServletRequest, httpResponse: HttpServletResponse): OutputStream {
+    private fun gzip(httpRequest: HttpServletRequest, httpResponse: HttpServletResponse): OutputStream {
         var responseStream: OutputStream = httpResponse.outputStream
 
         if (isGzipAccepted(httpRequest) && httpResponse.getHeaders("Content-Encoding").contains("gzip")) {
@@ -78,6 +75,4 @@ class RoutingFilter(val routingTable: RoutingTable) : Filter {
         }
         return false
     }
-
-    override fun destroy() {}
 }

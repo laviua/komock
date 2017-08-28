@@ -133,7 +133,7 @@ httpServers:
         callback:
           enabled: true
           httpMethod: POST
-          url: http://127.0.0.1:8084/callbacks_request
+          url: https://127.0.0.1:8084/callbacks_request
           requestHeaders: {"X-HEADER1" : "X-HEADER1-VALUE", "X-HEADER2" : "X-HEADER2-VALUE"}
           requestBody: "{yo}"
       -
@@ -182,10 +182,17 @@ httpServers:
   -
     name: callbackserver
     port: 8084
+    capture:
+      enabled: true
+    ssl:
+      enabled: true
+      keyStoreLocation: mock_keystore.jks
+      keyStorePassword: mockpassword
     routes:
       -
         httpMethod: POST
         url: /callbacks_request
         contentType: text/plain
-        responseBody: Content from the second server
+        responseBody: Content from the callback server
+        responseHeaders: {"X-Java-Version" : "1.8", "X-Builder" : "gradle"}
         code: 200
