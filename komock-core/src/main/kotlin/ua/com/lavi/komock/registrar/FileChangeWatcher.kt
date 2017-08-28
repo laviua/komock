@@ -26,14 +26,11 @@ class FileChangeWatcher(private val fileChangeHandler: FileChangeHandler,
             for (file in files) {
                 val currentHash = DigestUtils.md5Hex(String(Files.readAllBytes(file), Charsets.UTF_8))
                 val oldHash = fileHashes[file]
-                if (oldHash == null) { // first check
+                fileHashes.put(file, currentHash)
+                if (oldHash != null && oldHash != currentHash) {
+                    log.info("File: $file has been changed! $currentHash")
                     fileHashes.put(file, currentHash)
-                } else { // next check
-                    if (oldHash != currentHash) {
-                        log.debug("File has been changed! $currentHash")
-                        fileHashes.put(file, currentHash)
-                        fileChangeHandler.onFileChange(file)
-                    }
+                    fileChangeHandler.onFileChange(file)
                 }
             }
         }
