@@ -63,6 +63,9 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
         serverConnector.host = serverProps.host
         serverConnector.port = serverProps.port
         jettyServer.connectors = arrayOf(serverConnector)
+
+        //register only enabled routes
+        serverProps.routes.filter { it.enabled }.forEach { addRoute(it) }
     }
 
     override fun start() {

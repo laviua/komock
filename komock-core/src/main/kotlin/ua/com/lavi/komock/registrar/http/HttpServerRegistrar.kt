@@ -37,22 +37,19 @@ class HttpServerRegistrar {
     fun register(httpServerProperties: HttpServerProperties) {
 
         //SSL SecuredHttpRouter or not
-        val router = if (httpServerProperties.ssl.enabled) {
+        val mockServer = if (httpServerProperties.ssl.enabled) {
             SecuredMockServer(httpServerProperties)
         } else {
             UnsecuredMockServer(httpServerProperties)
         }
 
-        mockServers.add(router)
+        mockServers.add(mockServer)
 
         try {
-            router.start()
+            mockServer.start()
         } catch (e: BindException) {
             log.warn(e.message + ": ${httpServerProperties.host}, port: ${httpServerProperties.port}", e)
             return
         }
-
-        //register only enabled routes
-        httpServerProperties.routes.filter { it.enabled }.forEach { router.addRoute(it) }
     }
 }
