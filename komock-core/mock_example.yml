@@ -28,6 +28,13 @@ springConfig:
       enabled: true
       keyStoreLocation: mock_keystore.jks
       keyStorePassword: mockpassword
+    routes:
+      -
+        httpMethod: GET
+        url: /testNoContent
+        contentType: text/plain
+        responseBody: This content will be ignored
+        code: 204
 
 httpServers:
   -

@@ -47,8 +47,6 @@ class SpringConfigRegistrar {
             return
         }
 
-        log.info("Started httpServer: ${httpServerProp.name} on port: ${httpServerProp.port}. virtualHosts: ${httpServerProp.virtualHosts}")
-
         val profiles = springConfigProperties.profiles
 
         val fileList = springConfigProperties.fileList()
@@ -63,11 +61,6 @@ class SpringConfigRegistrar {
                 }
             }
             FileChangeWatcher(fileListener, fileList, springConfigProperties.refreshPeriod).start()
-        }
-
-        //register only enabled routeHolders
-        if (httpServerProp.hasRoutes()) {
-            httpServerProp.routes.filter { it.enabled }.forEach { router.addRoute(it) }
         }
 
     }
