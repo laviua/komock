@@ -43,76 +43,20 @@ Run standalone application:
 
 
 ## Examples
-**Get Oauth2 token example**
+**Mocking Oauth2 server**
+https://github.com/laviua/komock/wiki/Example-config:-Oauth2-server
 
-    httpServers:
-      -
-        enabled: true
-        name: auth-server
-        port: 8080
-        routes:
-          -
-            httpMethod: POST
-            url: /oauth/token
-            contentType: "application/json"
-            responseBody: '{"access_token" : "ya29S6ZQbiBQpA5Rz8oty00xj-xydfdfddteerer-1eM",  "token_type" : "Bearer",  "expires_in" : 3600}'
-            code: 200
-          -
-            httpMethod: GET
-            url: /anymask/*/anypath/
-            contentType: text/plain
-            responseBody: Hello World. Test url mask with additional text
-            code: 200
-
-    curl -X POST "http://127.0.0.1:8080/oauth/token"
-    {"access_token" : "ya29S6ZQbiBQpA5Rz8oty00xj-xydfdfddteerer-1eM",  "token_type" : "Bearer",  "expires_in" : 3600}
-
-**Consul service**
-
-    consulAgents:
-        -
-          enabled: false
-          consulHost: 127.0.0.1
-          consulPort: 8500
-          services:
-            -
-              serviceId: customer-data-service
-              serviceName: customer-data-service
-              servicePort: 8081
-              serviceAddress: 127.0.0.1
-              checkInterval: 30s
-              checkTimeout: 30s
+**Consul service registration**
+https://github.com/laviua/komock/wiki/Consul
               
 **Spring config server**
-
-    springConfig:
-      enabled: true
-      refreshPeriod: 10000
-      sourceFolder: /somedirectory/configs/springconfig/
-      profiles:
-        - dev
-        - qa
-        - default
-      httpServer:
-        name: spring-config-server
-        port: 8888
-        host: 127.0.0.1
-        ssl:
-          enabled: true
-          keyStoreLocation: mock_keystore.jks
-          keyStorePassword: mockpassword
-
-refreshPeriod: 0 - disable config watcher.
-
-Http Server can be configured in Wiremock style for unit testing like this
+https://github.com/laviua/komock/wiki/Spring-config-server
 
 **Unit testing**
 https://github.com/laviua/komock/wiki/Unit-Testing-with-request-capturing
 
 **Full config**
-
 Callbacks, Mask patterns, cookies, virtualhosts, etc
-
 Look at self-describable configuration file [Link](https://github.com/laviua/komock/blob/master/komock-core/mock_example.yml):
 
 ## HTTPS / SSL:
