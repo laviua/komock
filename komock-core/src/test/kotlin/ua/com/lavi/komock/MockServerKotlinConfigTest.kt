@@ -14,6 +14,10 @@ import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.server.MockServer
 import ua.com.lavi.komock.engine.server.UnsecuredMockServer
 
+/**
+ * Created by Oleksandr Loushkin
+ */
+
 class MockServerKotlinConfigTest {
 
     private val host = "localhost"

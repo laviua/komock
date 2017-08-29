@@ -58,7 +58,8 @@ class RoutingTest {
         Unirest.get("http://127.0.0.1:8081/testcallback").asJson()
 
         val capturedDataList = HttpServerRegistrar.getServers().filter { it.getName() == "callbackserver" }[0].getCapturedData()
-        Thread.sleep(100L)
+        Waiter.untilNotEmpty(capturedDataList)
+
         val capturedData = capturedDataList[0]
 
         assertEquals("{yo}", capturedData.requestBody)

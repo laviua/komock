@@ -68,8 +68,9 @@ public class MockServerJavaCallbackCaptureTest {
                 .asString();
         assertTrue(response.getStatus() == 200);
         assertTrue(response.getHeaders().get("Content-Type").get(0).equals(APPLICATION_JSON));
-        Thread.sleep(100L); //wait for callback
+
         List<CapturedData> capturedDataList = captureServer.getCapturedData();
+        Waiter.INSTANCE.untilNotEmpty(capturedDataList);
         assertTrue(capturedDataList.size() == 1);
         CapturedData capturedData = capturedDataList.get(0);
         assertEquals(TEST_CALLBACK_BODY, capturedData.getRequestBody());
