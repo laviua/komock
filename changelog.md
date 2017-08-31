@@ -1,30 +1,20 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.6.3] - 2017-08-28
+## [1.7.0] - 2017-08-31
 ### Changes
 - Create mechanism for request recording
 - Refactoring.
 - Increase performance
-
-## [1.6.2] - 2017-08-06
-### Changes
-- Refactoring.
-- Increase performance
+- Documentation
 - Improve builders for java code configuration
 - Improve data structures
-- Remove unused functionality
 - Add gradle wrapper
 - Add ktlint
-
-## [1.6.1] - 2017-07-11
-### Changes
 - Add variables for log request/response
 - Add request counter
 - Add delay for response
-- Add documentation and unit tests
 - Remove kotlinx package
-- Refactoring
 
 ## [1.6] - 2017-04-02
 ### Changes
