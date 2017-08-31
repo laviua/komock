@@ -43,8 +43,12 @@ Run standalone application:
 
 
 ## Examples
-**Mocking Oauth2 server**
-https://github.com/laviua/komock/wiki/Example-config:-Oauth2-server
+
+**Simple http server**
+https://github.com/laviua/komock/wiki/Simple-http-server
+
+**Oauth2 server**
+https://github.com/laviua/komock/wiki/Oauth2-server
 
 **Consul service registration**
 https://github.com/laviua/komock/wiki/Consul
