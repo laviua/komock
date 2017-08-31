@@ -18,6 +18,10 @@ open class SpringConfigProperties {
     var sourceFolder: String = "/"
     var httpServer: HttpServerProperties = HttpServerProperties()
 
+    fun doRefresh(): Boolean {
+        return refreshPeriod > 0
+    }
+
     fun fileList() : List<Path> {
         return Files.walk(Paths.get(sourceFolder))
                 .filter { it.toFile().isFile }
