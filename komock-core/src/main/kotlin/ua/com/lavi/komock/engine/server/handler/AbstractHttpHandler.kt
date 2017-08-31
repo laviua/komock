@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse
  * This is an entry point of the request
  * Serialize route properties content to the http response
  */
+
 abstract class AbstractHttpHandler(private val routingTable: RoutingTable) : SessionHandler() {
 
     private val log = LoggerFactory.getLogger(this.javaClass)

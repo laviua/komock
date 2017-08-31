@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Oleksandr Loushkin on 20.08.17.
  */
+
 public class MockServerJavaCallbackCaptureTest {
 
     private static final String TEST_CALLBACK_BODY = "{'testCallbackBody': true}";

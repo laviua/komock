@@ -6,6 +6,7 @@ import ua.com.lavi.komock.engine.model.Response
 /**
  * Created by Oleksandr Loushkin on 20.08.17.
  */
+
 data class CapturedData(private val request: Request, private val response: Response) {
 
     val requestBody: String = request.getRequestBody()

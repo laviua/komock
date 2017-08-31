@@ -10,6 +10,7 @@ import kotlin.concurrent.scheduleAtFixedRate
  * Created by Oleksandr Loushkin on 01.04.17.
  * Instant watch on files and invoke handler when file changes
  */
+
 class FileChangeWatcher(private val fileChangeHandler: FileChangeHandler,
                         private val files: List<Path>,
                         private val period: Long) {

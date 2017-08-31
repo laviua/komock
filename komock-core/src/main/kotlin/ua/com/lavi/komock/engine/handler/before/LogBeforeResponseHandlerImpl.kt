@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
  */
+
 class LogBeforeResponseHandlerImpl(private val routeProperties: RouteProperties) : BeforeResponseHandler {
 
     private val log = LoggerFactory.getLogger(this.javaClass)

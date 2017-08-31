@@ -6,6 +6,7 @@ import kotlin.test.assertEquals
 /**
  * Created by Oleksandr Loushkin on 01.07.17.
  */
+
 class VariableResolverTest {
 
     @Test

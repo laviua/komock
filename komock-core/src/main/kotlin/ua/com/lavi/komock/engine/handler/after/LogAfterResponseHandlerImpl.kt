@@ -9,6 +9,7 @@ import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
  */
+
 class LogAfterResponseHandlerImpl(private val routeProperties: RouteProperties) : AfterResponseHandler {
 
     private val log = LoggerFactory.getLogger(this.javaClass)

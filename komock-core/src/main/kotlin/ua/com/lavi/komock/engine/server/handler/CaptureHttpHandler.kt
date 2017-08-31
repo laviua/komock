@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse
  * Class decorator capture all requests and processed responses
  * Created by Oleksandr Loushkin on 20.08.17.
  */
+
 class CaptureHttpHandler(private val captureProperties: CaptureProperties,
                          routingTable: RoutingTable) : AbstractHttpHandler(routingTable) {
 
