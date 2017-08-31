@@ -17,6 +17,7 @@ import kotlin.concurrent.thread
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
  */
+
 class CallbackHandlerImpl(private val callbackProperties: CallbackProperties) : CallbackHandler {
 
     private val log = LoggerFactory.getLogger(this.javaClass)

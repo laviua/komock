@@ -14,6 +14,10 @@ import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.server.MockServer
 import ua.com.lavi.komock.engine.server.UnsecuredMockServer
 
+/**
+ * Created by Oleksandr Loushkin
+ */
+
 class MockServerKotlinConfigTest {
 
     private val host = "localhost"
@@ -28,21 +32,21 @@ class MockServerKotlinConfigTest {
         httpRouter.start()
     }
 
+    @After
+    fun tearDown() {
+        httpRouter.stop()
+    }
+
     @Test
     fun should_run_kotlin_config() {
 
-        httpRouter.addRoute("/testNoContent", HttpMethod.GET, responseHandler = customHandler())
+        httpRouter.addRoute("/testNoContent", HttpMethod.GET, customHandler())
 
         val response = Unirest.get("http://$host:$port/testNoContent").asString()
 
         assertTrue(response.status == 204)
         assertEquals(response.body, null)
 
-    }
-
-    @After
-    fun tearDown() {
-        httpRouter.stop()
     }
 
     private fun customHandler(): ResponseHandler {

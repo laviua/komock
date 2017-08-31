@@ -34,16 +34,13 @@ class ConsulRegistrar {
                 log.info("Registered consul service: ${consulService.serviceId} - ${consulService.serviceAddress}:${consulService.servicePort}")
             }
         }
-        daemonMode()
-    }
-
-    private fun daemonMode() {
-        try {
-            log.info("Consul registration is running in daemon mode")
-            Thread.currentThread().join()
-        } catch (e: InterruptedException) {
-            log.warn("Error: {}", e)
+        if (consulAgentProperties.daemon) {
+            try {
+                log.info("Consul registration is running in daemon mode")
+                Thread.currentThread().join()
+            } catch (e: InterruptedException) {
+                log.warn("Error: {}", e)
+            }
         }
     }
-
 }

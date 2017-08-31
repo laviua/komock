@@ -44,6 +44,11 @@ open class HttpServerProperties {
         return this
     }
 
+    fun withRoutes(routes: List<RouteProperties>): HttpServerProperties {
+        this.routes = routes
+        return this
+    }
+
     fun hasRoutes(): Boolean {
         if (routes.isEmpty()) {
             return false

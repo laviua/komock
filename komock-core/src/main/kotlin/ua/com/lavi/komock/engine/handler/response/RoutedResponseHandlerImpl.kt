@@ -8,6 +8,7 @@ import ua.com.lavi.komock.engine.model.config.http.RouteProperties
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
  */
+
 open class RoutedResponseHandlerImpl(private val routeProperties: RouteProperties) : ResponseHandler {
 
     override fun handle(request: Request, response: Response) {

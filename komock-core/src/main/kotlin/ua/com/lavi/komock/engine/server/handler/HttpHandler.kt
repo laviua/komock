@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse
 /**
  * Default http handler
  */
+
 open class HttpHandler(routingTable: RoutingTable) : AbstractHttpHandler(routingTable) {
 
     override fun doHandle(

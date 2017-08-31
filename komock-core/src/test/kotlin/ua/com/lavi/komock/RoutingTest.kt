@@ -58,7 +58,8 @@ class RoutingTest {
         Unirest.get("http://127.0.0.1:8081/testcallback").asJson()
 
         val capturedDataList = HttpServerRegistrar.getServers().filter { it.getName() == "callbackserver" }[0].getCapturedData()
-        Thread.sleep(100L)
+        Waiter.untilNotEmpty(capturedDataList)
+
         val capturedData = capturedDataList[0]
 
         assertEquals("{yo}", capturedData.requestBody)
@@ -129,8 +130,7 @@ class RoutingTest {
     @Test
     fun should_forbidden_get_secured_area() {
 
-        val response = Unirest.get("http://127.0.0.1:8081/testGetTextSecuredRoute")
-                .asString()
+        val response = Unirest.get("http://127.0.0.1:8081/testGetTextSecuredRoute").asString()
 
         assertTrue(response.status == 401)
         assertEquals(response.body, "")
@@ -259,7 +259,8 @@ class RoutingTest {
     fun should_ok_get_plaintext_with_content_on_second_secured_server() {
         val sslHttpClient = HttpClients.custom()
                 .setSSLContext(SSLContextBuilder()
-                        .loadTrustMaterial(null) { _, _ -> true }.build())
+                .loadTrustMaterial(null) { _, _ -> true }
+                .build())
                 .setSSLHostnameVerifier(NoopHostnameVerifier())
                 .build()
 
@@ -281,7 +282,7 @@ class RoutingTest {
     fun should_ok_get_plaintext_with_content_on_third_secured_server() {
         val sslHttpClient = HttpClients.custom()
                 .setSSLContext(SSLContextBuilder()
-                        .loadTrustMaterial(null) { _, _ -> true }.build())
+                .loadTrustMaterial(null) { _, _ -> true }.build())
                 .setSSLHostnameVerifier(NoopHostnameVerifier())
                 .build()
 
@@ -345,7 +346,8 @@ class RoutingTest {
 
         val sslHttpClient = HttpClients.custom()
                 .setSSLContext(SSLContextBuilder()
-                        .loadTrustMaterial(null) { _, _ -> true }.build())
+                .loadTrustMaterial(null) { _, _ -> true }
+                .build())
                 .setSSLHostnameVerifier(NoopHostnameVerifier())
                 .build()
 
@@ -372,6 +374,24 @@ class RoutingTest {
         assertTrue(jsonObject.getInt("server.port") == 7100)
         assertTrue(jsonObject.getString("spring.datasource.url") == "\${POSTGRES_URL:jdbc:postgresql://localhost:5432/test_database}")
 
+    }
+
+    @Test
+    fun should_ok_get_noContent_spring_config() {
+        val sslHttpClient = HttpClients.custom()
+                .setSSLContext(SSLContextBuilder()
+                        .loadTrustMaterial(null) { _, _ -> true }
+                        .build())
+                .setSSLHostnameVerifier(NoopHostnameVerifier())
+                .build()
+
+        Unirest.setHttpClient(sslHttpClient)
+
+        val response = Unirest.get("https://127.0.0.1:8888/testNoContent").asJson()
+
+        assertEquals("text/plain", response.headers["Content-Type"]!![0])
+        assertEquals(204, response.status)
+        assertEquals(response.body, null)
     }
 
 }

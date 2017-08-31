@@ -63,6 +63,9 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
         serverConnector.host = serverProps.host
         serverConnector.port = serverProps.port
         jettyServer.connectors = arrayOf(serverConnector)
+
+        //register only enabled routes
+        serverProps.routes.filter { it.enabled }.forEach { addRoute(it) }
     }
 
     override fun start() {
@@ -91,26 +94,16 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
         }
     }
 
-    /**
-     * Add virtual hosts to the running server
-     */
     override fun addVirtualHosts(virtualHosts: List<String>) {
         getContextHandler().addVirtualHosts(virtualHosts.toTypedArray())
         log.info("Added virtual hosts: $virtualHosts")
     }
 
-    /**
-     * Remove virtual host from the running server
-     */
     override fun deleteVirtualHosts(virtualHosts: List<String>) {
         getContextHandler().removeVirtualHosts(virtualHosts.toTypedArray())
         log.info("Removed virtual hosts: $virtualHosts")
     }
 
-
-    /**
-     * Add route by route properties configuration. It will create before, after, callback handlers
-     */
     override fun addRoute(routeProperties: RouteProperties) {
 
         val beforeRouteHandler = if (routeProperties.logRequest) {
@@ -133,9 +126,6 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
         addRoute(url, httpMethod, responseHandler, beforeRouteHandler, afterRouteHandler, callbackHandler)
     }
 
-    /**
-     * Add route with empty before, after and callback handlers.
-     */
     override fun addRoute(url: String,
                           httpMethod: HttpMethod,
                           responseHandler: ResponseHandler) {
@@ -146,6 +136,19 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
                 EmptyBeforeResponseHandlerImpl(),
                 EmptyAfterResponseHandlerImpl(),
                 EmptyCallbackHandlerImpl())
+    }
+
+    override fun addRoute(url: String,
+                          httpMethod: HttpMethod,
+                          responseHandler: ResponseHandler,
+                          callbackHandler: CallbackHandler) {
+
+        addRoute(url,
+                httpMethod,
+                responseHandler,
+                EmptyBeforeResponseHandlerImpl(),
+                EmptyAfterResponseHandlerImpl(),
+                callbackHandler)
     }
 
     override fun addRoute(url: String,

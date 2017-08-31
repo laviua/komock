@@ -2,14 +2,15 @@ package ua.com.lavi.komock.registrar
 
 import org.apache.commons.codec.digest.DigestUtils
 import org.slf4j.LoggerFactory
-import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
 
 /**
  * Created by Oleksandr Loushkin on 01.04.17.
+ * Instant watch on files and invoke handler when file changes
  */
+
 class FileChangeWatcher(private val fileChangeHandler: FileChangeHandler,
                         private val files: List<Path>,
                         private val period: Long) {
@@ -24,7 +25,7 @@ class FileChangeWatcher(private val fileChangeHandler: FileChangeHandler,
 
         timer.scheduleAtFixedRate(0, period) {
             for (file in files) {
-                val currentHash = DigestUtils.md5Hex(String(Files.readAllBytes(file), Charsets.UTF_8))
+                val currentHash = DigestUtils.md5Hex(file.toFile().readText())
                 val oldHash = fileHashes[file]
                 fileHashes.put(file, currentHash)
                 if (oldHash != null && oldHash != currentHash) {

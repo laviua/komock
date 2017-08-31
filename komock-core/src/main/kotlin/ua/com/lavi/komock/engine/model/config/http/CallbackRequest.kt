@@ -6,6 +6,7 @@ import java.net.URI
 /**
  * Created by Oleksandr Loushkin on 30.03.17.
  */
+
 open class CallbackRequest(private val methodName: String,
                            private val uri: String) : HttpEntityEnclosingRequestBase() {
 
