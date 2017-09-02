@@ -13,21 +13,6 @@ buildscript {
     }
 }
 
-processResources {
-    filesMatching('**/*.properties') {
-        filter {
-            it.replace('${projectVersion}', project.version)
-        }
-    }
-}
-
-mainClassName = 'ua.com.lavi.komock.app.KomockApplication'
-
-dependencies {
-    compile project(':komock-core')
-    compile "ch.qos.logback:logback-classic:1.1.7"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-}
 
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
@@ -44,4 +29,31 @@ compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+processResources {
+    filesMatching('**/*.properties') {
+        filter {
+            it.replace('${projectVersion}', project.version)
+        }
+    }
+}
+
+mainClassName = 'ua.com.lavi.komock.app.KomockApplication'
+
+dependencies {
+    compile project(':komock-core')
+    compile "ch.qos.logback:logback-classic:1.1.7"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Komock Application',
+                'Implementation-Version': version,
+                'Main-Class': mainClassName
+    }
+    baseName = project.name + '-fat'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
