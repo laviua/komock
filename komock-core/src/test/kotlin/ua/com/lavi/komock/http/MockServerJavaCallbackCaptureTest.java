@@ -1,4 +1,4 @@
-package ua.com.lavi.komock;
+package ua.com.lavi.komock.http;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -6,6 +6,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ua.com.lavi.komock.Waiter;
 import ua.com.lavi.komock.engine.model.HttpMethod;
 import ua.com.lavi.komock.engine.model.config.http.*;
 import ua.com.lavi.komock.engine.server.MockServer;

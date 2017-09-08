@@ -13,7 +13,6 @@ import ua.com.lavi.komock.engine.model.config.http.CallbackProperties
 import ua.com.lavi.komock.engine.model.config.http.CallbackRequest
 import kotlin.concurrent.thread
 
-
 /**
  * Created by Oleksandr Loushkin on 10.07.17.
  */
@@ -44,14 +43,12 @@ class CallbackHandlerImpl(private val callbackProperties: CallbackProperties) : 
                     log.info("Request to: {}. Got response: {}", callbackProperties.url, httpResponse.statusLine.toString())
                 } catch (t: Throwable) {
                     log.warn("Error", t)
-                }
-                finally {
+                } finally {
                     callbackRequest.releaseConnection()
                 }
             }
         }
     }
-
 
     private fun callbackRequest(callbackProperties: CallbackProperties) : CallbackRequest {
         val anyRequest = CallbackRequest(callbackProperties.httpMethod, callbackProperties.url)

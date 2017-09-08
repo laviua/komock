@@ -27,7 +27,6 @@ abstract class AbstractHttpHandler(private val routingTable: RoutingTable) : Ses
             httpServletRequest: HttpServletRequest,
             httpServletResponse: HttpServletResponse)
 
-
     open fun handle(httpServletRequest: HttpServletRequest, httpServletResponse: HttpServletResponse): Response {
         val requestUri = httpServletRequest.requestURI
         val response = Response(httpServletResponse)
@@ -47,7 +46,6 @@ abstract class AbstractHttpHandler(private val routingTable: RoutingTable) : Ses
         }
         return response
     }
-
 
     open fun serializeResponse(httpServletRequest: HttpServletRequest, httpServletResponse: HttpServletResponse, response: Response) {
         if (!httpServletResponse.isCommitted) {

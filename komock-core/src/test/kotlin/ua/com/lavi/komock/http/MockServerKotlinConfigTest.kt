@@ -1,4 +1,4 @@
-package ua.com.lavi.komock
+package ua.com.lavi.komock.http
 
 import com.mashape.unirest.http.Unirest
 import org.junit.After

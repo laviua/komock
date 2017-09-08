@@ -70,6 +70,7 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
 
     override fun start() {
         if (!isStarted) {
+            log.info("Starting server: ${serverProps.name}")
             jettyServer.start()
             log.info("Started server: ${serverProps.name} on port: ${serverProps.port}. " +
                     "VirtualHosts: ${serverProps.virtualHosts}. " +
@@ -87,7 +88,7 @@ abstract class AbstractMockServer(val serverProps: HttpServerProperties) : MockS
         if (isStarted) {
             log.info("Stopping server: ${serverProps.name}")
             jettyServer.stop()
-            log.info("Server: ${serverProps.name} is stopped")
+            log.info("Stopped server: ${serverProps.name}")
             isStarted = false
         } else {
             log.info("Unable to stop because server was not started!")

@@ -1,10 +1,11 @@
-package ua.com.lavi.smtpgate.netty
+package ua.com.lavi.komock.smtp
 
 /**
  * Created by Oleksandr Loushkin on 03.09.17.
  */
 class SmtpServerProperties {
 
+    var name: String = "defaultInstanceName"
     var port: Int = 2525
     var hostname: String = "localhost"
     var bossThreads: Int = 1

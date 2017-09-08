@@ -1,4 +1,4 @@
-package ua.com.lavi.komock
+package ua.com.lavi.komock.http
 
 import com.mashape.unirest.http.Unirest
 import com.mashape.unirest.http.exceptions.UnirestException
@@ -10,6 +10,8 @@ import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import org.yaml.snakeyaml.Yaml
+import ua.com.lavi.komock.KomockRunner
+import ua.com.lavi.komock.Waiter
 import ua.com.lavi.komock.engine.handler.after.EmptyAfterResponseHandlerImpl
 import ua.com.lavi.komock.engine.handler.before.EmptyBeforeResponseHandlerImpl
 import ua.com.lavi.komock.engine.handler.callback.EmptyCallbackHandlerImpl
@@ -57,7 +59,7 @@ class RoutingTest {
 
         Unirest.get("http://127.0.0.1:8081/testcallback").asJson()
 
-        val capturedDataList = HttpServerRegistrar.getServers().filter { it.getName() == "callbackserver" }[0].getCapturedData()
+        val capturedDataList = HttpServerRegistrar.getServers().filter { it.getName() == "callbackserver" } [0].getCapturedData()
         Waiter.untilNotEmpty(capturedDataList)
 
         val capturedData = capturedDataList[0]
@@ -72,7 +74,6 @@ class RoutingTest {
 
         assertEquals("gradle", responseHeaders["X-Builder"])
         assertEquals("1.8", responseHeaders["X-Java-Version"])
-
 
     }
 

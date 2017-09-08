@@ -1,32 +1,36 @@
-package ua.com.lavi.smtpgate.netty
+package ua.com.lavi.komock.smtp
 
 /**
  * Created by Oleksandr Loushkin on 03.09.17.
  */
 
-import org.jboss.netty.channel.*
+import io.netty.channel.*
+import org.slf4j.LoggerFactory
+import ua.com.lavi.komock.ext.toByteArrayInputStream
+import java.util.*
+import javax.mail.Session
+import javax.mail.internet.MimeMessage
 
-class SmtpServerHandler(serverProperties: SmtpServerProperties) : SimpleChannelHandler() {
+class SmtpServerHandler(serverProperties: SmtpServerProperties) : ChannelInboundHandlerAdapter() {
+
+    private val log = LoggerFactory.getLogger(this.javaClass)
+
     private var hostname: String = serverProperties.hostname
     private var dataMode = false
-    private val dataBuffer = StringBuffer()
-    val storedMessages: MutableList<String> = ArrayList()
+    private val dataBuffer = StringBuilder()
+    private val storedMessages: MutableList<MimeMessage> = ArrayList()
 
     //filter
-    override fun channelOpen(ctx: ChannelHandlerContext?, e: ChannelStateEvent?) {
-        super.channelOpen(ctx, e)
-    }
-
-    //send welcome banner
-    override fun channelConnected(ctx: ChannelHandlerContext, e: ChannelStateEvent) {
-        val channel = e.channel
+    override fun channelRegistered(ctx: ChannelHandlerContext) {
+        val channel = ctx.channel()
         dataBuffer.setLength(0) // reset buffer
-        channel.write("220 $hostname ESMTP\r\n")
+        channel.writeAndFlush("220 $hostname ESMTP\r\n")
+        super.channelRegistered(ctx)
     }
 
-    override fun messageReceived(ctx: ChannelHandlerContext, messageEvent: MessageEvent) {
-        val channel = messageEvent.channel
-        val data = messageEvent.message as String
+    override fun channelRead(ctx: ChannelHandlerContext, msg: Any?) {
+        val channel = ctx.channel()
+        val data = msg as String
 
         if (!dataMode) {
             commandHandler(channel, data)
@@ -45,28 +49,31 @@ class SmtpServerHandler(serverProperties: SmtpServerProperties) : SimpleChannelH
         }
 
         if (receivedCommand.isEmpty()) {
-            channel.write("500 Error: bad syntax\r\n")
+            channel.writeAndFlush("500 Error: bad syntax\r\n")
             return
         }
 
         if (receivedCommand == "HELO") {
-            channel.write("250 " + hostname + "\r\n")
+            channel.writeAndFlush("250 " + hostname + "\r\n")
         } else if (receivedCommand == "EHLO") {
-            channel.write("250 " + hostname + "\r\n")
+            channel.writeAndFlush("250 " + hostname + "\r\n")
         } else if (receivedCommand == "MAIL") { // start data
-            channel.write("250 OK\r\n")
+            channel.writeAndFlush("250 OK\r\n")
         } else if (receivedCommand == "RCPT") {
-            channel.write("250 OK\r\n")
+            channel.writeAndFlush("250 OK\r\n")
         } else if (receivedCommand == "DATA") {
             dataMode = true
-            channel.write("354 End data with <CR><LF>.<CR><LF>\r\n")
+            channel.writeAndFlush("354 End data with <CR><LF>.<CR><LF>\r\n")
         } else if (receivedCommand == "RSET") {
-            channel.write("250 OK\r\n")
+            channel.writeAndFlush("250 OK\r\n")
         } else if (receivedCommand == "QUIT") {
-            val channelFuture = channel.write("221 $hostname closing connection\r\n")
+            val channelFuture = channel.writeAndFlush("221 $hostname closing connection\r\n")
             channelFuture.addListener(ChannelFutureListener.CLOSE)
+            val mimeMessage = MimeMessage(Session.getDefaultInstance(Properties()), dataBuffer.toByteArrayInputStream())
+            storedMessages.add(mimeMessage)
+            log.info("Message has been captured: ${mimeMessage.messageID}")
         } else {
-            channel.write("500 unrecognized receivedCommand\r\n")
+            channel.writeAndFlush("500 unrecognized receivedCommand\r\n")
         }
     }
 
@@ -75,24 +82,18 @@ class SmtpServerHandler(serverProperties: SmtpServerProperties) : SimpleChannelH
         if (line.trim { it <= ' ' } == ".") {
             // end-of-data
             dataMode = false
-            channel.write("250 OK\r\n")
+            channel.writeAndFlush("250 OK\r\n")
         } else {
             // unescape leading dot
             if (line.startsWith("..")) {
                 line = line.substring(1)
             }
-            dataBuffer.append(line)
+            dataBuffer.append(line).append("\n")
         }
     }
 
-    override fun channelDisconnected(ctx: ChannelHandlerContext?, e: ChannelStateEvent?) {
-        storedMessages.add(dataBuffer.toString())
-        super.channelDisconnected(ctx, e)
-    }
-
-    override fun exceptionCaught(ctx: ChannelHandlerContext, e: ExceptionEvent) {
-        e.cause.printStackTrace()
-        val ch = e.channel
-        ch.close()
+    fun getMessages(): MutableList<MimeMessage> {
+        return storedMessages
     }
 }
+
