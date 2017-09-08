@@ -18,7 +18,7 @@ import javax.mail.internet.MimeMessage
  * Created by Oleksandr Loushkin on 03.09.17.
  */
 
-class SmtpMockServer(val serverProps: SmtpServerProperties) {
+class SmtpServer(val serverProps: SmtpServerProperties) {
     private var started = false
     private val log = LoggerFactory.getLogger(this.javaClass)
 

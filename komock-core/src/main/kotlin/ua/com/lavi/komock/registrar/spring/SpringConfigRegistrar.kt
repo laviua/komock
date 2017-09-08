@@ -14,6 +14,7 @@ import ua.com.lavi.komock.engine.server.SecuredMockServer
 import ua.com.lavi.komock.engine.server.UnsecuredMockServer
 import ua.com.lavi.komock.registrar.FileChangeHandler
 import ua.com.lavi.komock.registrar.FileChangeWatcher
+import ua.com.lavi.komock.registrar.Registrar
 import java.net.BindException
 import java.nio.file.Path
 import java.util.*
@@ -23,13 +24,13 @@ import java.util.*
  * Register Spring configuration files as a separate http server instance
  */
 
-class SpringConfigRegistrar {
+class SpringConfigRegistrar: Registrar<SpringConfigProperties> {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     private val gson = Gson()
 
-    fun register(springConfigProperties: SpringConfigProperties) {
+    override fun register(springConfigProperties: SpringConfigProperties) {
         val httpServerProp: HttpServerProperties = springConfigProperties.httpServer
 
         val router = if (httpServerProp.ssl.enabled) {

@@ -20,7 +20,7 @@ import kotlin.test.assertTrue
 /**
  * Created by Oleksandr Loushkin on 03.09.17.
  */
-class SmtpMockServerTest {
+class SmtpServerTest {
     private val SERVER_HOST = "127.0.0.1"
     private val SERVER_PORT = 2525
 
@@ -30,22 +30,22 @@ class SmtpMockServerTest {
     private val charset = "text/html; charset=utf8"
     private val body = "This is a body"
 
-    private var smtpMockServer: SmtpMockServer = SmtpMockServer(SmtpServerProperties().withPort(SERVER_PORT))
+    private var smtpServer: SmtpServer = SmtpServer(SmtpServerProperties().withPort(SERVER_PORT))
 
     @Before
     fun setUp() {
-        smtpMockServer.start()
+        smtpServer.start()
     }
 
     @After
     fun tearDown() {
-        smtpMockServer.stop()
+        smtpServer.stop()
     }
 
     @Test
     fun should_send_simple_text_plain() {
         sendEmail()
-        val messages = smtpMockServer.getMessages()
+        val messages = smtpServer.getMessages()
         Waiter.untilNotEmpty(messages, 1000)
         assertEquals(1, messages.size)
         val message: MimeMessage = messages[0]
@@ -60,7 +60,7 @@ class SmtpMockServerTest {
     @Test
     fun should_send_multipart_with_attachment() {
         sendMultipartEmailWithAttach()
-        val messages = smtpMockServer.getMessages()
+        val messages = smtpServer.getMessages()
         Waiter.untilNotEmpty(messages, 1000)
         assertEquals(1, messages.size)
         val message = messages[0]

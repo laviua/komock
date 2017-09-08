@@ -4,16 +4,17 @@ import com.ecwid.consul.v1.ConsulClient
 import com.ecwid.consul.v1.agent.model.NewService
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.engine.model.config.consul.ConsulAgentProperties
+import ua.com.lavi.komock.registrar.Registrar
 
 /**
  * Created by Oleksandr Loushkin
  */
 
-class ConsulRegistrar {
+class ConsulRegistrar: Registrar<ConsulAgentProperties> {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    fun register(consulAgentProperties: ConsulAgentProperties) {
+    override fun register(consulAgentProperties: ConsulAgentProperties) {
         val clientRegistrar = ConsulClient(consulAgentProperties.consulHost, consulAgentProperties.consulPort)
         log.debug("Found: ${consulAgentProperties.services.size} consul services")
         for (consulService in consulAgentProperties.services) {

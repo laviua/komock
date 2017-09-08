@@ -1,4 +1,4 @@
-package ua.com.lavi.komock.http
+package ua.com.lavi.komock
 
 import com.mashape.unirest.http.Unirest
 import com.mashape.unirest.http.exceptions.UnirestException
@@ -10,8 +10,6 @@ import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import org.yaml.snakeyaml.Yaml
-import ua.com.lavi.komock.KomockRunner
-import ua.com.lavi.komock.Waiter
 import ua.com.lavi.komock.engine.handler.after.EmptyAfterResponseHandlerImpl
 import ua.com.lavi.komock.engine.handler.before.EmptyBeforeResponseHandlerImpl
 import ua.com.lavi.komock.engine.handler.callback.EmptyCallbackHandlerImpl
@@ -20,16 +18,19 @@ import ua.com.lavi.komock.engine.model.HttpMethod
 import ua.com.lavi.komock.engine.model.config.KomockConfiguration
 import ua.com.lavi.komock.engine.server.handler.RoutingTable
 import ua.com.lavi.komock.registrar.http.HttpServerRegistrar
+import ua.com.lavi.komock.registrar.smtp.SmtpServerRegistrar
+import java.net.Socket
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
+
 /**
  * Created by Oleksandr Loushkin
  */
 
-class RoutingTest {
+class IntegrationTest {
 
     companion object {
 
@@ -38,19 +39,16 @@ class RoutingTest {
         @BeforeClass
         @JvmStatic
         fun startServer() {
-            runApplication(MOCK_EXAMPLE_YAML)
-        }
-
-        private fun runApplication(path: String) {
-            Files.newInputStream(Paths.get(path)).use { it ->
+            Files.newInputStream(Paths.get(MOCK_EXAMPLE_YAML)).use { it ->
                 KomockRunner().run(Yaml().loadAs<KomockConfiguration>(it, KomockConfiguration::class.java))
             }
         }
 
         @AfterClass
         @JvmStatic
-        fun stopServer() {
-            HttpServerRegistrar.stopAllServers()
+        fun stop() {
+            HttpServerRegistrar.getServers().forEach { it.stop() }
+            SmtpServerRegistrar.getServers().forEach { it.stop() }
         }
     }
 
@@ -393,6 +391,12 @@ class RoutingTest {
         assertEquals("text/plain", response.headers["Content-Type"]!![0])
         assertEquals(204, response.status)
         assertEquals(response.body, null)
+    }
+
+    @Test
+    fun should_ok_say_helo() {
+        val socket = Socket("localhost", 2525)
+        assertEquals("220 localhost ESMTP", socket.getInputStream().bufferedReader().readLine())
     }
 
 }

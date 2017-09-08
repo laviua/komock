@@ -5,6 +5,7 @@ import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
 import ua.com.lavi.komock.engine.server.MockServer
 import ua.com.lavi.komock.engine.server.SecuredMockServer
 import ua.com.lavi.komock.engine.server.UnsecuredMockServer
+import ua.com.lavi.komock.registrar.Registrar
 import java.net.BindException
 import java.util.*
 
@@ -12,7 +13,7 @@ import java.util.*
  * Created by Oleksandr Loushkin
  */
 
-class HttpServerRegistrar {
+class HttpServerRegistrar : Registrar<HttpServerProperties>{
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
@@ -21,20 +22,12 @@ class HttpServerRegistrar {
 
         private val mockServers: MutableList<MockServer> = ArrayList()
 
-        fun startAllServers() {
-            mockServers.forEach(MockServer::start)
-        }
-
-        fun stopAllServers() {
-            mockServers.forEach(MockServer::stop)
-        }
-
         fun getServers(): MutableList<MockServer> {
             return mockServers
         }
     }
 
-    fun register(httpServerProperties: HttpServerProperties) {
+    override fun register(httpServerProperties: HttpServerProperties) {
 
         //SSL SecuredHttpRouter or not
         val mockServer = if (httpServerProperties.ssl.enabled) {
