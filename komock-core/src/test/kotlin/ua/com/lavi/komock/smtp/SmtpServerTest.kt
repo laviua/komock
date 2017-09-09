@@ -3,7 +3,6 @@ package ua.com.lavi.komock.smtp
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import ua.com.lavi.komock.Waiter
 import ua.com.lavi.komock.ext.getFirstHeader
 import java.io.File
 import java.util.*
@@ -21,6 +20,7 @@ import kotlin.test.assertTrue
  * Created by Oleksandr Loushkin on 03.09.17.
  */
 class SmtpServerTest {
+
     private val SERVER_HOST = "127.0.0.1"
     private val SERVER_PORT = 2525
 
@@ -44,33 +44,37 @@ class SmtpServerTest {
 
     @Test
     fun should_send_simple_text_plain() {
+        val notifier = object : SmtpNotifier {
+            override fun onMail(mimeMessage: MimeMessage) {
+                assertTrue(mimeMessage.content.toString().contains(body))
+                assertEquals(from, mimeMessage.getFirstHeader("From"))
+                assertEquals(to, mimeMessage.getFirstHeader("To"))
+                assertEquals(subject, mimeMessage.getFirstHeader("Subject"))
+                assertEquals(charset, mimeMessage.getFirstHeader("Content-Type"))
+            }
+        }
+        smtpServer.getSmtpMailbox().registerNotifier(to, notifier)
         sendEmail()
-        val messages = smtpServer.getMessages()
-        Waiter.untilNotEmpty(messages, 1000)
-        assertEquals(1, messages.size)
-        val message: MimeMessage = messages[0]
 
-        assertTrue(message.content.toString().contains(body))
-        assertEquals(from, message.getFirstHeader("From"))
-        assertEquals(to, message.getFirstHeader("To"))
-        assertEquals(subject, message.getFirstHeader("Subject"))
-        assertEquals(charset, message.getFirstHeader("Content-Type"))
     }
 
     @Test
     fun should_send_multipart_with_attachment() {
+        val notifier = object : SmtpNotifier {
+            override fun onMail(mimeMessage: MimeMessage) {
+                val byteParts = getByteParts(mimeMessage)
+                assertTrue(mimeMessage.contentType.contains("multipart/mixed"))
+                assertEquals(from, mimeMessage.getFirstHeader("From"))
+                assertEquals(to, mimeMessage.getFirstHeader("To"))
+                assertEquals(subject, mimeMessage.getFirstHeader("Subject"))
+                assertTrue(Arrays.equals(byteParts[0], body.toByteArray()))
+                assertTrue(String(byteParts[1]) == File("build.gradle").readText())
+            }
+        }
+        smtpServer.getSmtpMailbox().registerNotifier(to, notifier)
         sendMultipartEmailWithAttach()
-        val messages = smtpServer.getMessages()
-        Waiter.untilNotEmpty(messages, 1000)
-        assertEquals(1, messages.size)
-        val message = messages[0]
-        val byteParts = getByteParts(message)
-        assertTrue(message.contentType.contains("multipart/mixed"))
-        assertEquals(from, message.getFirstHeader("From"))
-        assertEquals(to, message.getFirstHeader("To"))
-        assertEquals(subject, message.getFirstHeader("Subject"))
-        assertTrue(Arrays.equals(byteParts[0], body.toByteArray()))
-        assertTrue(String(byteParts[1]) == File("build.gradle").readText())
+
+
     }
 
     private fun getByteParts(message: MimeMessage): MutableList<ByteArray> {

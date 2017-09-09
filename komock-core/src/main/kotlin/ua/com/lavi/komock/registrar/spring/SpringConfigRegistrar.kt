@@ -30,8 +30,8 @@ class SpringConfigRegistrar: Registrar<SpringConfigProperties> {
 
     private val gson = Gson()
 
-    override fun register(springConfigProperties: SpringConfigProperties) {
-        val httpServerProp: HttpServerProperties = springConfigProperties.httpServer
+    override fun register(properties: SpringConfigProperties) {
+        val httpServerProp: HttpServerProperties = properties.httpServer
 
         val router = if (httpServerProp.ssl.enabled) {
             SecuredMockServer(httpServerProp)
@@ -46,19 +46,19 @@ class SpringConfigRegistrar: Registrar<SpringConfigProperties> {
             return
         }
 
-        val profiles = springConfigProperties.profiles
+        val profiles = properties.profiles
 
-        val fileList = springConfigProperties.fileList()
+        val fileList = properties.fileList()
         fileList.forEach({ configFilePath -> registerPath(configFilePath, profiles, router) })
 
-        if (springConfigProperties.doRefresh()) {
+        if (properties.doRefresh()) {
             val fileChangeHandler = object : FileChangeHandler {
                 override fun onFileChange(filePath: Path) {
                     unregisterPath(filePath, profiles, router)
                     registerPath(filePath, profiles, router)
                 }
             }
-            FileChangeWatcher(fileChangeHandler, fileList, springConfigProperties.refreshPeriod).start()
+            FileChangeWatcher(fileChangeHandler, fileList, properties.refreshPeriod).start()
         }
     }
 

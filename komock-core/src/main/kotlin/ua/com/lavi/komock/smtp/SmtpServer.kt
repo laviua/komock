@@ -11,8 +11,9 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder
 import io.netty.handler.codec.Delimiters
 import io.netty.handler.codec.string.StringDecoder
 import io.netty.handler.codec.string.StringEncoder
+import io.netty.handler.timeout.IdleStateHandler
 import org.slf4j.LoggerFactory
-import javax.mail.internet.MimeMessage
+
 
 /**
  * Created by Oleksandr Loushkin on 03.09.17.
@@ -22,14 +23,10 @@ class SmtpServer(val serverProps: SmtpServerProperties) {
     private var started = false
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    val smtpServerHandler = SmtpServerHandler(serverProps)
     var bossGroup = NioEventLoopGroup(serverProps.bossThreads)
     var workerGroup = NioEventLoopGroup(serverProps.workerThreads)
     var channel: ChannelFuture? = null
-
-    fun getMessages(): List<MimeMessage> {
-        return smtpServerHandler.getMessages()
-    }
+    val smtpMailBox = SmtpMailbox()
 
     fun start() {
         if (started) {
@@ -38,7 +35,7 @@ class SmtpServer(val serverProps: SmtpServerProperties) {
         }
         Runtime.getRuntime().addShutdownHook(object : Thread() {
             override fun run() {
-                stop()
+                this@SmtpServer.stop()
             }
         })
         log.info("Starting server: ${serverProps.name}")
@@ -50,10 +47,11 @@ class SmtpServer(val serverProps: SmtpServerProperties) {
             public override fun initChannel(socketChannel: SocketChannel) {
                 val pipeline = socketChannel.pipeline()
                 //pipeline.addLast(LoggingHandler())
+                pipeline.addLast("idleStateHandler", IdleStateHandler(60, 30, 0))
                 pipeline.addLast(DelimiterBasedFrameDecoder(8192, *Delimiters.lineDelimiter()))
                 pipeline.addLast(StringDecoder())
                 pipeline.addLast(StringEncoder())
-                pipeline.addLast(smtpServerHandler)
+                pipeline.addLast(SmtpServerHandler(smtpMailBox, serverProps))
             }
         })
 
@@ -75,4 +73,7 @@ class SmtpServer(val serverProps: SmtpServerProperties) {
         log.info("Stopped server: ${serverProps.name}")
     }
 
+    fun getSmtpMailbox(): SmtpMailbox {
+        return smtpMailBox
+    }
 }

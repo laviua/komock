@@ -5,20 +5,16 @@ package ua.com.lavi.komock.smtp
  */
 
 import io.netty.channel.*
-import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.ext.toByteArrayInputStream
 import java.util.*
 import javax.mail.Session
 import javax.mail.internet.MimeMessage
 
-class SmtpServerHandler(serverProperties: SmtpServerProperties) : ChannelInboundHandlerAdapter() {
+class SmtpServerHandler(val smtpMailbox: SmtpMailbox, serverProps: SmtpServerProperties) : ChannelInboundHandlerAdapter() {
 
-    private val log = LoggerFactory.getLogger(this.javaClass)
-
-    private var hostname: String = serverProperties.hostname
+    private var hostname: String = serverProps.hostname
     private var dataMode = false
     private val dataBuffer = StringBuilder()
-    private val storedMessages: MutableList<MimeMessage> = ArrayList()
 
     //filter
     override fun channelRegistered(ctx: ChannelHandlerContext) {
@@ -67,11 +63,9 @@ class SmtpServerHandler(serverProperties: SmtpServerProperties) : ChannelInbound
         } else if (receivedCommand == "RSET") {
             channel.writeAndFlush("250 OK\r\n")
         } else if (receivedCommand == "QUIT") {
-            val channelFuture = channel.writeAndFlush("221 $hostname closing connection\r\n")
-            channelFuture.addListener(ChannelFutureListener.CLOSE)
+            channel.writeAndFlush("221 $hostname closing connection\r\n").addListener(ChannelFutureListener.CLOSE)
             val mimeMessage = MimeMessage(Session.getDefaultInstance(Properties()), dataBuffer.toByteArrayInputStream())
-            storedMessages.add(mimeMessage)
-            log.info("Message has been captured: ${mimeMessage.messageID}")
+            smtpMailbox.deliver(mimeMessage)
         } else {
             channel.writeAndFlush("500 unrecognized receivedCommand\r\n")
         }
@@ -90,10 +84,6 @@ class SmtpServerHandler(serverProperties: SmtpServerProperties) : ChannelInbound
             }
             dataBuffer.append(line).append("\n")
         }
-    }
-
-    fun getMessages(): MutableList<MimeMessage> {
-        return storedMessages
     }
 }
 

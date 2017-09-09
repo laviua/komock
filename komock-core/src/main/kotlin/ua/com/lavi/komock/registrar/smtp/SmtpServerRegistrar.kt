@@ -24,14 +24,14 @@ class SmtpServerRegistrar : Registrar<SmtpServerProperties> {
         }
     }
 
-    override fun register(smtpServerProperties: SmtpServerProperties) {
-        val smtpServer = SmtpServer(smtpServerProperties)
+    override fun register(properties: SmtpServerProperties) {
+        val smtpServer = SmtpServer(properties)
 
         try {
             smtpServer.start()
             smtpServers.add(smtpServer)
         } catch (e: BindException) {
-            log.warn(e.message + ": ${smtpServerProperties.hostname}, port: ${smtpServerProperties.port}", e)
+            log.warn(e.message + ": ${properties.hostname}, port: ${properties.port}", e)
             return
         }
     }

@@ -27,13 +27,13 @@ class HttpServerRegistrar : Registrar<HttpServerProperties>{
         }
     }
 
-    override fun register(httpServerProperties: HttpServerProperties) {
+    override fun register(properties: HttpServerProperties) {
 
         //SSL SecuredHttpRouter or not
-        val mockServer = if (httpServerProperties.ssl.enabled) {
-            SecuredMockServer(httpServerProperties)
+        val mockServer = if (properties.ssl.enabled) {
+            SecuredMockServer(properties)
         } else {
-            UnsecuredMockServer(httpServerProperties)
+            UnsecuredMockServer(properties)
         }
 
         mockServers.add(mockServer)
@@ -41,7 +41,7 @@ class HttpServerRegistrar : Registrar<HttpServerProperties>{
         try {
             mockServer.start()
         } catch (e: BindException) {
-            log.warn(e.message + ": ${httpServerProperties.host}, port: ${httpServerProperties.port}", e)
+            log.warn(e.message + ": ${properties.host}, port: ${properties.port}", e)
             return
         }
     }

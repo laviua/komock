@@ -14,10 +14,10 @@ class ConsulRegistrar: Registrar<ConsulAgentProperties> {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    override fun register(consulAgentProperties: ConsulAgentProperties) {
-        val clientRegistrar = ConsulClient(consulAgentProperties.consulHost, consulAgentProperties.consulPort)
-        log.debug("Found: ${consulAgentProperties.services.size} consul services")
-        for (consulService in consulAgentProperties.services) {
+    override fun register(properties: ConsulAgentProperties) {
+        val clientRegistrar = ConsulClient(properties.consulHost, properties.consulPort)
+        log.debug("Found: ${properties.services.size} consul services")
+        for (consulService in properties.services) {
             if (consulService.enabled) {
                 val newService = NewService()
                 newService.id = consulService.serviceId
@@ -35,7 +35,7 @@ class ConsulRegistrar: Registrar<ConsulAgentProperties> {
                 log.info("Registered consul service: ${consulService.serviceId} - ${consulService.serviceAddress}:${consulService.servicePort}")
             }
         }
-        if (consulAgentProperties.daemon) {
+        if (properties.daemon) {
             try {
                 log.info("Consul registration is running in daemon mode")
                 Thread.currentThread().join()
