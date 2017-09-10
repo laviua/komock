@@ -1,7 +1,7 @@
 package ua.com.lavi.komock
 
 import org.junit.Test
-import ua.com.lavi.komock.engine.VariableResolver
+import ua.com.lavi.komock.ext.VariableResolver
 import kotlin.test.assertEquals
 
 /**

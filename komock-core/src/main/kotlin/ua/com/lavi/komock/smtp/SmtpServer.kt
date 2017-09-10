@@ -13,6 +13,7 @@ import io.netty.handler.codec.string.StringDecoder
 import io.netty.handler.codec.string.StringEncoder
 import io.netty.handler.timeout.IdleStateHandler
 import org.slf4j.LoggerFactory
+import ua.com.lavi.komock.model.config.smtp.SmtpServerProperties
 
 
 /**

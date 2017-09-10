@@ -7,10 +7,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ua.com.lavi.komock.Waiter;
-import ua.com.lavi.komock.engine.model.HttpMethod;
-import ua.com.lavi.komock.engine.model.config.http.*;
-import ua.com.lavi.komock.engine.server.MockServer;
-import ua.com.lavi.komock.engine.server.UnsecuredMockServer;
+import ua.com.lavi.komock.model.HttpMethod;
+import ua.com.lavi.komock.model.config.http.*;
+import ua.com.lavi.komock.http.server.MockServer;
+import ua.com.lavi.komock.http.server.UnsecuredMockServer;
 
 import java.util.Collections;
 import java.util.HashMap;

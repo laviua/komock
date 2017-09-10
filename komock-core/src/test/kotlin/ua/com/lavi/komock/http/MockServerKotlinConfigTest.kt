@@ -6,13 +6,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import ua.com.lavi.komock.engine.handler.response.ResponseHandler
-import ua.com.lavi.komock.engine.model.HttpMethod
-import ua.com.lavi.komock.engine.model.Request
-import ua.com.lavi.komock.engine.model.Response
-import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
-import ua.com.lavi.komock.engine.server.MockServer
-import ua.com.lavi.komock.engine.server.UnsecuredMockServer
+import ua.com.lavi.komock.http.handler.response.ResponseHandler
+import ua.com.lavi.komock.model.HttpMethod
+import ua.com.lavi.komock.model.Request
+import ua.com.lavi.komock.model.Response
+import ua.com.lavi.komock.model.config.http.HttpServerProperties
+import ua.com.lavi.komock.http.server.MockServer
+import ua.com.lavi.komock.http.server.UnsecuredMockServer
 
 /**
  * Created by Oleksandr Loushkin

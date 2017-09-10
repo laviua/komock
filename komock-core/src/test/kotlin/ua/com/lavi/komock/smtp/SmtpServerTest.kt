@@ -3,6 +3,7 @@ package ua.com.lavi.komock.smtp
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import ua.com.lavi.komock.model.config.smtp.SmtpServerProperties
 import ua.com.lavi.komock.ext.getFirstHeader
 import java.io.File
 import java.util.*

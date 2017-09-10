@@ -3,7 +3,7 @@ package ua.com.lavi.komock.registrar.smtp
 import org.slf4j.LoggerFactory
 import ua.com.lavi.komock.registrar.Registrar
 import ua.com.lavi.komock.smtp.SmtpServer
-import ua.com.lavi.komock.smtp.SmtpServerProperties
+import ua.com.lavi.komock.model.config.smtp.SmtpServerProperties
 import java.net.BindException
 import java.util.*
 

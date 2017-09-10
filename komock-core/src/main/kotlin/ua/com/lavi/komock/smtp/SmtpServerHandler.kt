@@ -5,6 +5,7 @@ package ua.com.lavi.komock.smtp
  */
 
 import io.netty.channel.*
+import ua.com.lavi.komock.model.config.smtp.SmtpServerProperties
 import ua.com.lavi.komock.ext.toByteArrayInputStream
 import java.util.*
 import javax.mail.Session
