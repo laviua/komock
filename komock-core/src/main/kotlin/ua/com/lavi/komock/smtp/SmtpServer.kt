@@ -21,7 +21,7 @@ import ua.com.lavi.komock.model.config.smtp.SmtpServerProperties
  */
 
 class SmtpServer(val serverProps: SmtpServerProperties) {
-    private var started = false
+    private var isStarted = false
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     var bossGroup = NioEventLoopGroup(serverProps.bossThreads)
@@ -30,48 +30,47 @@ class SmtpServer(val serverProps: SmtpServerProperties) {
     val smtpMailBox = SmtpMailbox()
 
     fun start() {
-        if (started) {
-            log.warn("Server is already started.")
-            return
+        if (!isStarted) {
+            log.info("Starting server: ${serverProps.name}")
+            val serverBootstrap = ServerBootstrap()
+            serverBootstrap.group(bossGroup, workerGroup)
+            serverBootstrap.channel(NioServerSocketChannel::class.java)
+            serverBootstrap.childHandler(object : ChannelInitializer<SocketChannel>() {
+                public override fun initChannel(socketChannel: SocketChannel) {
+                    val pipeline = socketChannel.pipeline()
+                    //pipeline.addLast(LoggingHandler())
+                    pipeline.addLast("idleStateHandler", IdleStateHandler(60, 30, 0))
+                    pipeline.addLast(DelimiterBasedFrameDecoder(8192, *Delimiters.lineDelimiter()))
+                    pipeline.addLast(StringDecoder())
+                    pipeline.addLast(StringEncoder())
+                    pipeline.addLast(SmtpServerHandler(smtpMailBox, serverProps))
+                }
+            })
+
+            serverBootstrap.option(ChannelOption.SO_BACKLOG, 128)
+            serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
+
+            channel = serverBootstrap.bind(serverProps.port).sync()
+            isStarted = true
+            log.info("Started server: ${serverProps.name} on port: ${serverProps.port}. " +
+                    "Boss threads: ${serverProps.bossThreads}. " +
+                    "Worker threads: ${serverProps.workerThreads}")
+        } else {
+            log.info("Unable to start because server is already started!")
         }
-        Runtime.getRuntime().addShutdownHook(object : Thread() {
-            override fun run() {
-                this@SmtpServer.stop()
-            }
-        })
-        log.info("Starting server: ${serverProps.name}")
-        started = true
-        val serverBootstrap = ServerBootstrap()
-        serverBootstrap.group(bossGroup, workerGroup)
-        serverBootstrap.channel(NioServerSocketChannel::class.java)
-        serverBootstrap.childHandler(object : ChannelInitializer<SocketChannel>() {
-            public override fun initChannel(socketChannel: SocketChannel) {
-                val pipeline = socketChannel.pipeline()
-                //pipeline.addLast(LoggingHandler())
-                pipeline.addLast("idleStateHandler", IdleStateHandler(60, 30, 0))
-                pipeline.addLast(DelimiterBasedFrameDecoder(8192, *Delimiters.lineDelimiter()))
-                pipeline.addLast(StringDecoder())
-                pipeline.addLast(StringEncoder())
-                pipeline.addLast(SmtpServerHandler(smtpMailBox, serverProps))
-            }
-        })
-
-        serverBootstrap.option(ChannelOption.SO_BACKLOG, 128)
-        serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
-
-        channel = serverBootstrap.bind(serverProps.port).sync()
-
-        log.info("Started server: ${serverProps.name} on port: ${serverProps.port}. " +
-                "Boss threads: ${serverProps.bossThreads}. " +
-                "Worker threads: ${serverProps.workerThreads}")
     }
 
     fun stop() {
-        log.info("Stopping server: ${serverProps.name}")
-        workerGroup.shutdownGracefully()
-        bossGroup.shutdownGracefully()
-        channel!!.channel().closeFuture().sync()
-        log.info("Stopped server: ${serverProps.name}")
+        if (isStarted) {
+            log.info("Stopping server: ${serverProps.name}")
+            workerGroup.shutdownGracefully()
+            bossGroup.shutdownGracefully()
+            channel!!.channel().closeFuture().sync()
+            isStarted = false
+            log.info("Stopped server: ${serverProps.name}")
+        } else {
+            log.info("Unable to stop because server was not started!")
+        }
     }
 
     fun getSmtpMailbox(): SmtpMailbox {
