@@ -6,7 +6,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'kotlin'
 apply from: "$rootDir/gradle-tasks/pmd.gradle"
 buildscript {
-    ext.kotlin_version = '1.1.4'
+    ext.kotlin_version = '1.1.51'
     repositories {
         mavenCentral()
         jcenter()
