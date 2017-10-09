@@ -45,7 +45,7 @@ Run standalone application:
 ## Examples
 
 **Simple http server**
-https://github.com/laviua/komock/wiki/Simple-http-server
+https://github.com/laviua/komock/wiki/Simple-http-server-(Java)
 
 **Oauth2 server**
 https://github.com/laviua/komock/wiki/Oauth2-server
@@ -57,7 +57,7 @@ https://github.com/laviua/komock/wiki/Consul
 https://github.com/laviua/komock/wiki/Spring-config-server
 
 **Unit testing**
-https://github.com/laviua/komock/wiki/Unit-Testing-with-request-capturing
+https://github.com/laviua/komock/wiki/Unit-Testing-with-request-capturing-(Java)
 
 **Full config**
 Callbacks, Mask patterns, cookies, virtualhosts, etc
