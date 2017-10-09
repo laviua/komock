@@ -1,10 +1,11 @@
 package ua.com.lavi.komock.registrar.http
 
 import org.slf4j.LoggerFactory
-import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
-import ua.com.lavi.komock.engine.server.MockServer
-import ua.com.lavi.komock.engine.server.SecuredMockServer
-import ua.com.lavi.komock.engine.server.UnsecuredMockServer
+import ua.com.lavi.komock.model.config.http.HttpServerProperties
+import ua.com.lavi.komock.http.server.MockServer
+import ua.com.lavi.komock.http.server.SecuredMockServer
+import ua.com.lavi.komock.http.server.UnsecuredMockServer
+import ua.com.lavi.komock.registrar.Registrar
 import java.net.BindException
 import java.util.*
 
@@ -12,7 +13,7 @@ import java.util.*
  * Created by Oleksandr Loushkin
  */
 
-class HttpServerRegistrar {
+class HttpServerRegistrar : Registrar<HttpServerProperties>{
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
@@ -21,26 +22,18 @@ class HttpServerRegistrar {
 
         private val mockServers: MutableList<MockServer> = ArrayList()
 
-        fun startAllServers() {
-            mockServers.forEach(MockServer::start)
-        }
-
-        fun stopAllServers() {
-            mockServers.forEach(MockServer::stop)
-        }
-
         fun getServers(): MutableList<MockServer> {
             return mockServers
         }
     }
 
-    fun register(httpServerProperties: HttpServerProperties) {
+    override fun register(properties: HttpServerProperties) {
 
         //SSL SecuredHttpRouter or not
-        val mockServer = if (httpServerProperties.ssl.enabled) {
-            SecuredMockServer(httpServerProperties)
+        val mockServer = if (properties.ssl.enabled) {
+            SecuredMockServer(properties)
         } else {
-            UnsecuredMockServer(httpServerProperties)
+            UnsecuredMockServer(properties)
         }
 
         mockServers.add(mockServer)
@@ -48,7 +41,7 @@ class HttpServerRegistrar {
         try {
             mockServer.start()
         } catch (e: BindException) {
-            log.warn(e.message + ": ${httpServerProperties.host}, port: ${httpServerProperties.port}", e)
+            log.warn(e.message + ": ${properties.host}, port: ${properties.port}", e)
             return
         }
     }

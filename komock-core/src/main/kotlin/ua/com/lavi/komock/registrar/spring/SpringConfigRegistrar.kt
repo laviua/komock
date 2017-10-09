@@ -3,17 +3,18 @@ package ua.com.lavi.komock.registrar.spring
 import com.google.gson.Gson
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.Yaml
-import ua.com.lavi.komock.engine.model.HttpMethod
-import ua.com.lavi.komock.engine.model.PropertySource
-import ua.com.lavi.komock.engine.model.SpringConfigResponse
-import ua.com.lavi.komock.engine.model.config.http.HttpServerProperties
-import ua.com.lavi.komock.engine.model.config.http.RouteProperties
-import ua.com.lavi.komock.engine.model.config.spring.SpringConfigProperties
-import ua.com.lavi.komock.engine.server.MockServer
-import ua.com.lavi.komock.engine.server.SecuredMockServer
-import ua.com.lavi.komock.engine.server.UnsecuredMockServer
-import ua.com.lavi.komock.registrar.FileChangeHandler
-import ua.com.lavi.komock.registrar.FileChangeWatcher
+import ua.com.lavi.komock.model.HttpMethod
+import ua.com.lavi.komock.model.PropertySource
+import ua.com.lavi.komock.model.SpringConfigResponse
+import ua.com.lavi.komock.model.config.http.HttpServerProperties
+import ua.com.lavi.komock.model.config.http.RouteProperties
+import ua.com.lavi.komock.model.config.spring.SpringConfigProperties
+import ua.com.lavi.komock.http.server.MockServer
+import ua.com.lavi.komock.http.server.SecuredMockServer
+import ua.com.lavi.komock.http.server.UnsecuredMockServer
+import ua.com.lavi.komock.ext.FileChangeHandler
+import ua.com.lavi.komock.ext.FileChangeWatcher
+import ua.com.lavi.komock.registrar.Registrar
 import java.net.BindException
 import java.nio.file.Path
 import java.util.*
@@ -23,14 +24,14 @@ import java.util.*
  * Register Spring configuration files as a separate http server instance
  */
 
-class SpringConfigRegistrar {
+class SpringConfigRegistrar: Registrar<SpringConfigProperties> {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     private val gson = Gson()
 
-    fun register(springConfigProperties: SpringConfigProperties) {
-        val httpServerProp: HttpServerProperties = springConfigProperties.httpServer
+    override fun register(properties: SpringConfigProperties) {
+        val httpServerProp: HttpServerProperties = properties.httpServer
 
         val router = if (httpServerProp.ssl.enabled) {
             SecuredMockServer(httpServerProp)
@@ -45,19 +46,19 @@ class SpringConfigRegistrar {
             return
         }
 
-        val profiles = springConfigProperties.profiles
+        val profiles = properties.profiles
 
-        val fileList = springConfigProperties.fileList()
+        val fileList = properties.fileList()
         fileList.forEach({ configFilePath -> registerPath(configFilePath, profiles, router) })
 
-        if (springConfigProperties.doRefresh()) {
+        if (properties.doRefresh()) {
             val fileChangeHandler = object : FileChangeHandler {
                 override fun onFileChange(filePath: Path) {
                     unregisterPath(filePath, profiles, router)
                     registerPath(filePath, profiles, router)
                 }
             }
-            FileChangeWatcher(fileChangeHandler, fileList, springConfigProperties.refreshPeriod).start()
+            FileChangeWatcher(fileChangeHandler, fileList, properties.refreshPeriod).start()
         }
     }
 
