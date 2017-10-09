@@ -2,7 +2,7 @@ language: java
 jdk:
   - oraclejdk8
 script:
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then gradle clean build bintrayUpload -PbintrayUser=$bintrayUser -PbintrayKey=$bintrayKey -PdryRun=true; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then gradle clean build bintrayUpload -PbintrayUser=$bintrayUser -PbintrayKey=$bintrayKey -PdryRun=$dryRun; fi
   - if [ "$TRAVIS_BRANCH" = "develop" ]; then gradle clean build; fi
 branches:
   only:
