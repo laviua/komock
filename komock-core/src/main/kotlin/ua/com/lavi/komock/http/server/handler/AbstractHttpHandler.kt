@@ -34,7 +34,7 @@ abstract class AbstractHttpHandler(private val routingTable: RoutingTable) : Ses
 
         val route = routingTable.find(httpMethod, requestUri)
         if (route == null) {
-            log.info("Requested route $requestUri is not mapped")
+            log.warn("Requested route $httpMethod:$requestUri is not mapped")
             httpServletResponse.status = HttpServletResponse.SC_NOT_FOUND
             return response
         } else {
