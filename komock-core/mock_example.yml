@@ -12,12 +12,6 @@ consulAgents:
           checkInterval: 30s
           checkTimeout: 30s
 
-smtpServer:
-  enabled: true
-  hostname: localhost
-  port: 2525
-  name: testSmtp
-
 springConfig:
   enabled: true
   refreshPeriod: 10000

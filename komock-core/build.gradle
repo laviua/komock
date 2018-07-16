@@ -1,12 +1,10 @@
-group 'ua.com.lavi'
-
 apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'kotlin'
 apply from: "$rootDir/gradle-tasks/pmd.gradle"
 buildscript {
-    ext.kotlin_version = '1.1.51'
+    ext.kotlin_version = '1.2.51'
     repositories {
         mavenCentral()
         jcenter()
@@ -56,10 +54,8 @@ dependencies {
     compile "com.ecwid.consul:consul-api:1.1.10"
     compile "org.eclipse.jetty:jetty-server:9.4.0.v20161208"
     compile "org.eclipse.jetty:jetty-servlet:9.4.0.v20161208"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "com.mashape.unirest:unirest-java:1.4.9"
-    compile "io.netty:netty-handler:4.1.15.Final"
-    compile "javax.mail:mail:1.4.7"
     testCompile "junit:junit:4.12"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "ch.qos.logback:logback-classic:1.1.7"

@@ -18,7 +18,6 @@ import ua.com.lavi.komock.model.HttpMethod
 import ua.com.lavi.komock.model.config.KomockConfiguration
 import ua.com.lavi.komock.http.server.handler.RoutingTable
 import ua.com.lavi.komock.registrar.http.HttpServerRegistrar
-import ua.com.lavi.komock.registrar.smtp.SmtpServerRegistrar
 import java.net.Socket
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -48,7 +47,6 @@ class IntegrationTest {
         @JvmStatic
         fun stop() {
             HttpServerRegistrar.getServers().forEach { it.stop() }
-            SmtpServerRegistrar.getServers().forEach { it.stop() }
         }
     }
 
@@ -392,11 +390,4 @@ class IntegrationTest {
         assertEquals(204, response.status)
         assertEquals(response.body, null)
     }
-
-    @Test
-    fun should_ok_say_helo() {
-        val socket = Socket("localhost", 2525)
-        assertEquals("220 localhost ESMTP", socket.getInputStream().bufferedReader().readLine())
-    }
-
 }

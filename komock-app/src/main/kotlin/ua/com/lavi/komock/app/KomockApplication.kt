@@ -16,7 +16,8 @@ object KomockApplication {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         if (args.isNotEmpty()) {
             runApplication(args[0])
         } else {
@@ -36,7 +37,7 @@ object KomockApplication {
 
     }
 
-    fun version(): String {
+    private fun version(): String {
         return KomockApplication::class.java.classLoader.getResourceAsStream("version.properties").bufferedReader().use { it.readText() }
     }
 }
