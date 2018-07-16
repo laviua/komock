@@ -1,3 +1,4 @@
+group 'ua.com.lavi'
 apply plugin: 'application'
 apply plugin: 'kotlin'
 

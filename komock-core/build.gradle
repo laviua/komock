@@ -1,3 +1,4 @@
+group 'ua.com.lavi'
 apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
