@@ -24,11 +24,11 @@ class YamlRouteWriter {
             val responseBody = "responseBody: ${route.responseBody.replace("\n", "")}"
 
             val template = "-\r\n" +
-                    "\t$httpMethod \r\n" +
-                    "\t$url \r\n" +
-                    "\t$headers \r\n" +
-                    "\t$httpCode \r\n" +
-                    "\t$responseBody \r\n"
+                    "  $httpMethod \r\n" +
+                    "  $url \r\n" +
+                    "  $headers \r\n" +
+                    "  $httpCode \r\n" +
+                    "  $responseBody \r\n"
 
             targetFile.appendText(template)
         }
