@@ -46,7 +46,7 @@ class Response(private val servletResponse: HttpServletResponse) {
     fun getHeaders(): MutableMap<String, String> {
         val headers: MutableMap<String, String> = HashMap()
         for (headerName in servletResponse.headerNames) {
-            headers.put(headerName, servletResponse.getHeader(headerName))
+            headers[headerName] = servletResponse.getHeader(headerName)
         }
         return headers
     }

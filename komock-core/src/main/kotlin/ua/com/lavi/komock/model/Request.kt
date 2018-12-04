@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest
 
 class Request(private val httpServletRequest: HttpServletRequest) {
 
+    fun getMethod() : String {
+        return httpServletRequest.method
+    }
+
     fun getRequestBody(): String {
         return httpServletRequest.inputStream.bufferedReader().use { it.readText() }
     }

@@ -14,11 +14,10 @@ import ua.com.lavi.komock.http.handler.after.EmptyAfterResponseHandlerImpl
 import ua.com.lavi.komock.http.handler.before.EmptyBeforeResponseHandlerImpl
 import ua.com.lavi.komock.http.handler.callback.EmptyCallbackHandlerImpl
 import ua.com.lavi.komock.http.handler.response.EmptyResponseHandler
+import ua.com.lavi.komock.http.server.handler.RoutingTable
 import ua.com.lavi.komock.model.HttpMethod
 import ua.com.lavi.komock.model.config.KomockConfiguration
-import ua.com.lavi.komock.http.server.handler.RoutingTable
 import ua.com.lavi.komock.registrar.http.HttpServerRegistrar
-import java.net.Socket
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.test.assertEquals
