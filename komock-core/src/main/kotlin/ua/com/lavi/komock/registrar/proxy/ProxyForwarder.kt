@@ -62,21 +62,20 @@ class ProxyForwarder : Registrar<ProxyConfigProperties> {
         val responseHandler = object : ResponseHandler {
             override fun handle(request: Request, response: Response) {
                 val httpResponse: CloseableHttpResponse = httpClient.execute(buildHttpRequest(request, properties))
+
+                //fill the response model
                 val content = httpResponse.entity.content.bufferedReader().use { it.readText() }
-                log.debug("Received: $httpResponse \r\n $content")
                 response.setCode(httpResponse.statusLine.statusCode)
                 response.setContent(content)
                 for (header in httpResponse.allHeaders) {
                     response.addHeader(header.name, header.value)
                 }
+                log.debug("Received: $httpResponse \r\n $content")
+
+                // dump the routes in the komock format
                 if (properties.writeTo.isNotEmpty()) {
 
-                    val routeProperties = RouteProperties()
-                    routeProperties.url = request.getHttpServletRequest().requestURI
-                    routeProperties.httpMethod = request.getMethod()
-                    routeProperties.responseBody = "'${content.replace("\n", "")}'"
-                    routeProperties.code = httpResponse.statusLine.statusCode
-                    routeProperties.responseHeaders = response.getHeaders().filterNot { ignoreHeader(it.key) }
+                    val routeProperties = buildRouteProperties(request, response)
 
                     var methodRoutes: MutableMap<String, RouteProperties>? = hitTable[request.getMethod()]
                     if (methodRoutes == null) {
@@ -88,17 +87,23 @@ class ProxyForwarder : Registrar<ProxyConfigProperties> {
 
                     yamlRouteWriter.write(hitTable, File(properties.writeTo))
                 }
+
             }
         }
-        router.addRoute("/**", HttpMethod.GET, responseHandler)
-        router.addRoute("/**", HttpMethod.POST, responseHandler)
-        router.addRoute("/**", HttpMethod.PATCH, responseHandler)
-        router.addRoute("/**", HttpMethod.DELETE, responseHandler)
-        router.addRoute("/**", HttpMethod.OPTIONS, responseHandler)
-        router.addRoute("/**", HttpMethod.CONNECT, responseHandler)
-        router.addRoute("/**", HttpMethod.HEAD, responseHandler)
-        router.addRoute("/**", HttpMethod.TRACE, responseHandler)
 
+        for (httpMethod in HttpMethod.values()) {
+            router.addRoute("/**", httpMethod, responseHandler)
+        }
+    }
+
+    private fun buildRouteProperties(request: Request, response: Response): RouteProperties {
+        val routeProperties = RouteProperties()
+        routeProperties.url = request.getHttpServletRequest().requestURI
+        routeProperties.httpMethod = request.getMethod()
+        routeProperties.responseBody = "'${response.getContent().replace("\n", "")}'"
+        routeProperties.code = response.getCode()
+        routeProperties.responseHeaders = response.getHeaders().filterNot { ignoreHeader(it.key) }
+        return routeProperties
     }
 
     private fun buildHttpRequest(request: Request, properties: ProxyConfigProperties): HttpUriRequest {

@@ -24,6 +24,10 @@ class Response(private val servletResponse: HttpServletResponse) {
         servletResponse.status = code
     }
 
+    fun getCode() : Int {
+        return servletResponse.status
+    }
+
     fun setContentType(contentType: String?) {
         servletResponse.contentType = contentType
     }
