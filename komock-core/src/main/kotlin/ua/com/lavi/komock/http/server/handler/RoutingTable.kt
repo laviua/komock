@@ -31,14 +31,17 @@ class RoutingTable {
         if (find(httpMethod, url) != null) {
             throw RuntimeException("Route with httpMethod: ${httpMethod.name} and requestedUrl: $url is already exists in the routing table")
         }
-        urlMap.put(httpMethod, Route(url, responseHandler, beforeResponseHandler, afterResponseHandler, callbackHandler))
-        routeMap.put(url, urlMap)
+        urlMap[httpMethod] = Route(url, responseHandler, beforeResponseHandler, afterResponseHandler, callbackHandler)
+        routeMap[url] = urlMap
     }
 
     fun find(httpMethod: HttpMethod, requestedUrl: String): Route? {
         val httpMethodsMap = routeMap[requestedUrl]
         if (httpMethodsMap == null) {
             for (routeKey in routeMap.keys) {
+                if (routeKey == "/**") {
+                    return routeMap[routeKey]?.get(httpMethod)
+                }
                 val pattern = routeKey.replace("*", REGEX_URL_WILDCARD)
                 if (Regex(pattern).matchEntire(requestedUrl) != null) {
                     return routeMap[routeKey]!![httpMethod]

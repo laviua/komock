@@ -3,6 +3,7 @@ package ua.com.lavi.komock
 import ua.com.lavi.komock.model.config.KomockConfiguration
 import ua.com.lavi.komock.registrar.consul.ConsulRegistrar
 import ua.com.lavi.komock.registrar.http.HttpServerRegistrar
+import ua.com.lavi.komock.registrar.proxy.ProxyForwarder
 import ua.com.lavi.komock.registrar.spring.SpringConfigRegistrar
 
 /**
@@ -26,12 +27,16 @@ class KomockRunner {
             springConfigRegistrar.register(springConfigProperties)
         }
 
+        //Proxy interceptor server
+        val proxyForwarder = ProxyForwarder()
+        komockConfiguration.proxies
+                .filter { it.enabled }
+                .forEach { proxyForwarder.register(it) }
+
         //Consul registration
         val consulRegistrar = ConsulRegistrar()
         komockConfiguration.consulAgents
                 .filter { it.enabled }
-                .forEach {
-                    consulRegistrar.register(it)
-                }
+                .forEach { consulRegistrar.register(it) }
     }
 }

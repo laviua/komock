@@ -12,6 +12,24 @@ consulAgents:
           checkInterval: 30s
           checkTimeout: 30s
 
+proxies:
+  -
+    enabled: true
+    httpServer:
+      name: auth
+      port: 9090
+      host: 127.0.0.1
+    forwardTo: "https://auth.testlab.com:9090"
+    writeTo: "/tmp/auth.yml"
+  -
+    enabled: true
+    httpServer:
+      name: esb
+      port: 9091
+      host: 127.0.0.1
+    forwardTo: "https://esb.testlab.com:9091"
+    writeTo: "/tmp/proxy.yml"
+
 springConfig:
   enabled: true
   refreshPeriod: 10000

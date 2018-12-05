@@ -24,6 +24,10 @@ class Response(private val servletResponse: HttpServletResponse) {
         servletResponse.status = code
     }
 
+    fun getCode() : Int {
+        return servletResponse.status
+    }
+
     fun setContentType(contentType: String?) {
         servletResponse.contentType = contentType
     }
@@ -46,7 +50,7 @@ class Response(private val servletResponse: HttpServletResponse) {
     fun getHeaders(): MutableMap<String, String> {
         val headers: MutableMap<String, String> = HashMap()
         for (headerName in servletResponse.headerNames) {
-            headers.put(headerName, servletResponse.getHeader(headerName))
+            headers[headerName] = servletResponse.getHeader(headerName)
         }
         return headers
     }
